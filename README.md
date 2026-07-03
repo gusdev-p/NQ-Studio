@@ -1,49 +1,58 @@
 ## NQ-Studio
 
 <p align="center">
-    <img src="./assets/logo.png" width="300">
+    <img src="./assets/logo.png" width="300px">
 </p>
 
-A simple IDE for JavaScript, HTML, CSS and Node.js projects.
 
-### Current development state
+A simple IDE/Code Editor for JavaScript, HTML, CSS and Node.js projects :0
 
-NQ-Studio is still under development, but it is already usable for simple projects involving JavaScript, HTML and CSS.
+Tired of using a heavy IDE for a simple project? NQ-Studio is for you.
 
-At the moment, the IDE does not yet include:
-- Live HTML preview
-- Image preview support
 
-These features are planned for future updates.
+### Features ✨
 
----
+- 💻 **Integrated Terminal** - You can execute your code without external terminals!
+- 📂 **Tree View** - Much easier to see your files
+- ⚡ **Lightweight** - Lightweight compared to other IDEs
+- 🎨 **Dark, light and custom themes** - Fully customizable themes!
 
-### How to use the source code
+### Current development state 🖥️
 
-To use the NQ-Studio source code, you will need to execute some commands in your terminal:
+NQ-Studio is still under development, we don't recommend you use it for now, because some features are under development, like:
 
-```Bash
+- Live `HTML` preview
+- Image preview
+
+But if you don't mind that, you can use the IDE :)
+
+--- 
+
+### How to use the source code?
+
+To use the NQ-Studio source code for what you want, you will need to execute some commands in your terminal:
+
+```bash
 make install-deps
 ```
 
-This command installs all dependencies required by NQ-Studio when `node_modules` is not present in the project.
+This command installs all the dependencies that NQ-Studio needs to work, because the directory `node_modules` is not included in this project repository
 
-```Bash
+```bash
 make
 # or
 make all
 ```
 
-This command runs three steps:
-- `make distclean` : removes the `dist` directory and cleans previous builds
+This command executes other three steps:
 
-- `make build` : compiles TypeScript(which is not included!) into JavaScript and copies essential files
+- `make distclean` : Removes the `dist` directory, good for clean old builds.
 
-- `make preview` : starts **Electron** and opens the IDE.
+- `make build` : Compiles all the TypeScript(which is not included :0) into JavaScript(which is included!) and copies essential files to the `dist` directory.
+
+- `make preview` : Launches **Electron** and opens the IDE.
 
 ---
 
-
-### Notes
-
-This project is envolving and may containg bugs or incomplete features. Feedback and suggestions are welcome.
+### Notes 📋
+This project is under development and may contain bugs or have incomplete features
