@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+    <script src="../core/renderer.js" type="module"></script>
+    <style>
+        #editor {
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 5px 0 5px 0;
+            overflow: auto;
+            box-sizing: border-box;
+            padding: 5px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .cm-editor {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            border-radius: 8px;
+        }
+
+        .cm-gutters {
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .selected {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+
+        .xterm-helper-textarea {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            left: -9999px;
+        }
+
+        .xterm-helpers {
+            height: 1px;
+            position: absolute;
+            overflow: hidden;
+        }
+
+        #terminal,
+        #terminalContent,
+        .xterm {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>

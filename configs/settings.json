@@ -1,0 +1,65 @@
+{
+    "console": {
+        "fontFamily": "JetBrainsMono Nerd Font",
+        "fontSize": 14,
+
+        "linux": {
+            "shell": "zsh"
+        },
+
+        "windows": {
+            "shell": "powershell.exe"
+        }
+    },
+
+    "$comment": [
+        "Your themes.",
+        "We have some examples of dark and light themes. If you want to add more, create a new theme, add here and define in the 'default'",
+        "Or edit the examples :)",
+        "NOTE:",
+        "each color in the theme MUST have '--' before the name"
+    ],
+
+    "themes": {
+        "dark": {
+            "variant": "dark",
+
+            "theme": {
+                "--backgroundColor": "#222",
+                "--surfaceColor": "#333",
+                "--fontColor": "#f1f1f1",
+                "--borderColor": "#666"
+            }
+        },
+
+        "light": {
+            "variant": "light",
+
+            "theme": {
+                "--backgroundColor": "#bdbdbd",
+                "--surfaceColor": "#9f9f9f",
+                "--fontColor": "#1c1c1c",
+                "--borderColor": "#838383"
+            }
+        },
+
+        "$comment": [
+            "This option define the default theme, if is 'auto' the theme will be decided by your System theme",
+            "like 'dark' or 'light'."
+        ],
+
+        "default": "auto"
+    },
+
+    "editor": {
+        "fontFamily": "JetBrainsMono Nerd Font",
+        "fontSize": 14,
+
+        "$comment": [
+            "This option define the default theme, if is 'auto' the theme will be decided by your System theme",
+            "like 'dark' or 'light'."
+        ],
+
+        "defaultTheme": "auto"
+    }
+}

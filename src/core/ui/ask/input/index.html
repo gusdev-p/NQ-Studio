@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #222;
+            display: flex;
+            /* gap: 10px; */
+            flex-direction: column;
+            overflow: auto;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        #t {
+            background-color: #333;
+            border: none;
+            outline: none;
+            padding: 5px;
+            border-radius: 4px;
+            color: #f1f1f1;
+            font-weight: bold;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            cursor: pointer;
+        }
+
+
+        button {
+            width: 40px;
+            height: 27px;
+            background-color: #333;
+            color: #f1f1f1;
+            font-weight: bold;
+            font-family:  system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            border: none;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #q {
+            color: #f1f1f1;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <h3 id="q"></h3>
+    <div>
+        <input id="t">
+        <button onclick="send()">Ok</button>
+    </div>
+    
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const question = params.get("question");
+        document.getElementById("q").innerText = question;
+        function send(value) {
+            if (value === false) {
+                window.electron.send("ask-text-result", null);
+            } else {
+                window.electron.send("ask-text-result", document.getElementById("t").value);
+            }
+        };
+
+        document.addEventListener("keydown", async (e) => {
+            if (e.key.toLowerCase() === "enter") {
+                send();
+            }
+
+            if (e.key.toLowerCase() === "escape") {
+                console.log("escapou!");
+                send(false);
+            }
+        });
+    </script>
+</body>
+</html>

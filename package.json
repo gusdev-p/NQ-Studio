@@ -1,0 +1,50 @@
+{
+  "name": "nq-studio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "preview": "electron ."
+  },
+  "keywords": [
+    "ide",
+    "code-editor",
+    "editor",
+    "text-editor",
+    "javascript",
+    "html",
+    "css",
+    "nodejs",
+    "electron",
+    "web-development",
+    "frontend",
+    "development-tools",
+    "coding",
+    "programming",
+    "nq-studio"
+  ],
+  "author": "GusDev",
+  "license": "GPL-3.0-only",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "electron": "^42.3.3",
+    "esbuild": "^0.28.0",
+    "globals": "^17.6.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@codemirror/lang-css": "^6.3.1",
+    "@codemirror/lang-html": "^6.4.11",
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/lang-json": "^6.0.2",
+    "@codemirror/language": "^6.12.3",
+    "@codemirror/state": "^6.6.0",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "codemirror": "^6.0.2",
+    "node-pty": "^1.1.0",
+    "thememirror": "^2.0.1"
+  }
+}
