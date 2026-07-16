@@ -8,6 +8,8 @@ export class treeItem {
     private node: TreeNode;
     private loaded: boolean;
     private static selectedItem: treeItem | null = null;
+    private static properties: HTMLDivElement | null = null;
+    private static propertiesOwner: treeItem | null = null;
     
     private tab: HTMLDivElement;
 
@@ -31,12 +33,19 @@ export class treeItem {
         this.element.style.userSelect = "none";
         this.element.style.cursor = "pointer";
         
-        this.element.onclick = (e) => {
+        this.element.addEventListener("mousedown", (e) => {
+            console.log("clique!");
             e.stopPropagation();
             this.select();
-        };
 
-        this.element.ondblclick = async (e) => {
+            if (e.button === 2) {
+                e.preventDefault();
+                console.log("direito!")
+                this.showProperties(e);
+            }
+        });
+
+        this.element.addEventListener("dblclick", async (e) => {
             e.stopPropagation();
 
             if (!node.isDir) {
@@ -83,7 +92,7 @@ export class treeItem {
             this.loaded = true;
             this.isOpen = true;
             this.changeIcon();
-        }
+        })
     }
 
     private changeIcon() {
@@ -107,7 +116,46 @@ export class treeItem {
         treeItem.selectedItem = this;
         window.nq.setSelected(this.node.path);
         console.log(treeItem.selectedItem);
+    }
 
+    private showProperties(e: MouseEvent) {
+        if (treeItem.properties) {
+            document.body.removeChild(treeItem.properties);
+            treeItem.properties = null;
+            treeItem.propertiesOwner = null;
+            return;
+        }
+
+        const properties = document.createElement("div");
+        properties.id = "nodeProperties";
+        properties.className = "dropdown";
+
+        properties.style.position = "fixed";
+        properties.style.top = `${e.clientY}px`;
+        properties.style.left = `${e.clientX}px`;
+        properties.style.background = "#333";
+        properties.style.border = "1px solid #666";
+        properties.style.minWidth = "180px";
+        properties.style.zIndex = "1000"
+        properties.style.display = "flex";
+        properties.style.flexDirection = "column";
+
+        properties.textContent = this.node.name;
+
+        // properties options
+        const renameButton = document.createElement("button");
+        renameButton.id = "renameButton";
+        renameButton.innerText = "Rename";
+        renameButton.onclick = () => {
+            console.log('rename!');
+        }
+
+        properties.appendChild(renameButton);
+
+        document.body.appendChild(properties);
+
+        treeItem.properties = properties;
+        treeItem.propertiesOwner = this;
     }
 
     public static getSelectedNode(): TreeNode | null {

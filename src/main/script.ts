@@ -1,4 +1,5 @@
 let waitForO = false;
+let secondaryBarOpen = false;
 
 document.addEventListener("keydown", async (e) => {
     // pra debug :)
@@ -69,6 +70,20 @@ document.addEventListener("keydown", async (e) => {
     if (e.ctrlKey && e.key.toLowerCase() === "w") {
         e.preventDefault();
     }
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "p") {
+        if (!secondaryBarOpen) {
+            document.dispatchEvent(new CustomEvent("openSecondarySideBar"));
+            secondaryBarOpen = true
+        } else {
+            document.dispatchEvent(new CustomEvent("hideSecondarySideBar"));
+            secondaryBarOpen = false;
+        }
+    }
+
+    if (e.key.toLowerCase() === "tab") {
+        e.preventDefault();
+    }
 });
 
 document.addEventListener("createDir", async (e: any) => {
@@ -78,7 +93,7 @@ document.addEventListener("createDir", async (e: any) => {
     console.log("pai: " + parent);
     console.log("nome: " + dirName);
 
-    const result = await window.nq.createDir(`${parent}/${dirName}`, true);
+    const result = await window.nq.createDir(`${parent}/${dirName}`, false);
 
     if (!result.success) {
         await window.nq.warn("Cant create directory", result.error);
@@ -92,7 +107,7 @@ document.addEventListener("createFile", async (e: any) => {
     const fileName = e.detail.name;
     const parent = await window.nq.getSelected();
 
-    const result = await window.nq.createFile(`${parent}/${fileName}`, true);
+    const result = await window.nq.createFile(`${parent}/${fileName}`, false);
 
     if (!result.success) {
         await window.nq.warn("Cant create file", result.error);

@@ -3,7 +3,7 @@ import { treeView, treeItem } from "./treeView/treeRender.js";
 
 export class SideBar {
     private root: HTMLElement;
-    private maxWidth = window.innerWidth * 0.5;
+    private maxWidth = window.innerWidth * 0.3;
     private minWidth = 150;
 
     private sidebar: HTMLDivElement;
@@ -16,7 +16,7 @@ export class SideBar {
         this.root = root;
 
         this.sidebar = document.createElement("div");
-        this.sidebar.id = "sidebar";
+        this.sidebar.id = "sideBar";
         this.sidebar.style.height = "calc(100vh - 10px)";
         this.sidebar.style.width = "300px";
         this.sidebar.style.display = "flex";
@@ -24,10 +24,11 @@ export class SideBar {
         this.sidebar.style.flexShrink = "0";
         this.sidebar.style.background = "var(--surfaceColor, #3c3c3c)";
         this.sidebar.style.overflow = "hidden";
+        this.sidebar.style.borderRadius = "10px";
 
 
         this.resizer = document.createElement("div");
-        this.resizer.id = "resizer";
+        this.resizer.id = "sideBarResizer";
         this.resizer.style.background = "var(--borderColor, #3c3c3c)";
         this.resizer.style.cursor = "col-resize"
         this.resizer.style.width = "4.5px";
@@ -71,13 +72,11 @@ export class SideBar {
         })
 
         this.wrapper = document.createElement("div");
-        this.wrapper.id = "wrapper"
+        this.wrapper.id = "sideBarWrapper"
         this.wrapper.style.display = "flex";
-        this.wrapper.style.height = "calc(100vh - 10px)";
         this.wrapper.style.flexShrink = "0";
-        this.wrapper.style.borderRadius = "10px";
         this.wrapper.style.margin = "0 8px 0 8px";
-        this.wrapper.style.overflow = "hidden";
+        this.wrapper.style.gap = "4px";
         
         this.content = document.createElement("div");
         this.content.id = "content";
@@ -88,10 +87,10 @@ export class SideBar {
         this.sidebar.appendChild(this.content);
 
         this.wrapper.appendChild(this.sidebar);
-        //this.wrapper.appendChild(this.resizer);
+        this.wrapper.appendChild(this.resizer);
+
 
         this.root.appendChild(this.wrapper);
-        this.root.appendChild(this.resizer);
     }
 
     async defineTreeView(tree: string) {

@@ -9,6 +9,7 @@ export class mainSideBar {
         this.root = root;
 
         this.bar = document.createElement("div");
+        this.bar.id = "mainSideBar"
         this.bar.style.width = "4%";
         this.bar.style.height = "calc(100vh - 10px)";
         this.bar.style.borderRight = "solid 2px var(--borderColor)"
@@ -20,6 +21,7 @@ export class mainSideBar {
         this.bar.style.padding = "5px 5px 0 5px"
 
         this.treeViewButton = document.createElement("button");
+        this.treeViewButton.id = "mainSideBarTreeViewButton"
         this.treeViewButton.innerText = "Tree view."
 
         this.treeViewButton.addEventListener("click", () => {

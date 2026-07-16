@@ -41,5 +41,10 @@ export class terminalManager {
         this.pty.onData(data => {
             win.webContents.send("terminal:data", data);
         });
+
+        ipcMain.handle("terminal:exec", (_, command: string) => {
+            this.pty?.write(command + "\n");
+            return true;
+        });
     }
 }

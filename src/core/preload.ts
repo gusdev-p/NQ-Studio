@@ -23,7 +23,13 @@ export const nq = {
     openSetting: (path: string) => ipcRenderer.invoke("openSetting", path),
     getSetting: (...keys: string[]) => ipcRenderer.invoke("getSetting", ...keys),
     getDevMode: () => ipcRenderer.invoke("getDevMode"),
-    getAppPath: (name: "home" | "appData" | "assets" | "userData" | "sessionData" | "temp" | "exe" | "module" | "desktop" | "documents" | "downloads" | "music" | "pictures" | "videos" | "recent" | "logs" | "crashDumps") => ipcRenderer.invoke("getAppPath", name)
+    getAppPath: (name: "home" | "appData" | "assets" | "userData" | "sessionData" | "temp" | "exe" | "module" | "desktop" | "documents" | "downloads" | "music" | "pictures" | "videos" | "recent" | "logs" | "crashDumps") => ipcRenderer.invoke("getAppPath", name),
+    getFileName: (path: string) => ipcRenderer.invoke("getFileName", path),
+    /**
+     * ## exists
+     * check if a file or a directory exists.
+     */
+    exists: (path: string) => ipcRenderer.invoke("exists", path),
 };
 
 export const terminal = {
@@ -43,7 +49,11 @@ export const terminal = {
         ipcRenderer.on("terminal:data", (_, data) => {
             callback(data);
         });
-    }
+    },
+
+    executeInTerminal(command: string) {
+        ipcRenderer.invoke("terminal:exec", command);
+    },
 };
 
 

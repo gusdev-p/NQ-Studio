@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain, nativeTheme, systemPreferences, dialog } from "electron";
+import { BrowserWindow, app, ipcMain, nativeTheme, systemPreferences, dialog, Menu } from "electron";
 import path from "path"
 import { execSync } from "child_process";
 import { makeTreeNodes } from "./core/ui/treeView/treeProvider";
@@ -6,7 +6,8 @@ import fs from "fs";
 import { terminalManager } from "./terminalManager";
 import { SettingsManager } from "./core/settings/settingsManager";
 
-let globalRoot: string = ".";
+// NOTE: mudar isso pra releases
+let globalRoot: string = "/home/gustavo/Projetos/NQ-Studio";
 let selected: string = globalRoot
 
 export const settingsManager = new SettingsManager();
@@ -14,6 +15,10 @@ settingsManager.open(path.join(app.getPath("appData"), "nq-studio", "settings.js
 console.log(settingsManager.get("console", "fontFamily"));
 const devMode = process.argv.includes("--devMode");
 console.log("devMode: ", devMode);
+if (typeof systemPreferences.getAccentColor === 'function') {
+    console.log(systemPreferences.getAccentColor());
+    console.log("foi a cor!")
+}
 
 let terminal: terminalManager;
 
@@ -31,6 +36,8 @@ function createBootstrap() {
         title: "NQ-Studio",
         icon: path.join("assets", "logo.png"),
     });
+
+    //Menu.setApplicationMenu(null);
 
     terminal = new terminalManager(win);
 
@@ -348,6 +355,20 @@ ipcMain.handle("removeFile", async (_, fileName: string) => {
     }
 });
 
+ipcMain.handle("exists", (_, path: string) => {
+    return fs.existsSync(path);
+});
+
+ipcMain.handle("getFileName", async (_, path: string) => {
+    const splitPath = path.split("/");
+
+    let result;
+    for (const p of splitPath) {
+        result = p
+    };
+
+    return result
+});
 
 ipcMain.handle("openSetting", (_, path: string) => {
     return settingsManager.open(path);

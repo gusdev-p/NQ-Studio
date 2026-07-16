@@ -1,5 +1,10 @@
-implementar suporte a imagens
-implementar preview do HTML
-refatorar método de abrir arquivos (pro suporte de imagens...)
-adicionar opção pra renomear arquivos
-implementar sistema de configs
+implementar suporte a imagens - renderer.ts
+refatorar método de abrir arquivos (pro suporte de imagens...) - renderer.ts, main.ts
+adicionar opção pra renomear arquivos - renderer.ts, main.ts
+adicionar barra superior pra preview e executar arquivos - renderer.ts
+adicionar barra superior estilo settings de IDE - renderer.ts
+continuar a aba do properties - treeRender.ts
+adicionar suporte a definição de arquivos (tipo src, build e etc, tipo a jetbrains) - treeRender.ts e main.ts
+
+pra depois:
+melhorar sistema de preview de HTML (só depois q implementar a definição de arquivos) - secondaryBar.ts

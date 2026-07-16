@@ -1,4 +1,4 @@
-import { EditorView } from "@codemirror/view";
+import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
@@ -10,14 +10,25 @@ import { css } from "@codemirror/lang-css";
 import { terminalView } from "./ui/terminal/terminalView.js";
 import { tags as t } from "@lezer/highlight";
 import { createTheme } from "thememirror";
+import { SecondarySideBar } from "./ui/secondaryBar.js";
+import { FileBar } from "./ui/fileBar.js";
+import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 
 document.documentElement.style.height = "100%";
+document.documentElement.style.overflow = "hidden";
 document.body.style.height = "100vh";
 document.body.style.margin = "0";
 document.body.style.display = "flex";
+document.body.style.flexDirection = "column";
+document.body.style.overflow = "hidden";
+document.body.style.width = "100vw";
+document.body.style.maxWidth = "100vw";
+document.body.style.gap = "4px";
 
 let side_bar: SideBar;
 let nqeditor: nqEditor;
+let secondary_side_bar: SecondarySideBar;
+let fileBar: FileBar;
 
 let isDark: boolean;
 
@@ -58,10 +69,17 @@ export class nqEditor {
             extensions: [
                 basicSetup,
                 languageConf.of(javascript()),
-                await setEditorTheme()
+                await setEditorTheme(),
+                keymap.of([
+                     ...defaultKeymap,
+                     indentWithTab
+                ])
             ],
             parent: document.getElementById("editor")!
         });
+        this.editor.dom.style.height = "100%";
+        this.editor.dom.style.width = "100%";
+        this.editor.dom.style.overflow = "hidden";
         this.fileContent = "";
         this.filePath = "";
     }
@@ -177,6 +195,12 @@ async function initTheme() {
 
     isDark = themeRoot.isDark
 
+    if ("--accentColor" in theme) {
+        ;
+    } else {
+        theme["--accentColor"] = await window.nq.getAccentColor();
+    }
+
     Object.entries(theme).forEach(([key, value]: [string, any]) => {
         document.body.style.setProperty(key, value);
         console.log("definido: ", key, value);
@@ -188,25 +212,107 @@ async function prepareTheme() {
 };
 
 async function initUI() {
-    new mainSideBar(document.body);
 
-    side_bar = new SideBar(document.body);
+    // topbar
+    const topBar = document.createElement("div");
+    topBar.id = "topBar";
+    topBar.style.display = "flex";
+    topBar.style.width = "100%";
+    topBar.style.maxWidth = "100%";
+    topBar.style.height = "48px";
+    topBar.style.boxSizing = "border-box";
+    topBar.style.padding = "8px";
+    topBar.style.gap = "4px";
+    topBar.style.flexShrink = "0";
+    //topBar.style.justifyContent = "center";
+    topBar.style.alignItems = "center"
+
+    // logo
+    const logoSrc = document.createElement("img");
+    logoSrc.id = "LogoSrc";
+    logoSrc.src = "../../assets/logo.png";
+    logoSrc.style.maxWidth = "100px";
+    logoSrc.style.maxHeight = "30px"
+
+    // file section
+    const fileBtn = document.createElement("button");
+    fileBtn.id = "fileButton";
+    fileBtn.innerText = "File";
+    fileBtn.style.background = "var(--onSurfaceColor)";
+    fileBtn.style.color = "var(--fontColor)";
+    fileBtn.style.border = "none";
+    fileBtn.style.borderRadius = "3px";
+
+    const fileMenu = document.createElement("div");
+    fileMenu.id = "fileMenu";
+    fileMenu.className = "dropdown";
+    fileMenu.style.position = "absolute";
+    fileMenu.style.top = "100%";
+    fileMenu.style.left = "0";
+    fileMenu.style.display = "none";
+    fileMenu.style.background = "#333";
+    fileMenu.style.border = "1px solid #666";
+    fileMenu.style.minWidth = "180px";
+    fileMenu.style.zIndex = "1000";
+
+    const createProjectBtn = document.createElement("button");
+    createProjectBtn.id = "createProjectButton";
+    createProjectBtn.innerText = "Create Project.";
+
+    fileMenu.appendChild(createProjectBtn)
+
+    fileBtn.addEventListener("click", (e) => {
+        e.stopPropagation()
+        fileMenu.style.display =
+            fileMenu.style.display === "block" ? "none": "block";
+    });
+
+    const fileContainer = document.createElement("div");
+    fileContainer.style.position = "relative";
+
+    fileContainer.appendChild(fileBtn);
+    fileContainer.appendChild(fileMenu)
+
+    topBar.appendChild(logoSrc);
+    topBar.appendChild(fileContainer);
+
+    const root = document.createElement("div");
+    root.id = "root";
+    root.style.display = "flex";
+    root.style.width = "100%";
+    root.style.maxWidth = "100%";
+    root.style.flex = "1";
+    root.style.minHeight = "0";
+    root.style.overflow = "hidden";
+    root.style.boxSizing = "border-box";
+
+    new mainSideBar(root);
+
+    side_bar = new SideBar(root);
 
     const main = document.createElement("div");
     main.id = "main";
     main.style.display = "flex";
     main.style.flexDirection = "column";
-    main.style.flex = "1";
+    main.style.width = "100%";
+    main.style.maxWidth = "100%";
+    main.style.height = "100%";
+    main.style.minHeight = "0";
+    main.style.overflow = "hidden";
     main.style.margin = "0 8px 0 8px";
+    main.style.boxSizing = "border-box";
 
     const editor = document.createElement("div");
     editor.id = "editor";
     editor.style.flex = "1";
+    editor.style.height = "100%";
+    editor.style.width = "100%";
+    editor.style.maxWidth = "100%";
     editor.style.borderRadius = "8px";
     editor.style.overflow = "hidden";
-    editor.style.overflowY = "auto";
     editor.style.minHeight = "0";
     editor.style.background = "var(--backgroundColor, #222)";
+    editor.style.boxSizing = "border-box";
 
     const terminal = document.createElement("div");
     terminal.id = "terminal";
@@ -284,9 +390,28 @@ async function initUI() {
     main.appendChild(terminal);
     main.appendChild(downBar);
 
-    document.body.appendChild(main);
+    
+    const workspace = document.createElement("div");
+    workspace.id = "workspace"
+    workspace.style.display = "flex";
+    workspace.style.flex = "1";
+    workspace.style.width = "100%";
+    workspace.style.maxWidth = "100%";
+    workspace.style.minWidth = "0";
+    workspace.style.overflow = "hidden";
+    
+    workspace.appendChild(main);
+    secondary_side_bar = new SecondarySideBar(workspace);
+    secondary_side_bar.hide();
 
+    root.appendChild(workspace);
+
+    document.body.appendChild(topBar);
+    fileBar = new FileBar(document.body)
+    document.body.appendChild(root);
+    
     nqeditor = new nqEditor();
+    
 }
 
 async function initListeners() {
@@ -295,15 +420,25 @@ async function initListeners() {
         side_bar.defineTreeView(await window.nq.getRoot());
     })
     // TODO: adicionar um check pra ver se é imagem!
-    document.addEventListener("fileOpened", (e: any) => {
+    document.addEventListener("fileOpened", async (e: any) => {
+        // properties
         const fileContent = e.detail.content;
         const fileType = e.detail.type;
         const filePath = e.detail.path;
+        const fileName = await window.nq.getFileName(filePath);
+
+        // debug
         console.log("arquivo aberto!");
         console.log("conteúdo: ", fileContent);
         console.log("tipo: ", fileType);
+        console.log("nome do arquivo: ", fileName);
+
+        // define the editor
         nqeditor.setContent(fileContent,filePath);
         nqeditor.setLanguage(nqeditor.toLanguage(fileType));
+
+        // define in the fileBar
+        fileBar.appendFile({fileName: fileName, filePath: filePath, fileType: fileType});
     });
 
     document.addEventListener("keydown", async (e) => {
@@ -313,6 +448,9 @@ async function initListeners() {
             const result = await window.nq.saveFile(nqeditor.file_path, String(nqeditor.file_content))
             if (result.success) {
                 console.log("arquivo salvo!")
+                if (secondary_side_bar.isOpen()) {
+                    document.dispatchEvent(new CustomEvent("reloadHTML"));
+                }
             }
         }
     });
@@ -327,6 +465,21 @@ async function initListeners() {
 
     document.addEventListener("updateTree", async () => {
         await side_bar.defineTreeView(await window.nq.getRoot());
+    });
+
+    document.addEventListener("openSecondarySideBar", () =>{
+        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(150);
+    });
+
+    document.addEventListener("hideSecondarySideBar", () => {
+        secondary_side_bar.hide();
+    });
+
+    document.addEventListener("htmlPreview", (e: any) => {
+        const html = e.detail.path;
+
+        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
+        secondary_side_bar.setHTMlPreview(html);
     });
 }
 
