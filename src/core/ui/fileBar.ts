@@ -67,6 +67,7 @@ export class FileBar {
                 break;
             }
             case ".html": {
+                console.log("é html!")
                 runButton.innerText = "Preview.";
                 runButton.onclick = async () => {
                     document.dispatchEvent(new CustomEvent("htmlPreview", {
@@ -75,6 +76,20 @@ export class FileBar {
                         }
                     }));
                 }
+                break;
+            };
+            case ".md": {
+                console.log("é md!")
+                runButton.innerText = "Preview.";
+                runButton.onclick = async () => {
+
+                    document.dispatchEvent(new CustomEvent("markdownPreview", {
+                        detail: {
+                            path: config.filePath,
+                        },
+                    }));
+                }
+                break;
             }
         }
 
