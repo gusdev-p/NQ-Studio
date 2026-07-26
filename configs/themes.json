@@ -3,7 +3,7 @@
         "variant": "dark",
 
         "settings": {
-            "background": "#222",
+            "background": "#222222",
             "foreground": "#f1f1f1",
             "caret": "#f1f1f1",
             "selection": "#70b4f8",
@@ -19,7 +19,7 @@
             "number": "#f9f06b",
             "bool": "#ffa348",
             "null": "#f66151",
-            "keyword": "#66151",
+            "keyword": "#f66151",
             "operator": "#f1f1f1",
             "className": "#e5a50a",
             "definitionTypeName": "#3584e4",
