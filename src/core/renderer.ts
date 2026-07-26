@@ -1,18 +1,11 @@
-import { EditorView, keymap } from "@codemirror/view";
-import { basicSetup } from "codemirror";
-import { javascript } from "@codemirror/lang-javascript";
-import { json } from "@codemirror/lang-json";
 import { SideBar } from "./ui/sidebar.js";
 import { mainSideBar } from "./ui/mainSideBar.js";
-import { Compartment, Extension } from "@codemirror/state";
-import { html } from "@codemirror/lang-html";
-import { css } from "@codemirror/lang-css";
 import { terminalView } from "./ui/terminal/terminalView.js";
-import { tags as t } from "@lezer/highlight";
-import { createTheme } from "thememirror";
 import { SecondarySideBar } from "./ui/secondaryBar.js";
 import { FileBar } from "./ui/fileBar.js";
-import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import "./monacoSetup.js";
+import * as monaco from "monaco-editor";
+import { buildMonacoTheme } from "./themes.js";
 
 document.documentElement.style.height = "100%";
 document.documentElement.style.overflow = "hidden";
@@ -29,31 +22,14 @@ let side_bar: SideBar;
 let nqeditor: nqEditor;
 let secondary_side_bar: SecondarySideBar;
 let fileBar: FileBar;
+let terminalVisible = true
+
+const filesToNotOpen = [".jpg", ".png", ".jpeg"];
 
 let isDark: boolean;
 
-const languageConf = new Compartment();
-
-
-const tagMap = {
-    comment: t.comment,
-    variableName: t.variableName,
-    string: [t.string, t.special(t.brace)],
-    number: t.number,
-    bool: t.bool,
-    null: t.null,
-    keyword: t.keyword,
-    operator: t.operator,
-    className: t.className,
-    definitionTypeName: t.definition(t.typeName),
-    typeName: t.typeName,
-    angleBracket: t.angleBracket,
-    tagName: t.tagName,
-    attributeName: t.attributeName
-};
-
 export class nqEditor {
-    private editor!: EditorView;
+    private editor!: monaco.editor.IStandaloneCodeEditor;
     public filePath!: string;
     public fileContent!: string;
 
@@ -62,65 +38,47 @@ export class nqEditor {
     }
 
     async init() {
-        this.editor = new EditorView({
-            doc: `// Welcome to NQ-Sudio!
-// Open a directory or create a project to begin!
-`,
-            extensions: [
-                basicSetup,
-                languageConf.of(javascript()),
-                await setEditorTheme(),
-                keymap.of([
-                     ...defaultKeymap,
-                     indentWithTab
-                ])
-            ],
-            parent: document.getElementById("editor")!
+        const themeName = await setEditorTheme();
+
+        this.editor = monaco.editor.create(document.getElementById("editor")!, {
+            value: "// Welcome to NQ-Studio!\n// Open a directory or create a new project to begin!\n",
+            language: "javascript",
+            theme: themeName,
+            automaticLayout: true,
         });
-        this.editor.dom.style.height = "100%";
-        this.editor.dom.style.width = "100%";
-        this.editor.dom.style.overflow = "hidden";
         this.fileContent = "";
         this.filePath = "";
     }
 
     setContent(content: string, path: string) {
-        this.editor.dispatch({
-            changes: {
-                from: 0,
-                to: this.editor.state.doc.length,
-                insert: content
-            }
-        });
+        console.log("conteúdo definido!")
+        this.editor.setValue(content)
         this.filePath = path;
         console.log("arquivo: ", this.fileContent);
         console.log("path: ", this.filePath);
     }
 
-    setLanguage(languageExtension: Extension) {
-        this.editor.dispatch({
-            effects: languageConf.reconfigure(languageExtension),
-        })
+    setLanguage(language: string) {
+        console.log("--- setLanguage ---")
+        console.log("linguagem definida!")
+        const model = this.editor.getModel()
+        if (model) monaco.editor.setModelLanguage(model, language);
     }
 
-    toLanguage(language: string): Extension {
-        if (language === ".js" || language === ".mjs" || language === ".cjs") {
-            return javascript();
-        }
-        
-        if (language === ".json") {
-            return json();
-        }
+    toLanguage(language: string): string {
+        console.log("--- toLanguage ---")
+        //console.log("pegando linguagem!")
+        if (language === ".js" || language === ".mjs" || language === ".cjs") return "javascript";
+        if (language === ".html") return "html";
+        if (language === ".css") return "css";
+        if (language === ".json") return "json";
+        if (language === ".md") return "markdown";
+        return "plaintext";
+    }
 
-        if (language === ".html") {
-            return html();
-        }
-
-        if (language === ".css") {
-            return css();
-        }
-
-        return [];
+    async applyTheme() {
+        const themeName = await setEditorTheme();
+        monaco.editor.setTheme(themeName);
     }
 
     get file_path() {
@@ -128,65 +86,25 @@ export class nqEditor {
     }
 
     get file_content() {
-        return this.editor.state.doc
+        return this.editor.getValue()
     }
+
 }
 
-async function setEditorTheme() {
+async function setEditorTheme(): Promise<string> {
     const settingsPath = await window.nq.getAppPath("appData") + "/nq-studio/themes.json";
     const themeToMount = await window.nq.getSetting("editor", "defaultTheme");
     const configRoot = JSON.parse(await window.nq.openFile(settingsPath));
-    if (themeToMount === "auto") {
-        switch (isDark) {
-            case true: {
-                const config = configRoot.dark;
 
-                const styles = Object.entries(config.styles).map(([key, color]) => ({
-                    tag: tagMap[key as keyof typeof tagMap],
-                    color: color as string
-                }));
+    const resolvedKey = themeToMount === "auto"
+        ? (isDark ? "dark": "light")
+        : themeToMount;
+    
+    const config = configRoot[resolvedKey];
+    const themeName = `nq-${resolvedKey}`;
 
-                const theme = createTheme({
-                    variant: config.variant,
-                    settings: config.settings,
-                    styles
-                });
-
-                return theme;
-            };
-            case false: {
-                const config = configRoot.light;
-
-                const styles = Object.entries(config.styles).map(([key, color]) => ({
-                    tag: tagMap[key as keyof typeof tagMap],
-                    color: color as string
-                }));
-
-                const theme = createTheme({
-                    variant: config.variant,
-                    settings: config.settings,
-                    styles
-                });
-
-                return theme;
-            }
-        }
-    } else {
-        const config = configRoot[themeToMount];
-
-        const styles = Object.entries(config.styles).map(([key, color]) => ({
-            tag: tagMap[key as keyof typeof tagMap],
-            color: color as string
-        }));
-
-        const theme = createTheme({
-            variant: config.variant,
-            settings: config.settings,
-            styles
-        });
-
-        return theme;
-    }
+    monaco.editor.defineTheme(themeName, buildMonacoTheme(config));
+    return themeName;
 }
 
 async function initTheme() {
@@ -320,7 +238,6 @@ async function initUI() {
     terminal.style.background = "black"
     terminal.style.display = "flex";
     terminal.style.flexDirection = "column";
-    //terminal.style.borderRadius = "20px";
 
     const terminalResizer = document.createElement("div");
     terminalResizer.id = "terminalResizer"
@@ -375,6 +292,16 @@ async function initUI() {
 
         document.addEventListener("mousemove", move);
         document.addEventListener("mouseup", stop);
+    });
+
+    document.addEventListener("toggleTerminal", () => {
+        terminalVisible = !terminalVisible
+
+        if (terminalVisible) {
+            terminal.style.display = "";
+        } else {
+            terminal.style.display = "none";
+        }
     });
 
     const downBar = document.createElement("div");
@@ -433,12 +360,23 @@ async function initListeners() {
         console.log("tipo: ", fileType);
         console.log("nome do arquivo: ", fileName);
 
-        // define the editor
-        nqeditor.setContent(fileContent,filePath);
-        nqeditor.setLanguage(nqeditor.toLanguage(fileType));
+        let found = false;
+        filesToNotOpen.forEach((ext) => {
+            if (ext == fileType) {
+                found = true;
+            }
+        });
 
-        // define in the fileBar
-        fileBar.appendFile({fileName: fileName, filePath: filePath, fileType: fileType});
+        if (found) {
+            console.log("é imagem!")
+            if (!secondary_side_bar.isOpen()) secondary_side_bar.show(window.innerWidth * 0.4);
+            secondary_side_bar.setImagePreview(filePath);
+        } else {
+            nqeditor.setContent(fileContent, filePath);
+            const type = nqeditor.toLanguage(fileType);
+            nqeditor.setLanguage(type);
+            fileBar.appendFile({fileName: fileName, filePath: filePath, fileType: fileType});
+        }
     });
 
     document.addEventListener("keydown", async (e) => {
@@ -457,8 +395,8 @@ async function initListeners() {
 
     document.addEventListener("openRoot", async (e: any) => {
         await window.nq.setRoot(e.detail.path);
-        await window.terminal.create(e.detail.path);
-        //console.log("pedido de troca de root!");
+        await window.terminal.changeCwd(e.detail.path);
+        console.log("pedido de troca de root!");
         console.log(e.detail.path);
         await side_bar.defineTreeView(e.detail.path);
     });
@@ -480,6 +418,12 @@ async function initListeners() {
 
         if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
         secondary_side_bar.setHTMlPreview(html);
+    });
+
+    document.addEventListener("markdownPreview", async (e: any) => {
+
+        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(window.innerWidth * 0.4);
+        secondary_side_bar.setMarkDownPreview(e.detail.path);
     });
 }
 
