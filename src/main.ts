@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain, nativeTheme, systemPreferences, dialog, Menu } from "electron";
+import { BrowserWindow, app, ipcMain, nativeTheme, systemPreferences, dialog, Menu, protocol } from "electron";
 import path from "path"
 import { execSync } from "child_process";
 import { makeTreeNodes } from "./core/ui/treeView/treeProvider";
@@ -32,6 +32,7 @@ function createBootstrap() {
             nodeIntegration: false,
             preload: path.join(__dirname, "core", "preload.js"),
             devTools: devMode,
+            webviewTag: true,
         },
         title: "NQ-Studio",
         icon: path.join("assets", "logo.png"),
@@ -45,6 +46,9 @@ function createBootstrap() {
     win.maximize();
 };
 
+protocol.registerSchemesAsPrivileged([
+    { scheme: "app", privileges: { standard: true, secure: true, supportFetchAPI: true } }
+]);
 
 app.whenReady().then(() => {
     createBootstrap();
@@ -145,10 +149,6 @@ ipcMain.handle("askDir", async () => {
         properties: ["openDirectory"],
     });
 
-    // em caso de debug
-    // console.log("resultado da API:");
-    // console.log(result);
-
     if (result.canceled) {
         console.log("o user cancelou!");
         return null;
@@ -172,6 +172,7 @@ ipcMain.handle("askInput", async (_, title: string, question: string) => {
         },
         autoHideMenuBar: true,
         title: title,
+        icon: path.join(__dirname, "assets", "logo.png")
     });
 
     askWin.loadFile(path.join(__dirname, "core", "ui", "ask", "input", "index.html"), {
@@ -217,6 +218,7 @@ ipcMain.handle("warn", (_, title: string, label: string) => {
             devTools: devMode,
         },
         autoHideMenuBar: true,
+        icon: path.join(__dirname, "assets", "logo.png")
     });
 
     warnWin.loadFile(path.join(__dirname, "core", "ui", "warn", "index.html"), {
@@ -248,7 +250,7 @@ ipcMain.handle("warn", (_, title: string, label: string) => {
     });
 });
 
-ipcMain.handle("askQuestion", async (_, title: string, question: string) =>{
+ipcMain.handle("askQuestion", async (_, title: string, question: string) => {
     const askWin = new BrowserWindow({
         title: title,
         width: 300,
@@ -260,7 +262,8 @@ ipcMain.handle("askQuestion", async (_, title: string, question: string) =>{
             preload: path.join(__dirname, "core", "ui", "ask", "button", "preload.js"),
             devTools: devMode,
         },
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        icon: path.join(__dirname, "assets", "logo.png")
     });
 
     askWin.loadFile(path.join(__dirname, "core", "ui", "ask", "button", "index.html"), {
@@ -370,10 +373,35 @@ ipcMain.handle("getFileName", async (_, path: string) => {
     return result
 });
 
+ipcMain.handle("renameFile", async (_, pathToMove: string, name: string) => {
+    const dir = path.dirname(pathToMove)
+    const target = path.join(dir, name);
+
+    try {
+        await fs.copyFileSync(pathToMove, target);
+        await fs.unlinkSync(pathToMove);
+        return { success: true, error: null };
+    } catch (e: unknown) {
+        return { success: false, error: e instanceof Error ? e.message: String(e) }
+    }
+});
+
 ipcMain.handle("openSetting", (_, path: string) => {
     return settingsManager.open(path);
 });
 
 ipcMain.handle("getSetting", (_, ...keys: string[]) => {
     return settingsManager.get(...keys);
+});
+
+ipcMain.handle("joinPath", (_, ...paths: string[]) => {
+    return path.join(...paths);
+});
+
+ipcMain.handle("getDirname", (_, pathToCheck: string) => {
+    return path.dirname(pathToCheck);
+});
+
+ipcMain.handle("resolvePath", (_, ...pathToResolve: string[]) => {
+    return path.resolve(...pathToResolve)
 });
