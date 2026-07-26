@@ -1,6 +1,3 @@
-implementar suporte a imagens - renderer.ts
-refatorar método de abrir arquivos (pro suporte de imagens...) - renderer.ts, main.ts
-adicionar opção pra renomear arquivos - renderer.ts, main.ts
 adicionar barra superior pra preview e executar arquivos - renderer.ts
 adicionar barra superior estilo settings de IDE - renderer.ts
 continuar a aba do properties - treeRender.ts
