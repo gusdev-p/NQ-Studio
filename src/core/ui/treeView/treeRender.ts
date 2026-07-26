@@ -145,9 +145,23 @@ export class treeItem {
         // properties options
         const renameButton = document.createElement("button");
         renameButton.id = "renameButton";
-        renameButton.innerText = "Rename";
+        renameButton.innerText = "Rename.";
         renameButton.onclick = () => {
             console.log('rename!');
+            document.dispatchEvent(new CustomEvent("renameFile", {
+                detail: {
+                    path: this.node.path,
+                }
+            }));
+            this.showProperties(e)
+        }
+
+        const srcButton = document.createElement("button");
+        srcButton.id = "srcButton";
+        srcButton.innerText = "Set as 'src' directory."
+        srcButton.onclick = async () => {
+            console.log("src define!")
+            await window
         }
 
         properties.appendChild(renameButton);
