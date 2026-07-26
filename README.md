@@ -21,12 +21,12 @@ Tired of using a heavy IDE for a simple project? NQ-Studio is for you.
 
 NQ-Studio is still under development, we don't recommend you use it for now, because some features are under development, like:
 
-- Image preview
+- properties tab for each file
 
 But if you don't mind that, you can use the IDE :)
 
 ### Changelog 🎯
-NQ-Studio is now in the '0.1.0-alpha' version! To see the changes check: [CHANGELOG.md](./CHANGELOG.md)
+NQ-Studio is now in the '0.2.0-alpha' version! To see the changes check: [CHANGELOG.md](./CHANGELOG.md)
 
 --- 
 
