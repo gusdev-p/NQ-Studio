@@ -19,9 +19,9 @@ distclean:
 
 install-deps:
 	@echo "Installing base dependencies..."
-	npm install --save-dev electron typescript esbuild @types/node codemirror node-pty @xterm/xterm @xterm/addon-fit
+	npm install --save-dev electron typescript esbuild @types/node node-pty @xterm/xterm @xterm/addon-fit dompurify marked
 	@echo "Installing languages support..."
-	npm install --save-dev @codemirror/lang-javascript @codemirror/lang-json
+	npm install --save-dev monaco-editor
 
 # just to debug :)
 copy-settings:
