@@ -9,7 +9,7 @@ import { ipcMain } from "electron";
  * - `success`: A boolean value which if its **true** means that the function have been successfully ended.
  * - `error`: A string value that contains the error responsible to cause the fail of the function.
  */
-class Result {
+export class Result {
     public success: boolean;
     public error: string | null = null;
 
