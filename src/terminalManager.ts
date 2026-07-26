@@ -20,6 +20,10 @@ export class terminalManager {
         ipcMain.on("terminal:resize", (_, cols, rows) => {
             this.pty?.resize(cols, rows);
         });
+
+        ipcMain.handle("terminal:cwdNew", (_, newCwd: string) => {
+            this.changeCwd(newCwd);
+        });
     }
 
     create(cwd: string, win: BrowserWindow) {
@@ -46,5 +50,16 @@ export class terminalManager {
             this.pty?.write(command + "\n");
             return true;
         });
+    }
+
+    changeCwd(newCwd: string) {
+        if (!this.pty) return;
+
+        const cdCommand =
+            process.platform === "win32"
+                ? `cd /d "${newCwd}"`
+                : `cd ${newCwd}`;
+        
+        this.pty.write(cdCommand + "\n");
     }
 }
