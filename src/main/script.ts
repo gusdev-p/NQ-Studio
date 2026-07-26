@@ -14,6 +14,11 @@ document.addEventListener("keydown", async (e) => {
 
         const result = await window.nq.askDir();
 
+        if (result === null) {
+            await window.nq.warn("Cant change root", "User canceled the operation.");
+            return;
+        }
+
         document.dispatchEvent(new CustomEvent("openRoot", {
             detail: {
                 path: result,
@@ -84,6 +89,14 @@ document.addEventListener("keydown", async (e) => {
     if (e.key.toLowerCase() === "tab") {
         e.preventDefault();
     }
+
+    if (e.ctrlKey && e.key.toLowerCase() === "j") {
+        document.dispatchEvent(new CustomEvent("toggleTerminal"))
+    }
+
+    if (e.key.toLowerCase() === "f5") {
+        document.dispatchEvent(new CustomEvent("updateTree"))
+    }
 });
 
 document.addEventListener("createDir", async (e: any) => {
@@ -113,5 +126,16 @@ document.addEventListener("createFile", async (e: any) => {
         await window.nq.warn("Cant create file", result.error);
     } else {
         document.dispatchEvent(new CustomEvent("updateTree"));
+    }
+});
+
+document.addEventListener("renameFile", async (e: any) => {
+    const path = e.detail.path;
+    const targetName = await window.nq.ask("Rename file:", "Enter the new file name:");
+    const result = await window.nq.renameFile(path, String(targetName));
+    if (result.success) {
+        document.dispatchEvent(new CustomEvent("updateTree"));
+    } else {
+        await window.nq.warn("Cant rename file", String(result.error));
     }
 });
