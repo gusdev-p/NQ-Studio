@@ -43,11 +43,11 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "auto",
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "./eslint.config.mts",
-    "./dist",
+    "./dist"
   ],
   "include": [
     "src/**/*.ts",
