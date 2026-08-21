@@ -25,41 +25,9 @@ document.addEventListener("keydown", async (e) => {
             }
         }));
     }
-
+    
     if (e.key.toLowerCase() === "delete") {
-        console.log("--- delete ---")
-        const target = await window.nq.getSelected();
-        const stat = await window.nq.stat(target);
-
-        if (target === ".") return;
-
-        let result;
-        let type;
-        
-        if (stat.isDirectory) {
-            type = "directory";
-        } else {
-            type = "file"
-        }
-
-        const confirm = await window.nq.askQuestion(`You want to delete this ${type}`, "You really want to delete: '" + target + "'?");
-
-        console.log("confirm: " + confirm);
-        if (!confirm) {
-            return
-        }
-
-        if (type === "directory") {
-            result = await window.nq.removeDir(target);
-        } else {
-            result = await window.nq.removeFile(target);
-        }
-
-        if (!result.success) {
-            await window.nq.warn(`Cant delete ${type}`, result.error);
-        } else {
-            document.dispatchEvent(new CustomEvent("updateTree"));
-        }
+        document.dispatchEvent(new CustomEvent("deleteFile"));
     }
 
     if (e.ctrlKey && e.key.toLowerCase() === "n") {
@@ -97,6 +65,10 @@ document.addEventListener("keydown", async (e) => {
     if (e.key.toLowerCase() === "f5") {
         document.dispatchEvent(new CustomEvent("updateTree"))
     }
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
+        e.preventDefault();
+    }
 });
 
 document.addEventListener("createDir", async (e: any) => {
@@ -118,7 +90,14 @@ document.addEventListener("createDir", async (e: any) => {
 document.addEventListener("createFile", async (e: any) => {
     console.log("--- createFile ---")
     const fileName = e.detail.name;
-    const parent = await window.nq.getSelected();
+    let parent = await window.nq.getSelected();
+
+    if (!(await window.nq.stat(parent)).isDirectory) {
+        parent = await window.nq.getDirname(parent);
+    }
+
+    console.log("pai: ", parent);
+    console.log("nome: ", fileName);
 
     const result = await window.nq.createFile(`${parent}/${fileName}`, false);
 
@@ -138,4 +117,54 @@ document.addEventListener("renameFile", async (e: any) => {
     } else {
         await window.nq.warn("Cant rename file", String(result.error));
     }
+});
+
+document.addEventListener("toggleDevTools", () => {
+    window.nq.openDevTools();
+});
+
+document.addEventListener("defineSrc", async (e: any) => {
+    await window.nq.setLocalProperty("src-directory", e.detail.path);
+    console.log(await window.nq.getLocalProperty("src-directory"));
+});
+
+document.addEventListener("defineMake", async (e: any) => {
+    await window.nq.setLocalProperty("makefile", e.detail.path);
+    console.log(await window.nq.getLocalProperty("makefile"));
+});
+
+document.addEventListener("deleteFile", async (e) => {
+        console.log("--- delete ---")
+        const target = await window.nq.getSelected();
+        const stat = await window.nq.stat(target);
+
+        if (target === ".") return;
+
+        let result;
+        let type;
+        
+        if (stat.isDirectory) {
+            type = "directory";
+        } else {
+            type = "file"
+        }
+
+        const confirm = await window.nq.askQuestion(`You want to delete this ${type}`, "You really want to delete: '" + target + "'?");
+
+        console.log("confirm: " + confirm);
+        if (!confirm) {
+            return
+        }
+
+        if (type === "directory") {
+            result = await window.nq.removeDir(target);
+        } else {
+            result = await window.nq.removeFile(target);
+        }
+
+        if (!result.success) {
+            await window.nq.warn(`Cant delete ${type}`, result.error);
+        } else {
+            document.dispatchEvent(new CustomEvent("updateTree"));
+        }
 });

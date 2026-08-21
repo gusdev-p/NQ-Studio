@@ -23,7 +23,7 @@ build({
     outdir: "dist",
     bundle: true,
     platform: "browser",
-    external: ["electron", "path", "child_process", "fs", "fs/promises"],
+    external: ["electron", "path", "child_process", "fs", "fs/promises", ],
     loader: {".ttf": "file"},
 });
 

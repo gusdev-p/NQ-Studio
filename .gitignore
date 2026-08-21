@@ -3,5 +3,9 @@ node_modules/
 teste.html
 bruh.js
 .nq/
-./license-format.json
-./.gitignore
+license-format.json
+.gitignore
+TODO.temp
+teste.css
+dist
+eslint.config.mts

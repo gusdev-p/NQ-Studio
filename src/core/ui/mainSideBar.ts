@@ -2,8 +2,8 @@ export class mainSideBar {
     private root: HTMLElement;
 
     private bar: HTMLDivElement;
-
     private treeViewButton: HTMLButtonElement;
+    private makeFileButton: HTMLButtonElement;
 
     constructor(root: HTMLElement) {
         this.root = root;
@@ -23,14 +23,29 @@ export class mainSideBar {
         this.treeViewButton = document.createElement("button");
         this.treeViewButton.id = "mainSideBarTreeViewButton"
         this.treeViewButton.innerText = "Tree view."
+        this.treeViewButton.style.background = "var(--surfaceColor)";
+        this.treeViewButton.style.color = "var(--fontColor)";
+        this.treeViewButton.style.border = "none";
+        this.treeViewButton.style.borderRadius = "12px";
+        this.treeViewButton.style.padding = "3px 8px";
+        this.treeViewButton.onclick = () => {
+            document.dispatchEvent(new CustomEvent("treeView"));
+        };
+    
+        this.makeFileButton = document.createElement("button");
+        this.makeFileButton.id = "mainSideBarMakefileButton";
+        this.makeFileButton.innerText = "Make files.";
+        this.makeFileButton.style.background = "var(--surfaceColor)";
+        this.makeFileButton.style.color = "var(--fontColor)";
+        this.makeFileButton.style.border = "none";
+        this.makeFileButton.style.borderRadius = "12px";
+        this.makeFileButton.style.padding = "10px 3px";
+        this.makeFileButton.onclick = () => {
+            document.dispatchEvent(new CustomEvent("parseMakefile"));
+        }
 
-        this.treeViewButton.addEventListener("click", () => {
-            const event = new CustomEvent("treeView");
-
-            document.dispatchEvent(event);
-        });
-
-        this.bar.appendChild(this.treeViewButton)
+        this.bar.appendChild(this.treeViewButton);
+        this.bar.appendChild(this.makeFileButton);
 
         this.root.appendChild(this.bar);
     }

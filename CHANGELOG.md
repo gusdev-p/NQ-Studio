@@ -1,27 +1,25 @@
 # changelog 📝
 
-## v0.2.0-alpha
-### Some refactors, changes and new features!
+## v0.5.0-alpha
+### Delayed commit... Big additions! 🛠️
 
 ### What was added? ✨
-- 🖼️ `image preview` : Now when you click on an image open a new tab with your imagem on there!
-- 📄 `Markdown preview and support` : Adds basic markdown syntax and preview!
-- ⚙️ `API calls` : Adds new API calls (don´t matter if you are not a developer).
+- 🌐 `Localhost Preview(HTML only)` : Now you can host a server with your project on! and open in your browser or use the built-in preview!
+- 🎨 `UI Improvements` : Better buttons... For now!
+- 📄 `Makefile Tab` : Now you can see all your targets and execute them directly by the UI!
+- ⚙️ `Set as 'makefile'.` : You can set the makefile for an specific one.
+- 🖼️ `README.md Improvements` : Simple things added, and a GIF!
 
 ### Changes 🔧
-- 🖥️ `codemirror6 substituted by monaco-editor` : Because the monaco-editor has better support for all languages, auto-complete etc...
-
+No major changes from the `0.2.0-alpha` to the `0.5.0-alpha` update!
 
 ### Incomplete features 🏗️
 -  ⚙️ `Properties tab` : A simple tab (for display options like `rename`) for each file in the tree view.
 - 📄 `Top bar` : The entire top bar is under development.
-- 💻 `Executor` (Only for `HTMl`) : The executer does not open the browser, only uses the built-in preview
 - 📄 `API documentation` : Only the main API (`nq`) has basic documentation.
 
 ### Bug fixes 👾
-- Add `break` in the `.html` **switch/case** in the [fileBar.ts](./src/core/ui/fileBar.ts)
-- Resolved the `null bug` in the [script.ts](./src/main//script.ts) that changes the root to `null`
-- Exported the class `Result`in the [settingsManager.ts](./src/core/settings//settingsManager.ts)
+- Bug resolved in the `CreateFile()` - [script.ts](./src/main/script.ts)
 
 ### Notes 📋
 NQ-Studio is under development, so some features in the `What added?` may be incomplete or may not work correctly

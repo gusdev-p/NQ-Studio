@@ -7,6 +7,8 @@ import "./monacoSetup.js";
 import * as monaco from "monaco-editor";
 import { buildMonacoTheme } from "./themes.js";
 
+console.log("-=- renderer boot! -=-")
+
 document.documentElement.style.height = "100%";
 document.documentElement.style.overflow = "hidden";
 document.body.style.height = "100vh";
@@ -142,13 +144,12 @@ async function initUI() {
     topBar.style.padding = "8px";
     topBar.style.gap = "4px";
     topBar.style.flexShrink = "0";
-    //topBar.style.justifyContent = "center";
     topBar.style.alignItems = "center"
 
     // logo
     const logoSrc = document.createElement("img");
     logoSrc.id = "LogoSrc";
-    logoSrc.src = "../../assets/logo.png";
+    logoSrc.src = await window.nq.resolvePath("assets/logo.png");
     logoSrc.style.maxWidth = "100px";
     logoSrc.style.maxHeight = "30px"
 
@@ -188,11 +189,54 @@ async function initUI() {
     const fileContainer = document.createElement("div");
     fileContainer.style.position = "relative";
 
-    fileContainer.appendChild(fileBtn);
-    fileContainer.appendChild(fileMenu)
+    
+    // dev tools button
+    const devBtn = document.createElement("button");
+    devBtn.id = "devButton";
+    devBtn.innerText = "Dev";
+    devBtn.style.background = "var(--onSurfaceColor)";
+    devBtn.style.color = "var(--fontColor)";
+    devBtn.style.border = "none";
+    devBtn.style.borderRadius = "3px";
+    
+    const devMenu = document.createElement("div");
+    devMenu.id = "devMenu";
+    devMenu.className = "dropdown";
+    devMenu.style.position = "absolute";
+    devMenu.style.top = "100%";
+    devMenu.style.left = "0";
+    devMenu.style.display = "none";
+    devMenu.style.background = "#333";
+    devMenu.style.border = "1px solid #666";
+    devMenu.style.minWidth = "180px";
+    devMenu.style.zIndex = "1000";
 
-    topBar.appendChild(logoSrc);
+    const devToolsBtn = document.createElement("button");
+    devToolsBtn.id = "devToolsButton";
+    devToolsBtn.innerText = "Open dev tools.";
+    devToolsBtn.onclick = () => {
+        document.dispatchEvent(new CustomEvent("toggleDevTools"));
+    }
+    
+    devMenu.appendChild(devToolsBtn)
+    
+    devBtn.addEventListener("click", (e) => {
+        e.stopPropagation()
+        devMenu.style.display =
+        devMenu.style.display === "block" ? "none": "block";
+    });
+    
+    const devContainer = document.createElement("div");
+    devContainer.style.position = "relative";
+    
+    fileContainer.appendChild(fileBtn);
+    fileContainer.appendChild(fileMenu);
+    devContainer.appendChild(devBtn);
+    devContainer.appendChild(devMenu);
+
+    topBar.appendChild(logoSrc),
     topBar.appendChild(fileContainer);
+    topBar.appendChild(devContainer);
 
     const root = document.createElement("div");
     root.id = "root";
@@ -343,7 +387,7 @@ async function initUI() {
 
 async function initListeners() {
     document.addEventListener("treeView", async () => {
-        console.log(window.nq.getRoot());
+        console.log(await window.nq.getRoot());
         side_bar.defineTreeView(await window.nq.getRoot());
     })
     // TODO: adicionar um check pra ver se é imagem!
@@ -399,6 +443,7 @@ async function initListeners() {
         console.log("pedido de troca de root!");
         console.log(e.detail.path);
         await side_bar.defineTreeView(e.detail.path);
+        await window.nq.initNqDir();
     });
 
     document.addEventListener("updateTree", async () => {
@@ -420,17 +465,38 @@ async function initListeners() {
         secondary_side_bar.setHTMlPreview(html);
     });
 
-    document.addEventListener("markdownPreview", async (e: any) => {
+    document.addEventListener("server:htmlPreview", async (e: any) => {
+        await window.server.closeHttpServer();
+        const url = await window.server.openHttpServer(await window.nq.getRoot());
+        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
+        secondary_side_bar.setHTMlPreview(await window.nq.joinPath(url, e.detail.path));
+    });
 
+    document.addEventListener("server:openInBrowser", async (e: any) => {
+        await window.server.closeHttpServer();
+        const url = await window.server.openHttpServer(await window.nq.getRoot());
+
+        await window.nq.openInBrowser(await window.nq.joinPath(url, e.detail.path));
+    });
+
+    document.addEventListener("markdownPreview", async (e: any) => {
         if (!secondary_side_bar.isOpen()) secondary_side_bar.show(window.innerWidth * 0.4);
         secondary_side_bar.setMarkDownPreview(e.detail.path);
+    });
+
+    document.addEventListener("parseMakefile", async () => {
+        const parsed = await window.make.parse(await window.nq.resolvePath(await window.nq.getRoot(), "Makefile"));
+        console.log("parsed: ", parsed);
+        side_bar.defineMakefileView(parsed);
     });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await initTheme();
-    prepareTheme();
-	initUI();
-    initListeners();
-    await side_bar.defineTreeView(".");
+    setTimeout(async () => {
+        await initTheme();
+        await prepareTheme();
+        await initUI();
+        await initListeners();
+        await side_bar.defineTreeView(await window.nq.getRoot());
+    }, 0.3)
 })

@@ -35,6 +35,10 @@ export class SettingsManager {
     private path!: string
     private config!: any
 
+    constructor() {
+        console.log("-=- Settings-manager boot! -=-");
+    }
+
     /**
      * ## open()
      * Receive a path, open and parse.
@@ -45,10 +49,11 @@ export class SettingsManager {
         try {
             this.config = JSON.parse(fs.readFileSync(path, "utf-8"));
             this.path = path;
-            console.log(`SettingsManager ---
+            console.log(`Settings-manager log -=-
 Setting imported:
------------------
+----------------->
 ${JSON.stringify(this.config, null, 4)}
+<-----------------
 `);
             return new Result(true, null);
         } catch (e: any) {

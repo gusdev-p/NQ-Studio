@@ -5,25 +5,38 @@ import { makeTreeNodes } from "./core/ui/treeView/treeProvider";
 import fs from "fs";
 import { terminalManager } from "./terminalManager";
 import { SettingsManager } from "./core/settings/settingsManager";
+import { ServerManager } from "./core/serverManager";
+import { MakefileParser } from "./core/makefileParser";
+import { open as open2 } from "fs/promises"
+import open from "open";
 
 // NOTE: mudar isso pra releases
-let globalRoot: string = "/home/gustavo/Projetos/NQ-Studio";
+let globalRoot: string = ".";
 let selected: string = globalRoot
+let win: BrowserWindow
 
 export const settingsManager = new SettingsManager();
 settingsManager.open(path.join(app.getPath("appData"), "nq-studio", "settings.json"));
-console.log(settingsManager.get("console", "fontFamily"));
-const devMode = process.argv.includes("--devMode");
+console.log("\n-=- debug messages -=-")
+console.log("Terminal font: ",settingsManager.get("console", "fontFamily"));
+const devMode = process.argv.includes("--devMode") || process.argv.includes("-d");
 console.log("devMode: ", devMode);
 if (typeof systemPreferences.getAccentColor === 'function') {
-    console.log(systemPreferences.getAccentColor());
-    console.log("foi a cor!")
+    console.log("Accent color: ", systemPreferences.getAccentColor());
+    if (systemPreferences.getAccentColor() !== "") {
+        console.log("Accent color defined!")
+    } else {
+        console.log("Cant define the accent color :(")
+    }
 }
+console.log("-=- End of debug messages -=-\n")
+const serverManager = new ServerManager();
+const makefileParser = new MakefileParser();
 
 let terminal: terminalManager;
 
 function createBootstrap() {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 600,
         height: 400,
         autoHideMenuBar: true,
@@ -33,12 +46,12 @@ function createBootstrap() {
             preload: path.join(__dirname, "core", "preload.js"),
             devTools: devMode,
             webviewTag: true,
+            sandbox: devMode ? false : true,
         },
         title: "NQ-Studio",
         icon: path.join("assets", "logo.png"),
     });
 
-    //Menu.setApplicationMenu(null);
 
     terminal = new terminalManager(win);
 
@@ -315,7 +328,7 @@ ipcMain.handle("getSelected", async () => {
 ipcMain.handle("createDir", async (_, dirName: string, withGlobalPath: boolean) => {
     let finalPath = dirName
     if (withGlobalPath) {
-        finalPath = path.join(globalRoot, dirName);
+        finalPath = path.resolve(globalRoot, dirName);
     }
 
     try {
@@ -329,7 +342,7 @@ ipcMain.handle("createDir", async (_, dirName: string, withGlobalPath: boolean) 
 ipcMain.handle("createFile", async (_, fileName: string, withGlobalPath: boolean) => {
     let finalPath = fileName;
     if (withGlobalPath) {
-        finalPath = path.join(globalRoot, fileName);
+        finalPath = path.resolve(globalRoot, fileName);
     }
 
     try {
@@ -374,7 +387,7 @@ ipcMain.handle("getFileName", async (_, path: string) => {
 });
 
 ipcMain.handle("renameFile", async (_, pathToMove: string, name: string) => {
-    const dir = path.dirname(pathToMove)
+    const dir = path.dirname(pathToMove);
     const target = path.join(dir, name);
 
     try {
@@ -404,4 +417,48 @@ ipcMain.handle("getDirname", (_, pathToCheck: string) => {
 
 ipcMain.handle("resolvePath", (_, ...pathToResolve: string[]) => {
     return path.resolve(...pathToResolve)
+});
+
+ipcMain.handle("initNqDir", async () => {
+    if (fs.existsSync(path.resolve(globalRoot, ".nq", "settings.json"))) {
+        return;
+    }
+    fs.mkdirSync(path.resolve(globalRoot, ".nq"), { recursive: true });
+    fs.writeFileSync(path.resolve(globalRoot, ".nq", "settings.json"), JSON.stringify({}), "utf-8");
+});
+
+ipcMain.handle("getLocalProperty", async (_, key: string) => {
+    if (!fs.existsSync(path.resolve(globalRoot, ".nq", "settings.json"))) {
+        return undefined;
+    }
+
+    const content = JSON.parse(fs.readFileSync(path.resolve(globalRoot, ".nq", "settings.json"), "utf-8"))
+
+    return content[key];
+});
+
+ipcMain.handle("setLocalProperty", (_, key: string, value: any) => {
+    if (!fs.existsSync(path.resolve(globalRoot, ".nq", "settings.json"))) {
+        return undefined;
+    }
+
+    const content = JSON.parse(fs.readFileSync(path.resolve(globalRoot, ".nq", "settings.json"), "utf-8"))
+
+    content[key] = value;
+
+    fs.writeFileSync(path.resolve(globalRoot, ".nq", "settings.json"), JSON.stringify(content), "utf-8")
+});
+
+ipcMain.handle("openDevTools", (_, modeToSet: ('left' | 'right' | 'bottom' | 'undocked' | 'detach')) => {
+    win.webContents.openDevTools(
+        {mode: modeToSet}
+    )
+});
+
+ipcMain.handle("openInBrowser", async (_, url: string) => {
+    open(url)
+});
+
+ipcMain.handle("make:parse", async (_, filePath: string) => {
+    return await makefileParser.parse(filePath);
 });

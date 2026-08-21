@@ -7,7 +7,8 @@ export class terminalManager {
     private pty: IPty | null = null;
 
     constructor (win: BrowserWindow) {
-        
+        console.log("-=- Terminal-manager boot! -=-");
+
         ipcMain.handle("terminal:create", (_, cwd: string) => {
             this.create(cwd, win);
             return true;

@@ -50,6 +50,10 @@ export class FileBar {
         runButton.style.color = "var(--fontColor)";
         console.log("checando...")
         console.log(`'${type}'`)
+        console.log("file path:", config.filePath)
+
+        section.appendChild(title);
+        
         switch(type) {
             case ".js": {
                 console.log("é js!")
@@ -64,6 +68,7 @@ export class FileBar {
                         window.terminal.executeInTerminal(`node ${config.filePath} && echo "--- Exited with exit code: $?"`);
                     }
                 }
+                section.appendChild(runButton);
                 break;
             }
             case ".html": {
@@ -76,25 +81,58 @@ export class FileBar {
                         }
                     }));
                 }
+                const secondaryRunButton = document.createElement("button");
+                secondaryRunButton.style.backgroundColor = "var(--surfaceColor)";
+                secondaryRunButton.style.border = "none";
+                secondaryRunButton.style.borderRadius = "8px";
+                secondaryRunButton.style.padding = "5px";
+                secondaryRunButton.style.color = "var(--fontColor)";
+
+                secondaryRunButton.innerText = "Preview in server.";
+                secondaryRunButton.onclick = () => {
+                    document.dispatchEvent(new CustomEvent("server:htmlPreview", {
+                        detail: {
+                            path: config.filePath
+                        }
+                    }));
+                }
+
+                const tertiaryRunButton = document.createElement("button");
+                tertiaryRunButton.style.backgroundColor = "var(--surfaceColor)";
+                tertiaryRunButton.style.border = "none";
+                tertiaryRunButton.style.borderRadius = "8px";
+                tertiaryRunButton.style.padding = "5px";
+                tertiaryRunButton.style.color = "var(--fontColor)";
+
+                tertiaryRunButton.innerText = "Preview in browser.";
+                tertiaryRunButton.onclick = () => {
+                    document.dispatchEvent(new CustomEvent("server:openInBrowser", {
+                        detail: {
+                            path: config.filePath
+                        }
+                    }));
+                }
+
+                section.appendChild(runButton);
+                section.appendChild(secondaryRunButton);
+                section.appendChild(tertiaryRunButton);
                 break;
             };
             case ".md": {
                 console.log("é md!")
                 runButton.innerText = "Preview.";
                 runButton.onclick = async () => {
-
                     document.dispatchEvent(new CustomEvent("markdownPreview", {
                         detail: {
                             path: config.filePath,
                         },
                     }));
                 }
+                section.appendChild(runButton);
                 break;
             }
         }
 
-        section.appendChild(title);
-        section.appendChild(runButton);
 
         this.fileBar.appendChild(section);
     }

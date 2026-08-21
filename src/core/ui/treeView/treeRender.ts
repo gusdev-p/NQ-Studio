@@ -103,7 +103,7 @@ export class treeItem {
         }
     }
 
-    private select() {
+    private async select() {
 
         //if (!this.node.isDir) return;
 
@@ -114,8 +114,9 @@ export class treeItem {
 
         this.element.classList.add("selected");
         treeItem.selectedItem = this;
-        window.nq.setSelected(this.node.path);
-        console.log(treeItem.selectedItem);
+        const path = await window.nq.joinPath(await window.nq.getRoot(), this.node.path);
+        window.nq.setSelected(path);
+        console.log("path: ", path);
     }
 
     private showProperties(e: MouseEvent) {
@@ -133,12 +134,14 @@ export class treeItem {
         properties.style.position = "fixed";
         properties.style.top = `${e.clientY}px`;
         properties.style.left = `${e.clientX}px`;
-        properties.style.background = "#333";
+        properties.style.background = "var(--surfaceColor)";
         properties.style.border = "1px solid #666";
         properties.style.minWidth = "180px";
         properties.style.zIndex = "1000"
         properties.style.display = "flex";
         properties.style.flexDirection = "column";
+        properties.style.color = "var(--fontColor)";
+        properties.style.fontWeight = "bold";
 
         properties.textContent = this.node.name;
 
@@ -155,16 +158,53 @@ export class treeItem {
             }));
             this.showProperties(e)
         }
+        renameButton.style.color = "var(--fontColor)";
+        renameButton.style.background = "transparent";
+        renameButton.style.textAlign = "left";
+        renameButton.style.border = "none";
+        renameButton.style.padding = "3px 6px"
+        renameButton.style.cursor = "pointer";
+        renameButton.style.borderTop = "solid 1px var(--borderColor)"
 
-        const srcButton = document.createElement("button");
-        srcButton.id = "srcButton";
-        srcButton.innerText = "Set as 'src' directory."
-        srcButton.onclick = async () => {
-            console.log("src define!")
-            await window
+        const makeButton = document.createElement("button");
+        makeButton.id = "makeButton";
+        makeButton.innerText = "Set as 'makefile'.";
+        makeButton.onclick = () => {
+            document.dispatchEvent(new CustomEvent("defineMake", {
+                detail: {
+                    path: this.node.path,
+                },
+            }));
+            this.showProperties(e)
+        };
+        makeButton.style.color = "var(--fontColor)";
+        makeButton.style.background = "transparent";
+        makeButton.style.textAlign = "left";
+        makeButton.style.border = "none";
+        makeButton.style.padding = "3px 6px";
+        makeButton.style.cursor = "pointer";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.id = "deleteButton";
+        deleteButton.innerText = "Delete.";
+        deleteButton.onclick = async () => {
+            document.dispatchEvent(new CustomEvent("deleteFile"));
+            this.showProperties(e);
         }
 
+        deleteButton.style.border = "none";
+        deleteButton.style.background = "transparent";
+        deleteButton.style.color = "var(--fontColor)";
+        deleteButton.style.textAlign = "left";
+        deleteButton.style.cursor = "pointer";
+        deleteButton.style.padding = "3px 6px";
+
         properties.appendChild(renameButton);
+        properties.appendChild(deleteButton);
+
+        if (!this.node.isDir) {
+            properties.appendChild(makeButton);
+        }
 
         document.body.appendChild(properties);
 

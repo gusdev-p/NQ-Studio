@@ -50,7 +50,7 @@
             "like 'dark' or 'light'."
         ],
 
-        "default": "auto"
+        "default": "dark"
     },
 
     "editor": {

@@ -112,7 +112,9 @@ export class SecondarySideBar {
     }
 
     async setHTMlPreview(html: string) {
-        const path = `${await window.nq.getRoot()}/${html}`;
+        const path = html;
+        console.log("path é:", html);
+        console.log("e o path final é:", path);
         this.content.innerHTML = "";
         this.content.id = "HTMLPreview"
 
@@ -121,7 +123,7 @@ export class SecondarySideBar {
 
         const toolBar = document.createElement("div");
         toolBar.id = "HTMLPreviewToolBar"
-        toolBar.style.backgroundColor = "var(--onSurfaceColor)";
+        toolBar.style.backgroundColor = "var(--surfaceColor)";
         toolBar.style.width = "100%";
         toolBar.style.height = "30px";
         toolBar.style.display = "flex";
@@ -132,11 +134,11 @@ export class SecondarySideBar {
 
         const pathDiv = document.createElement("div");
         pathDiv.id = "HTMLPreviewPathDiv";
-        pathDiv.style.background = "#333";
+        pathDiv.style.background = "#444";
         pathDiv.textContent = path;
         pathDiv.style.color = "#f1f1f1";
-        pathDiv.style.borderRadius = "3px";
-        pathDiv.style.padding = "2px 6px";
+        pathDiv.style.borderRadius = "8px";
+        pathDiv.style.padding = "3px 6px";
         pathDiv.style.flex = "1";
         pathDiv.style.minWidth = "0";
         pathDiv.style.whiteSpace = "nowrap";
@@ -144,17 +146,40 @@ export class SecondarySideBar {
         pathDiv.style.textOverflow = "ellipsis"
         pathDiv.style.display = "flex";
         pathDiv.style.alignItems = "center";
+        pathDiv.style.cursor = "text";
 
         const reloadBtn = document.createElement("button");
         reloadBtn.id = "HTMLPreviewReloadBtn";
         reloadBtn.innerText = "Reload";
         reloadBtn.style.flexShrink = "0";
+        reloadBtn.style.background = "var(--onSurfaceColor)";
+        reloadBtn.style.color = "var(--fontColor)";
+        reloadBtn.style.border = "none";
+        reloadBtn.style.borderRadius = "8px";
+        reloadBtn.style.padding = "3px 5px";
+        reloadBtn.style.cursor = "pointer";
         reloadBtn.onclick = () => {
             document.dispatchEvent(new CustomEvent("reloadHTML"));
         }
 
+        const devToolsBtn = document.createElement("button");
+        devToolsBtn.id = "HTMLPreviewDevToolsBtn";
+        devToolsBtn.innerText = "Dev Tools";
+        devToolsBtn.style.flexShrink = "0";
+        devToolsBtn.style.background = "var(--onSurfaceColor)";
+        devToolsBtn.style.color = "var(--fontColor)";
+        devToolsBtn.style.border = "none";
+        devToolsBtn.style.borderRadius = "8px";
+        devToolsBtn.style.padding = "3px 5px";
+        devToolsBtn.style.cursor = "pointer";
+        devToolsBtn.onclick =  () => {
+            if (!webview) return;
+            webview.openDevTools();
+        }
+
         toolBar.appendChild(pathDiv);
         toolBar.appendChild(reloadBtn);
+        toolBar.appendChild(devToolsBtn);
 
         const screenWrapper = document.createElement("div");
         screenWrapper.id = "HTMLPreviewScreenWrapper";
@@ -181,7 +206,7 @@ export class SecondarySideBar {
     }
 
     async setImagePreview(image: string) {
-        const path = `${await window.nq.getRoot()}/${image}`;
+        const path = await window.nq.joinPath(await window.nq.getRoot(), image);
 
         this.content.innerHTML = "";
         this.content.style.display = "flex";
@@ -195,7 +220,7 @@ export class SecondarySideBar {
         toolbar.style.display = "flex";
         toolbar.style.justifyContent = "space-around";
         toolbar.id = "imagePreviewToolBar";
-        toolbar.style.background = "var(--onSurfaceColor)";
+        toolbar.style.background = "var(--surfaceColor)";
         toolbar.style.height = "30px";
         toolbar.style.boxSizing = "border-box";
         toolbar.style.padding = "5px";
@@ -203,7 +228,7 @@ export class SecondarySideBar {
 
         const pathDiv = document.createElement("div");
         pathDiv.id = "HTMLPreviewPathDiv";
-        pathDiv.style.background = "#333";
+        pathDiv.style.background = "#444";
         pathDiv.textContent = path;
         pathDiv.style.color = "#f1f1f1";
         pathDiv.style.borderRadius = "3px";
@@ -220,6 +245,11 @@ export class SecondarySideBar {
         reloadBtn.id = "imagePreviewReloadButton";
         reloadBtn.innerText = "Reload"
         reloadBtn.style.flexShrink = "0"
+        reloadBtn.style.background = "var(--onSurfaceColor)";
+        reloadBtn.style.color = "var(--fontColor)";
+        reloadBtn.style.border = "none";
+        reloadBtn.style.borderRadius = "8px";
+        reloadBtn.style.padding = "3px 5px";
         reloadBtn.onclick = () => {
             document.dispatchEvent(new CustomEvent("reloadImage"));
         }
@@ -242,7 +272,7 @@ export class SecondarySideBar {
         img.style.position = "absolute";
         img.style.top = "0";
         img.style.left = "0";
-        img.style.transformOrigin = "0 0"; // essencial pro zoom no cursor funcionar certo
+        img.style.transformOrigin = "0 0";
         img.style.userSelect = 'none';
         img.style.pointerEvents = "none";
 

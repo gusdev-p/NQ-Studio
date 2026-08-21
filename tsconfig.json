@@ -37,9 +37,7 @@
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
-    "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": false,
-    "preserveValueImports": false,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "auto",
