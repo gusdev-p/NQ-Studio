@@ -14,9 +14,10 @@
 No major changes from the `0.2.0-alpha` to the `0.5.0-alpha` update!
 
 ### Incomplete features 🏗️
--  ⚙️ `Properties tab` : A simple tab (for display options like `rename`) for each file in the tree view.
+- ⚙️ `Properties tab` : A simple tab (for display options like `rename`) for each file in the tree view.
 - 📄 `Top bar` : The entire top bar is under development.
 - 📄 `API documentation` : Only the main API (`nq`) has basic documentation.
+- ⚙️ `Makefile Tab` : By now the makefile tab is on active development.
 
 ### Bug fixes 👾
 - Bug resolved in the `CreateFile()` - [script.ts](./src/main/script.ts)
