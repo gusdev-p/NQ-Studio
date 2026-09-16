@@ -29,7 +29,8 @@
                 "--surfaceColor": "#333",
                 "--onSurfaceColor": "#444",
                 "--fontColor": "#f1f1f1",
-                "--borderColor": "#666"
+                "--borderColor": "#666",
+                "--accentColor": "#AD344CFF"
             }
         },
 
@@ -41,7 +42,8 @@
                 "--surfaceColor": "#9f9f9f",
                 "--onSurfaceColor": "#adadad",
                 "--fontColor": "#1c1c1c",
-                "--borderColor": "#838383"
+                "--borderColor": "#838383",
+                "--accentColor": "#AD344CFF"
             }
         },
 

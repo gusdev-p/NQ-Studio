@@ -10,6 +10,8 @@ export class treeItem {
     private static selectedItem: treeItem | null = null;
     private static properties: HTMLDivElement | null = null;
     private static propertiesOwner: treeItem | null = null;
+    private icon : HTMLImageElement;
+    public is_selected: boolean = false;
     
     private tab: HTMLDivElement;
 
@@ -22,9 +24,7 @@ export class treeItem {
         this.isOpen = false;
         this.loaded = false;
 
-        this.label.textContent = node.isDir
-            ? `> 📁 ${node.name}`
-            : `📄 ${node.name}`
+        this.label.textContent = `${node.name}`
 
         this.element.appendChild(this.label);
         this.element.style.display = "block";
@@ -32,6 +32,27 @@ export class treeItem {
         this.element.style.color = "var(--fontColor)";
         this.element.style.userSelect = "none";
         this.element.style.cursor = "pointer";
+
+        this.icon = document.createElement("img");
+        this.icon.style.width = "18px";
+        this.icon.style.height = "18px";
+        this.icon.style.marginRight = "3px";
+        this.icon.style.imageRendering = "auto";
+        this.icon.style.verticalAlign = "middle";
+
+        this.element.appendChild(this.icon);
+        this.element.appendChild(this.label);
+
+        this.changeIcon();
+
+        this.element.addEventListener("mouseenter", (e) => {
+            if (this.is_selected) return;
+            this.element.classList.add("hover");
+        });
+
+        this.element.addEventListener("mouseleave", (e) => {
+            this.element.classList.remove("hover");
+        });
         
         this.element.addEventListener("mousedown", (e) => {
             console.log("clique!");
@@ -86,21 +107,55 @@ export class treeItem {
                 const item = new treeItem(file, root);
                 this.tab.appendChild(item.element);
             }
-
             this.element.appendChild(this.tab);
 
             this.loaded = true;
             this.isOpen = true;
             this.changeIcon();
-        })
+        });
     }
 
-    private changeIcon() {
-        if (this.isOpen) {
-            this.label.textContent = `v 📂 ${this.node.name}`
+    private async changeIcon() {
+        const fileType = await window.nq.getFileExt(this.node.path);
+
+        if (this.node.isDir) {
+            this.icon.src = await window.nq.resolvePath("assets/icon_pack/folder.svg");
         } else {
-            this.label.textContent = `> 📁 ${this.node.name}`
+            switch (fileType) {
+                case ".js": {
+                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/javascript.svg");
+                    break;
+                }
+
+                case ".css": {
+                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/css.svg");
+                    break;
+                }
+
+                case ".html": {
+                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/html.svg");
+                    break;
+                }
+
+                case ".json": {
+                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/json.svg");
+                    break;
+                }
+
+                case ".jpg":
+                case ".png":
+                case ".jpeg": {
+                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/image.svg");
+                    break;
+                }
+
+                default: {
+                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/file.svg");
+                    break;
+                }
+            }
         }
+
     }
 
     private async select() {
@@ -110,9 +165,12 @@ export class treeItem {
         console.log("selecionado!")
         if (treeItem.selectedItem) {
             treeItem.selectedItem.element.classList.remove("selected");
+            treeItem.selectedItem.is_selected = false;
         }
 
+        this.element.classList.remove("hover");
         this.element.classList.add("selected");
+        this.is_selected = true;
         treeItem.selectedItem = this;
         const path = await window.nq.joinPath(await window.nq.getRoot(), this.node.path);
         window.nq.setSelected(path);

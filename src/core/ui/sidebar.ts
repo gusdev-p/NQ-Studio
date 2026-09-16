@@ -21,13 +21,12 @@ export class SideBar {
         this.sidebar.style.display = "flex";
         this.sidebar.style.flexDirection = "row";
         this.sidebar.style.flexShrink = "0";
-        this.sidebar.style.background = "var(--surfaceColor, #3c3c3c)";
-        this.sidebar.style.borderRadius = "10px";
+        this.sidebar.style.background = "var(--surfaceColor)";
 
 
         this.resizer = document.createElement("div");
         this.resizer.id = "sideBarResizer";
-        this.resizer.style.background = "var(--borderColor, #3c3c3c)";
+        this.resizer.style.background = "var(--borderColor)";
         this.resizer.style.cursor = "col-resize"
         this.resizer.style.width = "4.5px";
         this.resizer.style.height = "calc(100vh - 10px)";
@@ -37,8 +36,7 @@ export class SideBar {
         this.resizer.addEventListener("mousedown", (e) => {
             e.preventDefault();
             document.body.style.cursor = "col-resize"
-            this.resizer.style.background = "var(--accentColor, #1e8ed3)";
-            this.resizer.style.borderRadius = "100%";
+            this.resizer.style.background = "var(--accentColor)";
             const sidebarRect = this.sidebar.getBoundingClientRect();
 
             const startX = e!.clientX;
@@ -74,7 +72,8 @@ export class SideBar {
         this.wrapper.style.display = "flex";
         this.wrapper.style.flexShrink = "0";
         this.wrapper.style.margin = "0 8px 0 8px";
-        this.wrapper.style.gap = "4px";
+        this.wrapper.style.overflow = "hidden";
+        this.wrapper.style.borderRadius = "10px";
         
         this.content = document.createElement("div");
         this.content.id = "content";
@@ -95,6 +94,7 @@ export class SideBar {
      * @param tree 
      */
     async defineTreeView(tree: string) {
+        console.log("path da tree: ", tree)
         this.content.innerHTML = "";
         this.content.id = "TreeView";
         this.content.style.boxSizing = "border-box";

@@ -7,11 +7,10 @@ import { terminalManager } from "./terminalManager";
 import { SettingsManager } from "./core/settings/settingsManager";
 import { ServerManager } from "./core/serverManager";
 import { MakefileParser } from "./core/makefileParser";
-import { open as open2 } from "fs/promises"
 import open from "open";
 
 // NOTE: mudar isso pra releases
-let globalRoot: string = ".";
+let globalRoot: string = path.resolve(".");
 let selected: string = globalRoot
 let win: BrowserWindow
 

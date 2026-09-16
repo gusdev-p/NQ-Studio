@@ -4,6 +4,7 @@ export class mainSideBar {
     private bar: HTMLDivElement;
     private treeViewButton: HTMLButtonElement;
     private makeFileButton: HTMLButtonElement;
+    private treeViewIcon!: HTMLImageElement;
 
     constructor(root: HTMLElement) {
         this.root = root;
@@ -21,16 +22,18 @@ export class mainSideBar {
         this.bar.style.padding = "5px 5px 0 5px"
 
         this.treeViewButton = document.createElement("button");
-        this.treeViewButton.id = "mainSideBarTreeViewButton"
-        this.treeViewButton.innerText = "Tree view."
+        this.treeViewButton.id = "mainSideBarTreeViewButton";
         this.treeViewButton.style.background = "var(--surfaceColor)";
         this.treeViewButton.style.color = "var(--fontColor)";
         this.treeViewButton.style.border = "none";
         this.treeViewButton.style.borderRadius = "12px";
         this.treeViewButton.style.padding = "3px 8px";
+        this.treeViewButton.style.cursor = "pointer";
         this.treeViewButton.onclick = () => {
             document.dispatchEvent(new CustomEvent("treeView"));
         };
+
+        this.initTreeViewIcon();
     
         this.makeFileButton = document.createElement("button");
         this.makeFileButton.id = "mainSideBarMakefileButton";
@@ -48,5 +51,16 @@ export class mainSideBar {
         this.bar.appendChild(this.makeFileButton);
 
         this.root.appendChild(this.bar);
+    }
+
+    private async initTreeViewIcon() {
+        this.treeViewIcon = document.createElement("img");
+        this.treeViewIcon.style.width = "min(50px, 100%)";
+        this.treeViewIcon.style.height = "auto";
+        this.treeViewIcon.style.objectFit = "contain"
+
+        this.treeViewIcon.src = await window.nq.resolvePath("assets/icon_pack/folder.svg");
+
+        this.treeViewButton.appendChild(this.treeViewIcon);
     }
 }

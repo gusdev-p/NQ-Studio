@@ -1,0 +1,9 @@
+logos pra fazer:
+    html ok
+    css ok
+    settings (IDE)
+    markdown
+    imagem
+    script
+    config (arquivo)
+    makefile

@@ -458,8 +458,9 @@ async function initListeners() {
         secondary_side_bar.hide();
     });
 
-    document.addEventListener("htmlPreview", (e: any) => {
+    document.addEventListener("htmlPreview", async (e: any) => {
         const html = e.detail.path;
+        console.log("path do html: ", await window.nq.resolvePath(await window.nq.getRoot(), html));
 
         if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
         secondary_side_bar.setHTMlPreview(html);
