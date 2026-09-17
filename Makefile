@@ -1,4 +1,4 @@
-DEVMODE=--devMode
+DEVMODE=--dev-mode
 
 all:
 	$(MAKE) copy-settings
