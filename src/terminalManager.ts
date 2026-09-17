@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from "electron";
 import * as pty  from "node-pty";
 import type { IPty } from "node-pty";
-import { settingsManager } from "./main";
+import { settingsManager } from "./core/settings/settingsManager";
 
 export class terminalManager {
     private pty: IPty | null = null;
