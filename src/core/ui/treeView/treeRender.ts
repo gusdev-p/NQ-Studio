@@ -174,9 +174,8 @@ export class treeItem {
         this.element.classList.add("selected");
         this.is_selected = true;
         treeItem.selectedItem = this;
-        const path = await window.nq.joinPath(await window.nq.getRoot(), this.node.path);
-        window.nq.setSelected(path);
-        console.log("path: ", path);
+        window.nq.setSelected(this.node.path);
+        console.log("path: ", this.node.path);
     }
 
     private showProperties(e: MouseEvent) {
