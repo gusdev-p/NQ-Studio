@@ -1,6 +1,4 @@
-adicionar barra superior pra preview e executar arquivos - renderer.ts
 adicionar barra superior estilo settings de IDE - renderer.ts
 continuar a aba do properties - treeRender.ts
 
-pra depois:
-melhorar sistema de preview de HTML (só depois q implementar a definição de arquivos) - secondaryBar.ts
+arrumar o script.ts
