@@ -1,4 +1,4 @@
-import { contentTracing, contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import { TreeNode } from "./ui/treeView/treeProvider";
 import { Result } from "../core/settings/settingsManager";
 
@@ -142,8 +142,8 @@ export const nq = {
      * @param withGlobalPath If 'true' appends the `root` path to the `dirName` path.
      * @returns An object with the values 'success' and 'error'
      */
-    createDir(dirName: string, withGlobalPath: boolean): Promise<{ success: boolean, error: any }> {
-        return ipcRenderer.invoke("createDir", dirName, withGlobalPath);
+    createDir(dirName: string): Promise<{ success: boolean, error: null } | { success: boolean, error: string }> {
+        return ipcRenderer.invoke("createDir", dirName);
     },
     /**
      * ## createFile
@@ -151,8 +151,8 @@ export const nq = {
      * @param fileName The path to create the file.
      * @param withGlobalPath If 'true' appends the `root` path to the `fileName` path.
      */
-    createFile(fileName: string, withGlobalPath: boolean): Promise<{ success: boolean, error: any }> {
-        return ipcRenderer.invoke("createFile", fileName, withGlobalPath);
+    createFile(fileName: string): Promise<{ success: boolean, error: null } | { success: boolean, error: string }> {
+        return ipcRenderer.invoke("createFile", fileName);
     },
     /**
      * ## removeDir
@@ -161,7 +161,7 @@ export const nq = {
      * @param dirName The directory path.
      * @returns An object with the values 'success' and 'error'
      */
-    removeDir(dirName: string): Promise<{ success: boolean, error: any }> {
+    removeDir(dirName: string): Promise<{ success: boolean, error: null } | { success: boolean, error: string }> {
         return ipcRenderer.invoke("removeDir", dirName);
     },
     /**
@@ -170,7 +170,7 @@ export const nq = {
      * @param fileName The file path.
      * @returns An object with the values 'success' and 'error'
      */
-    removeFile(fileName: string): Promise<{ success: boolean, error: any }> {
+    removeFile(fileName: string): Promise<{ success: boolean, error: null } | { success: boolean, error: string }> {
         return ipcRenderer.invoke("removeFile", fileName);
     },
     /**
@@ -196,7 +196,7 @@ export const nq = {
     },
     /**
      * ## openSetting
-     * Receives a path and open the path as the NQ-Sudio settings.json file.
+     * Receives a path and open the path as the NQ-Studio settings.json file.
      * @param path The file path.
      * @returns Result (class which has the values 'success' and 'error')
      */
@@ -277,7 +277,7 @@ export const nq = {
      * `settings.json` file.
      * @returns Nothing.
      */
-    initNqDir(): Promise<void> {
+    initNqDir(): Promise<{success: boolean, error: null} | { success: boolean, error: string }> {
         return ipcRenderer.invoke("initNqDir");
     },
 
@@ -300,7 +300,7 @@ export const nq = {
      * @param value The value to be stored.
      * @returns Nothing.
      */
-    setLocalProperty(key: string, value: any): Promise<undefined> {
+    setLocalProperty(key: string, value: any): Promise<{ success: boolean, error: null } | { success: boolean, error: string }> {
         return ipcRenderer.invoke("setLocalProperty", key, value);
     },
 
