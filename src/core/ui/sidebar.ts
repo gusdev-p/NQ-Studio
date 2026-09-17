@@ -23,15 +23,22 @@ export class SideBar {
         this.sidebar.style.flexShrink = "0";
         this.sidebar.style.background = "var(--surfaceColor)";
 
-
         this.resizer = document.createElement("div");
         this.resizer.id = "sideBarResizer";
-        this.resizer.style.background = "var(--borderColor)";
+        this.resizer.style.background = "var(--surfaceColor)";
         this.resizer.style.cursor = "col-resize"
         this.resizer.style.width = "4.5px";
-        this.resizer.style.height = "calc(100vh - 10px)";
-        this.resizer.style.borderRadius = "100px";
+        this.resizer.style.height = "100%";
         this.resizer.style.transition = "all 0.2s ease-in";
+        this.resizer.style.color = "var(--fontColor)";
+        this.resizer.style.display = "flex";
+        this.resizer.style.justifyContent = "center";
+        this.resizer.style.alignItems = "center";
+
+        const resizerText = document.createElement("div");
+        resizerText.innerText = "⋮"
+
+        this.resizer.appendChild(resizerText);
 
         this.resizer.addEventListener("mousedown", (e) => {
             e.preventDefault();
@@ -59,21 +66,32 @@ export class SideBar {
                 document.removeEventListener("mouseup", stop);
                 document.body.style.userSelect = "";
                 document.body.style.cursor = "";
-                this.resizer.style.background = "var(--borderColor, #3c3c3c)";
+                this.resizer.style.background = "var(--surfaceColor)";
                 this.resizer.style.borderRadius = "100px";
             }
 
             document.addEventListener("mousemove", move);
             document.addEventListener("mouseup", stop);
-        })
+        });
+
+        this.resizer.addEventListener("mouseenter", () => {
+            this.root.style.cursor = "col-resize";
+            this.resizer.style.background = "var(--borderColor)";
+        });
+
+        this.resizer.addEventListener("mouseleave", () => {
+            this.root.style.cursor = "";
+            this.resizer.style.background = "var(--surfaceColor)";
+        });
 
         this.wrapper = document.createElement("div");
         this.wrapper.id = "sideBarWrapper"
         this.wrapper.style.display = "flex";
         this.wrapper.style.flexShrink = "0";
-        this.wrapper.style.margin = "0 8px 0 8px";
+        // this.wrapper.style.margin = "0 8px 0 8px";
         this.wrapper.style.overflow = "hidden";
-        this.wrapper.style.borderRadius = "10px";
+        this.wrapper.style.borderRadius = "8px";
+        this.wrapper.style.border = "1px solid var(--borderColor)"
         
         this.content = document.createElement("div");
         this.content.id = "content";

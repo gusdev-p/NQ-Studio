@@ -8,15 +8,16 @@ export class FileBar {
 
         const fileBar = document.createElement("div");
         fileBar.id = "fileBar";
-        fileBar.style.width = "100%";
+        fileBar.style.width = "calc(100% - 10px)";
         fileBar.style.display = "flex";
-        fileBar.style.maxWidth = "100%";
         fileBar.style.boxSizing = "border-box";
         fileBar.style.justifyContent = "space-around";
         fileBar.style.alignItems = "center";
         fileBar.style.height = "50px";
         fileBar.style.background = "var(--surfaceColor)";
-        fileBar.style.borderRadius = "12px";
+        fileBar.style.borderRadius = "8px";
+        fileBar.style.margin = "0 5px"
+        fileBar.style.border = "1px solid var(--borderColor)";
 
         this.fileBar = fileBar
 

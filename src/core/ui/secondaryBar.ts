@@ -22,22 +22,28 @@ export class SecondarySideBar {
         sideBar.style.background = "var(--surfaceColor, #333)";
         sideBar.style.width = `${this.minWidth}px`;
         sideBar.style.flexShrink = "0";
-        sideBar.style.borderRadius = "10px";
         sideBar.style.overflow = "auto";
 
         const resizer = document.createElement("div");
         resizer.id = "secondarySidBarResizer";
         resizer.style.height = "100%";
         resizer.style.width = "4.5px";
-        resizer.style.background = "var(--borderColor, #333)";
+        resizer.style.background = "var(--surfaceColor)";
         resizer.style.transition = "all 0.2s ease-in";
-        resizer.style.borderRadius = "100px";
+        resizer.style.display = "flex";
+        resizer.style.justifyContent = "center";
+        resizer.style.alignItems = "center";
+        resizer.style.color = "var(--fontColor)";
+
+        const resizerText = document.createElement("div");
+        resizerText.innerText = "⋮"
+
+        resizer.appendChild(resizerText);
 
 
         resizer.addEventListener("mousedown", (e) => {
             e.preventDefault();
-            resizer.style.borderRadius = "100%";
-            resizer.style.background = "var(--accentColor, #1e8ed3)";
+            resizer.style.background = "var(--accentColor)";
             document.body.style.cursor = "col-resize";
             const sideBarRect = sideBar.getBoundingClientRect();
 
@@ -59,13 +65,22 @@ export class SecondarySideBar {
                 document.removeEventListener("mousemove", move);
                 document.removeEventListener("mouseup", stop);
                 document.body.style.userSelect = "";
-                resizer.style.borderRadius = "100px"
-                resizer.style.background = "var(--borderColor, #333)";
+                resizer.style.background = "var(--surfaceColor)";
                 document.body.style.cursor = "";
             };
 
             document.addEventListener("mousemove", move);
             document.addEventListener("mouseup", stop);
+        });
+
+        resizer.addEventListener("mouseenter", () => {
+            this.root.style.cursor = "col-resize";
+            resizer.style.background = "var(--borderColor)";
+        });
+
+        resizer.addEventListener("mouseleave", () => {
+            this.root.style.cursor = "";
+            resizer.style.background = "var(--surfaceColor)";
         });
 
         const content = document.createElement("div");
@@ -83,7 +98,11 @@ export class SecondarySideBar {
         const wrapper = document.createElement("div");
         wrapper.id = "SecondarySideBarWrapper"
         wrapper.style.display = "flex";
-        wrapper.style.gap = "4px";
+        wrapper.style.overflow = "hidden";
+        wrapper.style.border = "1px solid var(--borderColor)";
+        wrapper.style.borderRadius = "8px";
+        wrapper.style.flexShrink = "0";
+        wrapper.style.gap = "2px";
 
 
         wrapper.appendChild(this.resizer);
@@ -102,7 +121,7 @@ export class SecondarySideBar {
         }
         this.wrapper.style.display = "flex";
         this.sidebar.style.display = "flex";
-        this.resizer.style.display = "block";
+        this.resizer.style.display = "flex";
     };
 
     hide() {
@@ -206,7 +225,7 @@ export class SecondarySideBar {
     }
 
     async setImagePreview(image: string) {
-        const path = await window.nq.joinPath(await window.nq.getRoot(), image);
+        const path = image;
 
         this.content.innerHTML = "";
         this.content.style.display = "flex";
@@ -345,6 +364,12 @@ export class SecondarySideBar {
         this.content.innerHTML = DOMPurify.sanitize(marked.parse(mdSource) as string);
 
         const images = this.content.querySelectorAll("img");
+        const elements = this.content.querySelectorAll(":scope > *");
+
+        elements.forEach((element) => {
+            (element as HTMLElement).style.marginLeft = "3px";
+            (element as HTMLElement).style.marginRight = "3px";
+        });
 
         for (const img of images) {
             const src = img.getAttribute("src");

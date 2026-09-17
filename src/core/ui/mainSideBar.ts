@@ -12,14 +12,16 @@ export class mainSideBar {
         this.bar = document.createElement("div");
         this.bar.id = "mainSideBar"
         this.bar.style.width = "4%";
-        this.bar.style.height = "calc(100vh - 10px)";
-        this.bar.style.borderRight = "solid 2px var(--borderColor)"
+        this.bar.style.height = "100%";
         this.bar.style.boxSizing = "border-box";
         this.bar.style.display = "flex";
         this.bar.style.alignItems = "center";
         this.bar.style.flexDirection = "column";
         this.bar.style.gap = "3px";
         this.bar.style.padding = "5px 5px 0 5px"
+        this.bar.style.overflow = "hidden";
+        this.bar.style.borderRadius = "8px";
+        this.bar.style.border = "1px solid var(--borderColor)";
 
         this.treeViewButton = document.createElement("button");
         this.treeViewButton.id = "mainSideBarTreeViewButton";

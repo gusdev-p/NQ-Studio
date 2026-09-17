@@ -26,7 +26,7 @@ let secondary_side_bar: SecondarySideBar;
 let fileBar: FileBar;
 let terminalVisible = true
 
-const filesToNotOpen = [".jpg", ".png", ".jpeg"];
+const filesToNotOpen = [".jpg", ".png", ".jpeg", ".svg", ".gif"];
 
 let isDark: boolean;
 
@@ -241,12 +241,12 @@ async function initUI() {
     const root = document.createElement("div");
     root.id = "root";
     root.style.display = "flex";
-    root.style.width = "100%";
-    root.style.maxWidth = "100%";
-    root.style.flex = "1";
-    root.style.minHeight = "0";
-    root.style.overflow = "hidden";
+    root.style.width = "calc(100% - 10px)";
+    root.style.height = "100%";
     root.style.boxSizing = "border-box";
+    root.style.overflow = "hidden";
+    root.style.gap = "3px";
+    root.style.margin = "3px 5px";
 
     new mainSideBar(root);
 
@@ -261,8 +261,8 @@ async function initUI() {
     main.style.height = "100%";
     main.style.minHeight = "0";
     main.style.overflow = "hidden";
-    main.style.margin = "0 8px 0 8px";
     main.style.boxSizing = "border-box";
+    main.style.gap = "3px";
 
     const editor = document.createElement("div");
     editor.id = "editor";
@@ -275,6 +275,7 @@ async function initUI() {
     editor.style.minHeight = "0";
     editor.style.background = "var(--backgroundColor, #222)";
     editor.style.boxSizing = "border-box";
+    editor.style.border = "1px solid var(--borderColor)";
 
     const terminal = document.createElement("div");
     terminal.id = "terminal";
@@ -282,13 +283,20 @@ async function initUI() {
     terminal.style.background = "black"
     terminal.style.display = "flex";
     terminal.style.flexDirection = "column";
+    terminal.style.overflow = "hidden";
+    terminal.style.borderRadius = "8px";
+    terminal.style.border = "1px solid var(--borderColor)";
 
     const terminalResizer = document.createElement("div");
     terminalResizer.id = "terminalResizer"
     terminalResizer.style.width = "100%";
     terminalResizer.style.height = "5px";
-    terminalResizer.style.background = "#333"
+    terminalResizer.style.background = "var(--surfaceColor)"
     terminalResizer.style.flexShrink = "0";
+    terminalResizer.style.color = "var(--fontColor)";
+    terminalResizer.style.display = "flex";
+    terminalResizer.style.justifyContent = "center";
+    terminalResizer.style.alignItems = "center";
     
     terminal.appendChild(terminalResizer);
 
@@ -353,15 +361,13 @@ async function initUI() {
     downBar.style.height = "30px";
     downBar.style.flexShrink = "0";
     downBar.style.background = "var(--surfaceColor, #3c3c3c)";
-    downBar.style.border = "solid 2px var(--borderColor, #666)"
-    downBar.style.marginTop = "8px";
     downBar.style.borderRadius = "8px";
+    downBar.style.border = "1px solid var(--borderColor)";
 
     main.appendChild(editor);
     main.appendChild(terminal);
     main.appendChild(downBar);
 
-    
     const workspace = document.createElement("div");
     workspace.id = "workspace"
     workspace.style.display = "flex";

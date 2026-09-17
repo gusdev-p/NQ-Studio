@@ -144,6 +144,8 @@ export class treeItem {
 
                 case ".jpg":
                 case ".png":
+                case ".svg":
+                case ".gif":
                 case ".jpeg": {
                     this.icon.src = await window.nq.resolvePath("assets/icon_pack/image.svg");
                     break;
