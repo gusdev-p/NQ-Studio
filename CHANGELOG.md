@@ -1,26 +1,24 @@
-# changelog 📝
+# Changelog 📝
 
-## v0.5.0-alpha
-### Delayed commit... Big additions! 🛠️
+## 0.5.0-alpha Dev Build 🧑‍💻
+### Tiny changes, refactors...
 
 ### What was added? ✨
-- 🌐 `Localhost Preview(HTML only)` : Now you can host a server with your project on! and open in your browser or use the built-in preview!
-- 🎨 `UI Improvements` : Better buttons... For now!
-- 📄 `Makefile Tab` : Now you can see all your targets and execute them directly by the UI!
-- ⚙️ `Set as 'makefile'.` : You can set the makefile for an specific one.
-- 🖼️ `README.md Improvements` : Simple things added, and a GIF!
+- 🎨 `New UI` : Changes in the UI to make it more beauty 💅
+- 🖼️ `Support to .svg and .gif` : Now you can see your vectorial images and GIFs!
+- 📁 `Icons added` : Boring emojis no more! with these new .svg icons that tok me an eternity to create...
 
 ### Changes 🔧
-No major changes from the `0.2.0-alpha` to the `0.5.0-alpha` update!
+- 🌐 `API calls` : All the API calls (yes, everyone) was refactored and now they are modules! (you're welcome me from future)
 
-### Incomplete features 🏗️
-- ⚙️ `Properties tab` : A simple tab (for display options like `rename`) for each file in the tree view.
-- 📄 `Top bar` : The entire top bar is under development.
-- 📄 `API documentation` : Only the main API (`nq`) has basic documentation.
-- ⚙️ `Makefile Tab` : By now the makefile tab is on active development.
+### Incomplete features 🚧
+- ⚙️ `Properties tab` : Just need some fine-tunning...
+- 📄 `Makefile tab` : For now you can open and execute your targets!
 
 ### Bug fixes 👾
-- Bug resolved in the `CreateFile()` - [script.ts](./src/main/script.ts)
+- Bug resolved in the `setImagePreview()` - [secondaryBar.ts](./src/core/ui/secondaryBar.ts) : The image path was with a duplicated root path.
+
+- Bug resolved in all the `API Calls` - [API modules](./src/api/modules) : Some API calls returns things that don't make any sense (thanks to me from past) like a boolean function that returns nothing.
 
 ### Notes 📋
-NQ-Studio is under development, so some features in the `What added?` may be incomplete or may not work correctly
+NQ-Studio (especially in the `dev` branch) is under development, so some features in the `What added?` may be incomplete or not work correctly
