@@ -74,14 +74,14 @@ document.addEventListener("keydown", async (e) => {
 document.addEventListener("createDir", async (e: any) => {
     console.log("--- createDir ---")
     const dirName = e.detail.name;
-    const parent = await window.nq.getSelected();
+    const parent = await window.nq.getSelected() ?? await window.nq.getRoot();
     console.log("pai: " + parent);
     console.log("nome: " + dirName);
 
-    const result = await window.nq.createDir(`${parent}/${dirName}`, false);
+    const result = await window.nq.createDir(`${parent}/${dirName}`);
 
     if (!result.success) {
-        await window.nq.warn("Cant create directory", result.error);
+        await window.nq.warn("Cant create directory", String(result.error));
     } else {
         document.dispatchEvent(new CustomEvent("updateTree"));
     }
@@ -99,10 +99,11 @@ document.addEventListener("createFile", async (e: any) => {
     console.log("pai: ", parent);
     console.log("nome: ", fileName);
 
-    const result = await window.nq.createFile(`${parent}/${fileName}`, false);
+    const result = await window.nq.createFile(`${parent}/${fileName}`);
 
     if (!result.success) {
-        await window.nq.warn("Cant create file", result.error);
+        // FIXME
+        await window.nq.warn("Cant create file", String(result.error));
     } else {
         document.dispatchEvent(new CustomEvent("updateTree"));
     }
@@ -136,6 +137,7 @@ document.addEventListener("defineMake", async (e: any) => {
 document.addEventListener("deleteFile", async (e) => {
         console.log("--- delete ---")
         const target = await window.nq.getSelected();
+        console.log("target: ", target)
         const stat = await window.nq.stat(target);
 
         if (target === ".") return;
@@ -163,8 +165,9 @@ document.addEventListener("deleteFile", async (e) => {
         }
 
         if (!result.success) {
-            await window.nq.warn(`Cant delete ${type}`, result.error);
+            await window.nq.warn(`Cant delete ${type}`, String(result.error));
         } else {
             document.dispatchEvent(new CustomEvent("updateTree"));
+            await window.nq.setSelected(await window.nq.getRoot());
         }
 });
