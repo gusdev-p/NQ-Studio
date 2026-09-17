@@ -1,5 +1,6 @@
 import fs from "fs";
-import { ipcMain } from "electron";
+import { app, ipcMain } from "electron";
+import path from "path";
 
 /**
  * ## Result
@@ -79,3 +80,14 @@ ${JSON.stringify(this.config, null, 4)}
         return value;
     }
 }
+
+
+export const settingsManager = new SettingsManager();
+
+settingsManager.open(
+    path.join(
+        app.getPath("appData"),
+        "nq-studio",
+        "settings.json"
+    )
+)
