@@ -16,6 +16,12 @@
 </p>
 
 <p align="center">
+    <a href="https://nq-studio.pages.dev">
+        🌐 Visit the NQ-Studio website
+    </a>
+</p>
+
+<p align="center">
     <img src="./assets/html_preview.gif" alt="NQ-Studio HTML Preview" width="600">
 </p>
 
