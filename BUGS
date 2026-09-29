@@ -1,0 +1,6 @@
+html preview:
+    o preview local funciona plenamente, porem o por server (localhost)(serverManager.ts e provavelmente script.ts)
+    da erro de path, provavelmente pq os paths pra preview local e server sejam os mesmos....
+
+reload markdown:
+    quando um arquivo é salvo somente o preview do html é recarregado, falta o markdown ser recarregado também.
