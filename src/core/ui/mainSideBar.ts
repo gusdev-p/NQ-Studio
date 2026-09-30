@@ -5,13 +5,15 @@ export class mainSideBar {
     private treeViewButton: HTMLButtonElement;
     private makeFileButton: HTMLButtonElement;
     private treeViewIcon!: HTMLImageElement;
+    private makeFileIcon!: HTMLImageElement;
 
     constructor(root: HTMLElement) {
         this.root = root;
 
         this.bar = document.createElement("div");
         this.bar.id = "mainSideBar"
-        this.bar.style.width = "4%";
+        this.bar.style.width = "50px";
+        this.bar.style.minWidth = "50px";
         this.bar.style.height = "100%";
         this.bar.style.boxSizing = "border-box";
         this.bar.style.display = "flex";
@@ -29,7 +31,10 @@ export class mainSideBar {
         this.treeViewButton.style.color = "var(--fontColor)";
         this.treeViewButton.style.border = "none";
         this.treeViewButton.style.borderRadius = "12px";
-        this.treeViewButton.style.padding = "3px 8px";
+        this.treeViewButton.style.width = "40px";
+        this.treeViewButton.style.height = "40px";
+        this.treeViewButton.style.padding = "5px";
+        this.treeViewButton.style.boxSizing = "border-box";
         this.treeViewButton.style.cursor = "pointer";
         this.treeViewButton.onclick = () => {
             document.dispatchEvent(new CustomEvent("treeView"));
@@ -39,15 +44,20 @@ export class mainSideBar {
     
         this.makeFileButton = document.createElement("button");
         this.makeFileButton.id = "mainSideBarMakefileButton";
-        this.makeFileButton.innerText = "Make files.";
         this.makeFileButton.style.background = "var(--surfaceColor)";
         this.makeFileButton.style.color = "var(--fontColor)";
         this.makeFileButton.style.border = "none";
         this.makeFileButton.style.borderRadius = "12px";
-        this.makeFileButton.style.padding = "10px 3px";
+        this.makeFileButton.style.width = "40px";
+        this.makeFileButton.style.height = "40px"
+        this.makeFileButton.style.padding = "5px";
+        this.makeFileButton.style.boxSizing = "border-box";
+        this.makeFileButton.style.cursor = "pointer";
         this.makeFileButton.onclick = () => {
             document.dispatchEvent(new CustomEvent("parseMakefile"));
-        }
+        };
+
+        this.initMakeFileIcon();
 
         this.bar.appendChild(this.treeViewButton);
         this.bar.appendChild(this.makeFileButton);
@@ -57,12 +67,23 @@ export class mainSideBar {
 
     private async initTreeViewIcon() {
         this.treeViewIcon = document.createElement("img");
-        this.treeViewIcon.style.width = "min(50px, 100%)";
-        this.treeViewIcon.style.height = "auto";
+        this.treeViewIcon.style.width = "100%";
+        this.treeViewIcon.style.height = "100%";
         this.treeViewIcon.style.objectFit = "contain"
 
-        this.treeViewIcon.src = await window.nq.resolvePath("assets/icon_pack/folder.svg");
+        this.treeViewIcon.src = await window.nq.getIcon("folder", false);
 
         this.treeViewButton.appendChild(this.treeViewIcon);
+    }
+
+    private async initMakeFileIcon() {
+        this.makeFileIcon = document.createElement("img");
+        this.makeFileIcon.style.width = "100%";
+        this.makeFileIcon.style.height = "100%";
+        this.makeFileIcon.style.objectFit = "contain";
+
+        this.makeFileIcon.src = await window.nq.getIcon("makefile", false);
+
+        this.makeFileButton.appendChild(this.makeFileIcon);
     }
 }
