@@ -2,6 +2,14 @@ import { ipcMain, app } from "electron";
 import fs from "fs";
 import path from "path";
 
+/*
+NQ-Studio Filesystem API.
+
+    Part of the main api as a module, responsible
+for all functions that involves files or directories,
+example: create a file, delete a file and etc...
+
+*/
 export class FilesystemHandler {
     private verbose: boolean;
 
@@ -119,6 +127,11 @@ export class FilesystemHandler {
                     error: e instanceof Error ? e.message : "Unknown error."
                 };
             }
+        });
+
+
+        ipcMain.handle("relativePath", async (_, rootPath: string, toRelativePath: string) => {
+            return path.relative(rootPath, toRelativePath);
         });
     }
 }
