@@ -1,6 +1,18 @@
 import { ipcMain, app } from "electron";
 import path from "path";
+import fs from "fs";
 import { makeTreeNodes } from "../../core/ui/treeView/treeProvider";
+
+
+/*
+NQ-Studio Utils API
+
+    Part of the main api, responsible for
+giving miscellaneous functions, like resolve
+basic paths, get the extension of a file and
+more.
+
+*/
 
 export class UtilsHandler {
     private verbose: boolean;

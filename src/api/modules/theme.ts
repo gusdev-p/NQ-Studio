@@ -2,6 +2,15 @@ import { execSync } from "child_process";
 import {ipcMain, nativeTheme, systemPreferences } from "electron";
 import { settingsManager } from "../../core/settings/settingsManager";
 
+/*
+NQ-Studio Theme API
+
+    Part of the main api, responsible for
+initializing the themes of the IDE, like
+the background or colors.
+
+*/
+
 export class ThemeHandler {
     private verbose: boolean
 
