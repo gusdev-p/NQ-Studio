@@ -323,6 +323,30 @@ export const nq = {
      */
     openInBrowser(url: string): Promise<void> {
         return ipcRenderer.invoke("openInBrowser", url);
+    },
+
+    /**
+     * ## Get Icon
+     * Returns the compatible icon compared to the path
+     * @param filePath - The file path to receive the icon.
+     * @returns The specified icon for the path.
+     * @example // Examples of usage:
+     * await window.nq.getIcon("some_file.txt") // returns a generic icon.
+     * await window.nq.getIcon("makefile") // returns the makefile icon.
+     */
+    getIcon(filePath: string, is_path: boolean = true): Promise<string | any> {
+        return ipcRenderer.invoke("IconsManager::getIcon", filePath, is_path);
+    },
+
+    /**
+     * ## Relative Path
+     * Returns the relative path version of the second argument.
+     * @param rootPath An absolute path: "/home/your-user/projects"
+     * @param toRelativePath The path to become relative: "/home/your-user/projects/nq-studio"
+     * @returns The relative version of the path: "nq-studio"
+     */
+    relativePath(rootPath: string, toRelativePath: string): Promise<string> {
+        return ipcRenderer.invoke("relativePath", rootPath, toRelativePath);
     }
 };
 
