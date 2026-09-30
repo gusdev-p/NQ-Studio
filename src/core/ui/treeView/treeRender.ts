@@ -24,7 +24,7 @@ export class treeItem {
         this.isOpen = false;
         this.loaded = false;
 
-        this.label.textContent = `${node.name}`
+        this.label.textContent = node.name
 
         this.element.appendChild(this.label);
         this.element.style.display = "block";
@@ -117,46 +117,9 @@ export class treeItem {
 
     private async changeIcon() {
         const fileType = await window.nq.getFileExt(this.node.path);
+        const fileName = await window.nq.getFileName(this.node.path);
 
-        if (this.node.isDir) {
-            this.icon.src = await window.nq.resolvePath("assets/icon_pack/folder.svg");
-        } else {
-            switch (fileType) {
-                case ".js": {
-                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/javascript.svg");
-                    break;
-                }
-
-                case ".css": {
-                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/css.svg");
-                    break;
-                }
-
-                case ".html": {
-                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/html.svg");
-                    break;
-                }
-
-                case ".json": {
-                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/json.svg");
-                    break;
-                }
-
-                case ".jpg":
-                case ".png":
-                case ".svg":
-                case ".gif":
-                case ".jpeg": {
-                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/image.svg");
-                    break;
-                }
-
-                default: {
-                    this.icon.src = await window.nq.resolvePath("assets/icon_pack/file.svg");
-                    break;
-                }
-            }
-        }
+        this.icon.src = await window.nq.getIcon(this.node.path);
 
     }
 
