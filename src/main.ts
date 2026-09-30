@@ -1,7 +1,6 @@
-import { BrowserWindow, app, ipcMain, nativeTheme, systemPreferences, dialog, Menu, protocol } from "electron";
+import { BrowserWindow, app, ipcMain, systemPreferences } from "electron";
 import path from "path"
 import { terminalManager } from "./terminalManager";
-import { settingsManager } from "./core/settings/settingsManager";
 import { ServerManager } from "./core/serverManager";
 import { MakefileParser } from "./core/makefileParser";
 
@@ -10,6 +9,7 @@ import { ThemeHandler } from "./api/modules/theme";
 import { SettingsManagerHandler, IDEHandler } from "./api/modules/IDE";
 import { UtilsHandler } from "./api/modules/utils"
 import { FilesystemHandler } from "./api/modules/filesystem"
+import { IconsHandler } from "./api/modules/icons";
 
 
 let win: BrowserWindow
@@ -28,6 +28,7 @@ const themeHandler = new ThemeHandler();
 const settingsManagerHandler = new SettingsManagerHandler();
 const utilsHandler = new UtilsHandler(devMode);
 const filesystemHandler = new FilesystemHandler();
+const iconsHandler = new IconsHandler(true);
 const ideHandler = new IDEHandler();
 
 console.log("-=- End of debug messages -=-\n")
@@ -60,10 +61,6 @@ function createBootstrap() {
     win.maximize();
 };
 
-protocol.registerSchemesAsPrivileged([
-    { scheme: "app", privileges: { standard: true, secure: true, supportFetchAPI: true } }
-]);
-
 app.whenReady().then(() => {
     createBootstrap();
 
@@ -73,7 +70,6 @@ app.whenReady().then(() => {
         }
     });
 });
-
 
 ipcMain.handle("openDevTools", () => {
     win.webContents.openDevTools();
