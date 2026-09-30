@@ -1,4 +1,7 @@
 adicionar barra superior estilo settings de IDE - renderer.ts
 continuar a aba do properties - treeRender.ts
+terminar a aba do makefile - sidebar.ts, makefileParser.ts
 
-arrumar o script.ts
+PELA AMOR DE DEUS FAÇA NA ORDEM EU DO FUTURO
+
+melhorar e dar utilidade pra down-bar (mostrar a linguagem usada? package.json?)
