@@ -3,9 +3,12 @@ import { mainSideBar } from "./ui/mainSideBar.js";
 import { terminalView } from "./ui/terminal/terminalView.js";
 import { SecondarySideBar } from "./ui/secondaryBar.js";
 import { FileBar } from "./ui/fileBar.js";
-import "./monacoSetup.js";
 import * as monaco from "monaco-editor";
 import { buildMonacoTheme } from "./themes.js";
+import { nqEditor } from "./ui/renderer/nqEditor.js";
+import { FileTabs } from "./ui/fileTabs.js";
+
+import { initListeners } from "../main/script.js";
 
 console.log("-=- renderer boot! -=-")
 
@@ -18,82 +21,17 @@ document.body.style.flexDirection = "column";
 document.body.style.overflow = "hidden";
 document.body.style.width = "100vw";
 document.body.style.maxWidth = "100vw";
-document.body.style.gap = "4px";
 
-let side_bar: SideBar;
-let nqeditor: nqEditor;
-let secondary_side_bar: SecondarySideBar;
-let fileBar: FileBar;
+export let side_bar: SideBar;
+export let nqeditor: nqEditor;
+export let secondary_side_bar: SecondarySideBar;
+export let fileBar: FileBar;
+export let fileTabs: FileTabs;
 let terminalVisible = true
-
-const filesToNotOpen = [".jpg", ".png", ".jpeg", ".svg", ".gif"];
 
 let isDark: boolean;
 
-export class nqEditor {
-    private editor!: monaco.editor.IStandaloneCodeEditor;
-    public filePath!: string;
-    public fileContent!: string;
-
-    constructor () {
-        this.init()
-    }
-
-    async init() {
-        const themeName = await setEditorTheme();
-
-        this.editor = monaco.editor.create(document.getElementById("editor")!, {
-            value: "// Welcome to NQ-Studio!\n// Open a directory or create a new project to begin!\n",
-            language: "javascript",
-            theme: themeName,
-            automaticLayout: true,
-        });
-        this.fileContent = "";
-        this.filePath = "";
-    }
-
-    setContent(content: string, path: string) {
-        console.log("conteúdo definido!")
-        this.editor.setValue(content)
-        this.filePath = path;
-        console.log("arquivo: ", this.fileContent);
-        console.log("path: ", this.filePath);
-    }
-
-    setLanguage(language: string) {
-        console.log("--- setLanguage ---")
-        console.log("linguagem definida!")
-        const model = this.editor.getModel()
-        if (model) monaco.editor.setModelLanguage(model, language);
-    }
-
-    toLanguage(language: string): string {
-        console.log("--- toLanguage ---")
-        //console.log("pegando linguagem!")
-        if (language === ".js" || language === ".mjs" || language === ".cjs") return "javascript";
-        if (language === ".html") return "html";
-        if (language === ".css") return "css";
-        if (language === ".json") return "json";
-        if (language === ".md") return "markdown";
-        return "plaintext";
-    }
-
-    async applyTheme() {
-        const themeName = await setEditorTheme();
-        monaco.editor.setTheme(themeName);
-    }
-
-    get file_path() {
-        return this.filePath
-    }
-
-    get file_content() {
-        return this.editor.getValue()
-    }
-
-}
-
-async function setEditorTheme(): Promise<string> {
+export async function setEditorTheme(): Promise<string> {
     const settingsPath = await window.nq.getAppPath("appData") + "/nq-studio/themes.json";
     const themeToMount = await window.nq.getSetting("editor", "defaultTheme");
     const configRoot = JSON.parse(await window.nq.openFile(settingsPath));
@@ -127,11 +65,8 @@ async function initTheme() {
     });
 };
 
-async function prepareTheme() {
-    document.body.style.background = "var(--backgroundColor, #1c1c1c)";
-};
-
 async function initUI() {
+    document.body.style.background = "var(--backgroundColor)";
 
     // topbar
     const topBar = document.createElement("div");
@@ -364,6 +299,8 @@ async function initUI() {
     downBar.style.borderRadius = "8px";
     downBar.style.border = "1px solid var(--borderColor)";
 
+    fileTabs = new FileTabs(main);
+
     main.appendChild(editor);
     main.appendChild(terminal);
     main.appendChild(downBar);
@@ -391,119 +328,11 @@ async function initUI() {
     
 }
 
-async function initListeners() {
-    document.addEventListener("treeView", async () => {
-        console.log(await window.nq.getRoot());
-        side_bar.defineTreeView(await window.nq.getRoot());
-    })
-    // TODO: adicionar um check pra ver se é imagem!
-    document.addEventListener("fileOpened", async (e: any) => {
-        // properties
-        const fileContent = e.detail.content;
-        const fileType = e.detail.type;
-        const filePath = e.detail.path;
-        const fileName = await window.nq.getFileName(filePath);
-
-        // debug
-        console.log("arquivo aberto!");
-        console.log("conteúdo: ", fileContent);
-        console.log("tipo: ", fileType);
-        console.log("nome do arquivo: ", fileName);
-
-        let found = false;
-        filesToNotOpen.forEach((ext) => {
-            if (ext == fileType) {
-                found = true;
-            }
-        });
-
-        if (found) {
-            console.log("é imagem!")
-            if (!secondary_side_bar.isOpen()) secondary_side_bar.show(window.innerWidth * 0.4);
-            secondary_side_bar.setImagePreview(filePath);
-        } else {
-            nqeditor.setContent(fileContent, filePath);
-            const type = nqeditor.toLanguage(fileType);
-            nqeditor.setLanguage(type);
-            fileBar.appendFile({fileName: fileName, filePath: filePath, fileType: fileType});
-        }
-    });
-
-    document.addEventListener("keydown", async (e) => {
-        if (e.ctrlKey && e.key.toLowerCase() === "s") {
-            e.preventDefault()
-            console.log("pedido de arquivo pra ser salvo!");
-            const result = await window.nq.saveFile(nqeditor.file_path, String(nqeditor.file_content))
-            if (result.success) {
-                console.log("arquivo salvo!")
-                if (secondary_side_bar.isOpen()) {
-                    document.dispatchEvent(new CustomEvent("reloadHTML"));
-                }
-            }
-        }
-    });
-
-    document.addEventListener("openRoot", async (e: any) => {
-        await window.nq.setRoot(e.detail.path);
-        await window.terminal.changeCwd(e.detail.path);
-        console.log("pedido de troca de root!");
-        console.log(e.detail.path);
-        await side_bar.defineTreeView(e.detail.path);
-        await window.nq.initNqDir();
-    });
-
-    document.addEventListener("updateTree", async () => {
-        await side_bar.defineTreeView(await window.nq.getRoot());
-    });
-
-    document.addEventListener("openSecondarySideBar", () =>{
-        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(150);
-    });
-
-    document.addEventListener("hideSecondarySideBar", () => {
-        secondary_side_bar.hide();
-    });
-
-    document.addEventListener("htmlPreview", async (e: any) => {
-        const html = e.detail.path;
-        console.log("path do html: ", await window.nq.resolvePath(await window.nq.getRoot(), html));
-
-        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
-        secondary_side_bar.setHTMlPreview(html);
-    });
-
-    document.addEventListener("server:htmlPreview", async (e: any) => {
-        await window.server.closeHttpServer();
-        const url = await window.server.openHttpServer(await window.nq.getRoot());
-        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
-        secondary_side_bar.setHTMlPreview(await window.nq.joinPath(url, e.detail.path));
-    });
-
-    document.addEventListener("server:openInBrowser", async (e: any) => {
-        await window.server.closeHttpServer();
-        const url = await window.server.openHttpServer(await window.nq.getRoot());
-
-        await window.nq.openInBrowser(await window.nq.joinPath(url, e.detail.path));
-    });
-
-    document.addEventListener("markdownPreview", async (e: any) => {
-        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(window.innerWidth * 0.4);
-        secondary_side_bar.setMarkDownPreview(e.detail.path);
-    });
-
-    document.addEventListener("parseMakefile", async () => {
-        const parsed = await window.make.parse(await window.nq.resolvePath(await window.nq.getRoot(), "Makefile"));
-        console.log("parsed: ", parsed);
-        side_bar.defineMakefileView(parsed);
-    });
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
     setTimeout(async () => {
         await initTheme();
-        await prepareTheme();
         await initUI();
         await initListeners();
         await side_bar.defineTreeView(await window.nq.getRoot());
-    }, 0.3)
-})
+    }, 0.3);
+});
