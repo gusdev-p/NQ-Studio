@@ -4,6 +4,16 @@ import fs from "fs";
 import { ipcMain, dialog, BrowserWindow, shell } from "electron";
 import { MakefileParser } from "../../core/makefileParser";
 
+/*
+NQ-Studio IDE API
+
+    Part of the main API as a module, responsible for
+manage settings, and functions that all the IDE can use
+for different purposes.
+
+*/
+
+
 const makefileParser = new MakefileParser();
 
 export class SettingsManagerHandler {
