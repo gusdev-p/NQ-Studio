@@ -1,0 +1,13 @@
+{
+    "name": "nq_studio_icon_pack",
+    "icons": {
+        "css": "icons/css.svg",
+        "generic_file": "icons/file.svg",
+        "folder": "icons/folder.svg",
+        "html": "icons/html.svg",
+        "generic_image": "icons/image.svg",
+        "javascript": "icons/javascript.svg",
+        "json": "icons/json.svg",
+        "makefile": "icons/makefile.svg"
+    }
+}
