@@ -60,10 +60,9 @@ export class FileBar {
                 console.log("é js!")
                 runButton.innerText = "▶";
                 runButton.onclick = async () => {
-                    console.log(`${await window.nq.getRoot()}/.nq/nq-runner`)
-                    if (await window.nq.exists(`${await window.nq.getRoot()}/.nq/nq-runner`)) {
+                    if (await window.nq.exists(await window.nq.joinPath(await window.nq.getRoot(), ".nq", "nq-runner"))) {
                         console.log("achei!")
-                        window.terminal.executeInTerminal(`${await window.nq.getRoot()}/.nq/nq-runner ${config.filePath}`);
+                        window.terminal.executeInTerminal(await window.nq.joinPath(await window.nq.getRoot(), ".nq", "nq-runner"));
                     } else {
                         console.log("n deu ent :/")
                         window.terminal.executeInTerminal(`node ${config.filePath} && echo "--- Exited with exit code: $?"`);
