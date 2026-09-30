@@ -3,7 +3,7 @@ logos pra fazer:
     css ok
     settings (IDE)
     markdown
-    imagem
+    imagem ok
     script
     config (arquivo)
-    makefile
+    makefile ok
