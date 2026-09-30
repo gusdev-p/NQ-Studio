@@ -2,6 +2,7 @@ DEVMODE=--dev-mode
 
 all:
 	$(MAKE) copy-settings
+	$(MAKE) copy-icon-pack
 	$(MAKE) distclean
 	$(MAKE) build
 	$(MAKE) preview DEVMODE=$(DEVMODE)
@@ -27,3 +28,8 @@ copy-settings:
 	@rm -rf ~/.config/nq-studio/themes.json
 	@cp ./configs/settings.json ~/.config/nq-studio/settings.json
 	@cp ./configs/themes.json ~/.config/nq-studio/themes.json
+
+copy-icon-pack:
+	@rm -rf ~/.config/nq-studio/icon_pack
+	@mkdir -p ~/.config/nq-studio/icon_pack
+	@cp -r ./assets/icon_pack/nq-studio-icon-pack ~/.config/nq-studio/icon_pack/nq-studio-icon-pack
