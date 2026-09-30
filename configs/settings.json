@@ -55,6 +55,8 @@
         "default": "dark"
     },
 
+    "icon_pack": "nq-studio-icon-pack",
+    
     "editor": {
         "fontFamily": "JetBrainsMono Nerd Font",
         "fontSize": 14,
