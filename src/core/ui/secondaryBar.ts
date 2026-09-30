@@ -10,7 +10,10 @@ export class SecondarySideBar {
     private resizer: HTMLDivElement;
     private wrapper: HTMLDivElement;
     private content: HTMLDivElement;
+
     private currentMd!: string;
+    private currentHtml!: string;
+    private currentImage!: string;
 
     constructor(root: HTMLElement) {
         this.root = root;
@@ -111,6 +114,28 @@ export class SecondarySideBar {
         this.wrapper = wrapper
 
         this.root.appendChild(this.wrapper);
+
+        this.initListeners();
+    }
+
+    private initListeners() {
+        document.addEventListener("reloadMarkdown", async () => {
+            if (!this.currentMd) return;
+
+            await this.setMarkDownPreview(this.currentMd);
+        });
+
+        document.addEventListener("reloadHTML", async () => {
+            if (!this.currentHtml) return;
+
+            await this.setHTMlPreview(this.currentHtml);
+        });
+
+        document.addEventListener("reloadImage", async () => {
+            if (!this.currentImage) return;
+
+            await this.setImagePreview(this.currentImage);
+        });
     }
 
     show(width: number | string) {
@@ -132,6 +157,7 @@ export class SecondarySideBar {
 
     async setHTMlPreview(html: string) {
         const path = html;
+        this.currentHtml = path;
         console.log("path é:", html);
         console.log("e o path final é:", path);
         this.content.innerHTML = "";
@@ -218,14 +244,12 @@ export class SecondarySideBar {
         this.content.appendChild(toolBar);
         this.content.appendChild(screenWrapper);
 
-
-        document.addEventListener("reloadHTML", () => {
-            webview.reload();
-        });
     }
 
     async setImagePreview(image: string) {
         const path = image;
+
+        this.currentImage = path;
 
         this.content.innerHTML = "";
         this.content.style.display = "flex";
