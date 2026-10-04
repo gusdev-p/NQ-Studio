@@ -7,6 +7,19 @@ interface TabInfo {
     identifier: string
 }
 
+export interface TabDump {
+    identifier: string;
+    buffer: string;
+    path: string;
+    modified: boolean;
+    fileName: string;
+}
+
+export interface TabDumps {
+    tabs: TabDump[];
+    activeTab: string;
+}
+
 export class FileTabs {
     private root: HTMLDivElement;
     private bar: HTMLDivElement;
@@ -55,7 +68,6 @@ export class FileTabs {
 
         const newTab: TabInfo = {element: tab, path, fileName: fileName, modified: false, buffer: fileContent, identifier: identifier};
         this.elements.set(identifier, newTab);
-        this.activeIdentifier = identifier;
         console.log("new active tab:", this.activeIdentifier);
         this.bar.appendChild(tab);
     }
@@ -239,5 +251,25 @@ export class FileTabs {
         tab.appendChild(closeTab);
 
         await this.addIdentifier(identifier, tab, filePath);
+    }
+
+    public dumpTabs(): { tabs: TabDump[], activeTab: string | null } {
+        let result: TabDump[] = []
+        const active = this.getActive()?.identifier ?? null;
+
+        for (const t of this.elements) {
+            const [ identifier, tab ] = t;
+            const toDump: TabDump = {
+                identifier: identifier,
+                buffer: tab.buffer,
+                path: tab.path,
+                modified: tab.modified,
+                fileName: tab.fileName
+            }
+
+            result.push(toDump);
+        }
+
+        return { tabs: result, activeTab: active };
     }
 };
