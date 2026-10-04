@@ -28,7 +28,6 @@ export class terminalManager {
     }
 
     create(cwd: string, win: BrowserWindow) {
-        console.log(pty);
         this.pty?.kill();
         
         const shell =
