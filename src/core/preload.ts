@@ -2,6 +2,12 @@ import { contextBridge, ipcRenderer } from "electron";
 import { TreeNode } from "./ui/treeView/treeProvider";
 import { Result } from "../core/settings/settingsManager";
 
+let booted = false;
+
+ipcRenderer.on("nq:boot", () => {
+    booted = true;
+});
+
 export const nq = {
     /**
      * ## getAccentColor
@@ -121,7 +127,7 @@ export const nq = {
      * @param question
      * @returns If answer is 'yes' returns 'true', if is 'no' or 'cancel' returns 'false'. If user cancels return 'null'.
      */
-    askQuestion(title: string, question: string): Promise<unknown> {
+    askQuestion(title: string, question: string): Promise<boolean> {
         return ipcRenderer.invoke("askQuestion", title, question);
     },
     /**
@@ -132,7 +138,7 @@ export const nq = {
      * @param label The warn.
      * @returns 'true' if answer is 'ok' or 'null' if user closes the window.
      */
-    warn(title: string, label: string): Promise<unknown> {
+    warn(title: string, label: string): Promise<boolean> {
         return ipcRenderer.invoke("warn", title, label);
     },
     /**
@@ -332,7 +338,7 @@ export const nq = {
      * @returns The specified icon for the path.
      * @example // Examples of usage:
      * await window.nq.getIcon("some_file.txt") // returns a generic icon.
-     * await window.nq.getIcon("makefile") // returns the makefile icon.
+     * await window.nq.getIcon("makefile", false) // returns the makefile icon.
      */
     getIcon(filePath: string, is_path: boolean = true): Promise<string | any> {
         return ipcRenderer.invoke("IconsManager::getIcon", filePath, is_path);
@@ -347,6 +353,28 @@ export const nq = {
      */
     relativePath(rootPath: string, toRelativePath: string): Promise<string> {
         return ipcRenderer.invoke("relativePath", rootPath, toRelativePath);
+    },
+
+    onShutdown(callback: () => void | Promise<void>): void {
+        ipcRenderer.on("nq:shutdown", () => {
+            callback();
+        })
+    },
+
+    shutdownNow() {
+        return ipcRenderer.invoke("nq:shutdown-now");
+    },
+
+    onBoot(callback: () => void | Promise<void>): void {
+        console.log("[PRELOAD]: registering BOOT listener");
+        if (booted) {
+            callback();
+            return;
+        }
+
+        ipcRenderer.once("nq:boot", () => {
+            callback();
+        });
     }
 };
 
