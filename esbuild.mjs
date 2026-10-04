@@ -43,5 +43,4 @@ build({
 
 cpSync("src/main/index.html", "dist/main/index.html", {recursive: true});
 cpSync("src/core/ui/ask/", "dist/core/ui/ask", {recursive: true});
-cpSync("src/core/ui/warn/", "dist/core/ui/warn", { recursive: true});
 cpSync("node_modules/monaco-editor/min/vs", "dist/vs", {recursive: true});
