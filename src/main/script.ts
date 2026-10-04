@@ -1,5 +1,6 @@
 import { eventLoopUtilization } from "perf_hooks";
 import { side_bar, nqeditor, secondary_side_bar, fileBar, fileTabs } from "../core/renderer.js";
+import { TabDumps } from "../core/ui/fileTabs.js";
 
 let waitForO = false;
 let secondaryBarOpen = false;
@@ -78,17 +79,27 @@ document.addEventListener("keydown", async (e) => {
 
 document.addEventListener("createDir", async (e: any) => {
     console.log("--- createDir ---")
-    const dirName = e.detail.name;
-    const parent = await window.nq.getSelected() ?? await window.nq.getRoot();
-    console.log("pai: " + parent);
-    console.log("nome: " + dirName);
+    
+    try {
+        const dirName = e.detail.name;
+        const parent = await window.nq.getSelected() ?? await window.nq.getRoot();
+        console.log("pai: " + parent);
+        console.log("nome: " + dirName);
+    
+        const result = await window.nq.createDir(await window.nq.joinPath(parent, dirName));
+    
+        if (!result.success) {
+            await window.nq.warn("Cant create directory", String(result.error));
+        } else {
+            document.dispatchEvent(new CustomEvent("updateTree"));
+        }
+    } catch (e) {
+        console.error("Failed to create directory:", e);
 
-    const result = await window.nq.createDir(await window.nq.joinPath(parent, dirName));
-
-    if (!result.success) {
-        await window.nq.warn("Cant create directory", String(result.error));
-    } else {
-        document.dispatchEvent(new CustomEvent("updateTree"));
+        await window.nq.warn(
+            "Cant Create Directory",
+            String(e)
+        )
     }
 });
 
@@ -180,10 +191,73 @@ document.addEventListener("deleteFile", async (e) => {
 });
 
 export async function initListeners() {
+    console.log("[SCRIPT]: registering listener to BOOT...")
+    window.nq.onBoot(async () => {
+        console.log("[SCRIPT]: received BOOT call");
+
+        const rawTabs = await window.nq.getLocalProperty("fileTabs");
+
+        if (!rawTabs) return;
+
+        const tabs = JSON.parse(rawTabs) as TabDumps;
+
+        for (const tab of tabs.tabs) {
+            await fileTabs.addFile(tab.identifier, tab.path);
+
+            const newTab = fileTabs.getTab(tab.identifier);
+
+            if (!newTab) {
+                await window.nq.warn(
+                    "Something went wrong",
+                    `cant initialize the tab: '${tab.identifier}' :(`
+                );
+                return;
+            }
+
+            fileTabs.setBuffer(newTab, tab.buffer);
+            fileTabs.setModified(tab.identifier, tab.modified);
+        }
+
+        if (tabs.activeTab) {
+            const activeTab = fileTabs.getTab(tabs.activeTab);
+
+            if (activeTab) {
+                fileTabs.setActive(tabs.activeTab);
+
+                nqeditor.setContent(
+                    activeTab.buffer,
+                    activeTab.path
+                );
+
+                nqeditor.setLanguage(
+                    nqeditor.toLanguage(
+                        await window.nq.getFileExt(activeTab.path)
+                    )
+                );
+            }
+        }
+    });
+
+    window.nq.onShutdown(async () => {
+        console.log("[SCRIPT]: Received SHUTDOWN call.");
+
+        const active = fileTabs.getActive();
+
+        if (active) {
+            fileTabs.setBuffer(active, nqeditor.getContent());
+        }
+
+        const dump = fileTabs.dumpTabs();
+        console.log(dump);
+        await window.nq.setLocalProperty("fileTabs", JSON.stringify(dump, null, 4));
+
+        await window.nq.shutdownNow();
+    });
+
     document.addEventListener("treeView", async () => {
         console.log(await window.nq.getRoot());
         side_bar.defineTreeView(await window.nq.getRoot());
-    })
+    });
 
     document.addEventListener("fileOpened", async (e: any) => {
         // properties
