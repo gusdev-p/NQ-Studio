@@ -35,6 +35,8 @@ console.log("-=- End of debug messages -=-\n")
 const serverManager = new ServerManager();
 const makefileParser = new MakefileParser();
 
+let allowClose = false;
+
 let terminal: terminalManager;
 
 function createBootstrap() {
@@ -54,11 +56,33 @@ function createBootstrap() {
         icon: path.join("assets", "logo.png"),
     });
 
+    const window = win;
 
-    terminal = new terminalManager(win);
+    window.on("close", (e) => {
+        if (allowClose) return;
 
-    win.loadFile(path.join(__dirname, "main", "index.html"));
-    win.maximize();
+        e.preventDefault();
+
+        console.log("[NQ]: Sending SHUTDOWN call...")
+        window.webContents.send("nq:shutdown");
+    });
+
+    ipcMain.handle("nq:shutdown-now", () => {
+        console.log("[NQ]: Received SHUTDOWN-NOW call")
+        allowClose = true;
+        window.close();
+    });
+
+    terminal = new terminalManager(window);
+
+    window.webContents.once("did-finish-load", () => {
+        console.log("[NQ]: did-finish-load triggered")
+        console.log("[NQ]: Sending BOOT call");
+        window.webContents.send("nq:boot");
+    });
+
+    window.loadFile(path.join(__dirname, "main", "index.html"));
+    window.maximize();
 };
 
 app.whenReady().then(() => {
