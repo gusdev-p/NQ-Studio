@@ -240,16 +240,16 @@ export class treeItem {
     }
 }
 
-export class treeView {
-    private root: HTMLElement;
-
-    constructor (root: HTMLElement, dirs: TreeNode[]) {
-        this.root = root;
+export class TreeView {
+    constructor (dirs: TreeNode[]) {
+        const root2 = document.createElement("div");
 
         for (const dir of dirs) {
-            const item = new treeItem(dir, root);
+            const item = new treeItem(dir, root2);
 
-            this.root.appendChild(item.element);
+            root2.appendChild(item.element);
         }
+
+        return root2;
     }
 }
