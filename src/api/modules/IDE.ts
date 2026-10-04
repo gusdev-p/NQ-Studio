@@ -101,100 +101,44 @@ export class IDEHandler {
             });
         });
 
-        ipcMain.handle("warn", (_, title: string, label: string) => {
+        ipcMain.handle("warn", async (_, title: string, label: string) => {
             const focusedWindow = BrowserWindow.getFocusedWindow();
 
-            const warnWin = new BrowserWindow({
-                width: 300,
-                height: 150,
-                modal: true,
-                ...(focusedWindow && { parent: focusedWindow }),
-                webPreferences: {
-                    nodeIntegration: false,
-                    contextIsolation: true,
-                    preload: path.join(__dirname, "core", "ui", "warn", "preload.js"),
-                    devTools: false
-                },
-                autoHideMenuBar: true,
+            if (!focusedWindow) return;
+
+            const response = await dialog.showMessageBox(focusedWindow, {
+                type: "warning",
                 title: title,
-                icon: path.join(__dirname, "assets", "logo.png"),
+                message: label,
+                buttons: ["ok", "cancel"],
+                defaultId: 0,
+                cancelId: 1
             });
 
-            warnWin.loadFile(path.join(__dirname, "core", "ui", "warn", "index.html"), {
-                query: { label }
-            });
+            if (response.response === 0) return true;
 
-            warnWin.webContents.on("did-finish-load", async () => {
-                setTimeout(async () => {
-                    const size = await warnWin.webContents.executeJavaScript(`
-                        ({
-                            width: document.documentElement.scrollWidth,
-                            height: document.documentElement.scrollHeight
-                        })    
-                    `);
-
-                    warnWin.setContentSize(size.width, size.height);
-                }, 100);
-            });
-
-            return new Promise((resolve) => {
-                ipcMain.on("warn-win-response", (_, value) => {
-                    resolve(value);
-                    warnWin.close();
-                });
-
-                warnWin.on("closed", () => {
-                    return null;
-                });
-            });
+            return false;
         });
 
         ipcMain.handle("askQuestion", async (_, title: string, question: string) => {
             const focusedWindow = BrowserWindow.getFocusedWindow();
 
-            const askWin = new BrowserWindow({
-                width: 300,
-                height: 150,
-                modal: true,
-                ...(focusedWindow && { parent: focusedWindow }),
-                webPreferences: {
-                    contextIsolation: true,
-                    nodeIntegration: false,
-                    preload: path.join(__dirname, "core", "ui", "ask", "button", "preload.js"),
-                    devTools: false,
-                },
-                autoHideMenuBar: true,
+            if (!focusedWindow) return;
+
+            const response = await dialog.showMessageBox(focusedWindow, {
+                type: "question",
                 title: title,
-                icon: path.join(__dirname, "assets", "logo.png"),
+                message: question,
+                buttons: ["yes", "no", "cancel"],
+                defaultId: 0,
+                cancelId: 2
             });
 
-            askWin.loadFile(path.join(__dirname, "core", "ui", "ask", "button", "index.html"), {
-                query: { question }
-            });
-        
-            askWin.webContents.on("did-finish-load", async () => {
-                setTimeout(async () => {
-                    const size = await askWin.webContents.executeJavaScript(`
-                        ({
-                            width: document.documentElement.scrollWidth,
-                            height: document.documentElement.scrollHeight
-                        })
-                    `);
-        
-                    askWin.setContentSize(size.width, size.height);
-                }, 100);
-            });
-        
-            return new Promise((resolve) => {
-                ipcMain.once("ask-button-response", (_, value) => {
-                    resolve(value);
-                    askWin.close();
-                });
-        
-                askWin.on("closed", () => {
-                    return null
-                });
-            });
+            if (response.response === 1 || response.response === 2) {
+                return false;
+            }
+
+            return true;
         });
 
 
