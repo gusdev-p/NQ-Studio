@@ -8,6 +8,8 @@
         "generic_image": "icons/image.svg",
         "javascript": "icons/javascript.svg",
         "json": "icons/json.svg",
-        "makefile": "icons/makefile.svg"
+        "makefile": "icons/makefile.svg",
+        "create_file": "icons/create_file.svg",
+        "create_folder": "icons/create_folder.svg"
     }
 }
