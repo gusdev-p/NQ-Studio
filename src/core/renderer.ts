@@ -9,6 +9,7 @@ import { nqEditor } from "./ui/renderer/nqEditor.js";
 import { FileTabs } from "./ui/fileTabs.js";
 
 import { initListeners } from "../main/script.js";
+import { DownBar } from "./ui/downBar.js";
 
 console.log("-=- renderer boot! -=-")
 
@@ -27,6 +28,7 @@ export let nqeditor: nqEditor;
 export let secondary_side_bar: SecondarySideBar;
 export let fileBar: FileBar;
 export let fileTabs: FileTabs;
+export let downBar: DownBar;
 let terminalVisible = true
 
 let isDark: boolean;
@@ -291,19 +293,13 @@ async function initUI() {
         }
     });
 
-    const downBar = document.createElement("div");
-    downBar.id = "downBar"
-    downBar.style.height = "30px";
-    downBar.style.flexShrink = "0";
-    downBar.style.background = "var(--surfaceColor, #3c3c3c)";
-    downBar.style.borderRadius = "8px";
-    downBar.style.border = "1px solid var(--borderColor)";
+    
 
     fileTabs = new FileTabs(main);
 
     main.appendChild(editor);
     main.appendChild(terminal);
-    main.appendChild(downBar);
+    downBar = new DownBar(main);
 
     const workspace = document.createElement("div");
     workspace.id = "workspace"
