@@ -5,3 +5,4 @@ terminar a aba do makefile - sidebar.ts, makefileParser.ts
 PELA AMOR DE DEUS FAÇA NA ORDEM EU DO FUTURO
 
 melhorar e dar utilidade pra down-bar (mostrar a linguagem usada? package.json?)
+fazer o codemirror mostar os erros e etc do LSP de typescript e javascript ;)
