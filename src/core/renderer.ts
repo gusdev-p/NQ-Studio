@@ -3,10 +3,11 @@ import { mainSideBar } from "./ui/mainSideBar.js";
 import { terminalView } from "./ui/terminal/terminalView.js";
 import { SecondarySideBar } from "./ui/secondaryBar.js";
 import { FileBar } from "./ui/fileBar.js";
-import * as monaco from "monaco-editor";
 import { buildMonacoTheme } from "./themes.js";
 import { nqEditor } from "./ui/renderer/nqEditor.js";
 import { FileTabs } from "./ui/fileTabs.js";
+import { Extension } from "@codemirror/state";
+import { buildCMTheme } from "./cmTheme.js";
 
 import { initListeners } from "../main/script.js";
 import { DownBar } from "./ui/downBar.js";
@@ -33,20 +34,16 @@ let terminalVisible = true
 
 let isDark: boolean;
 
-export async function setEditorTheme(): Promise<string> {
-    const settingsPath = await window.nq.getAppPath("appData") + "/nq-studio/themes.json";
+export async function setEditorTheme(): Promise<Extension> {
+    const settingsPath = await window.nq.joinPath(await window.nq.getAppPath("appData"), "nq-studio", "themes.json");
     const themeToMount = await window.nq.getSetting("editor", "defaultTheme");
     const configRoot = JSON.parse(await window.nq.openFile(settingsPath));
 
     const resolvedKey = themeToMount === "auto"
-        ? (isDark ? "dark": "light")
+        ? (isDark ? "dark" : "light")
         : themeToMount;
     
-    const config = configRoot[resolvedKey];
-    const themeName = `nq-${resolvedKey}`;
-
-    monaco.editor.defineTheme(themeName, buildMonacoTheme(config));
-    return themeName;
+    return buildCMTheme(configRoot[resolvedKey]);
 }
 
 async function initTheme() {
