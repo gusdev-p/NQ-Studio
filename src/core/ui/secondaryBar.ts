@@ -1,7 +1,7 @@
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 export class SecondarySideBar {
-    private root!: HTMLElement;
+    private root: HTMLElement;
 
     private maxWidth = window.innerWidth * 0.4;
     private minWidth = 50;
@@ -11,9 +11,9 @@ export class SecondarySideBar {
     private wrapper: HTMLDivElement;
     private content: HTMLDivElement;
 
-    private currentMd!: string;
-    private currentHtml!: string;
-    private currentImage!: string;
+    private currentMd: string | null = null;
+    private currentHtml: string | null = null;
+    private currentImage: string | null = null;
 
     constructor(root: HTMLElement) {
         this.root = root;
@@ -153,6 +153,10 @@ export class SecondarySideBar {
         this.wrapper.style.display = "none";
         this.sidebar.style.display = "none";
         this.resizer.style.display = "none";
+
+        this.currentHtml = null;
+        this.currentMd = null;
+        this.currentImage = null;
     }
 
     async setHTMlPreview(html: string) {
@@ -414,6 +418,8 @@ export class SecondarySideBar {
 
             const href = a.getAttribute("href");
             if (!href) return;
+
+            if (!this.currentMd) return;
 
             const next = await window.nq.resolvePath(
                 await window.nq.getDirname(this.currentMd),
