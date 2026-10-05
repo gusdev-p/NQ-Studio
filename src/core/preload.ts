@@ -375,6 +375,10 @@ export const nq = {
         ipcRenderer.once("nq:boot", () => {
             callback();
         });
+    },
+
+    pathToUri(path: string) {
+        return ipcRenderer.invoke("toUri", path);
     }
 };
 
@@ -443,8 +447,33 @@ export const make = {
     }
 }
 
+export const lsp = {
+    open(path: string, text: string, languageId: string) {
+        ipcRenderer.send("lsp:open", path, text, languageId);
+    },
+
+    change(path: string, version: number, text:string) {
+        ipcRenderer.send("lsp:change", path, version, text);
+    },
+
+    completion(path: string, line: number, character: number) {
+        return ipcRenderer.invoke("lsp:completion", path, line, character);
+    },
+
+    hover(path: string, line: number, character: number) {
+        return ipcRenderer.invoke("lsp:hover", path, line, character);
+    },
+
+    onDiagnostics(callback: (uri: string, diagnostics: any[]) => void | Promise<void>) {
+        ipcRenderer.on("lsp:diagnostics", (_, uri, diagnostics) => {
+            callback(uri, diagnostics);
+        })
+    }
+}
+
 
 contextBridge.exposeInMainWorld("nq", nq);
 contextBridge.exposeInMainWorld("terminal", terminal);
 contextBridge.exposeInMainWorld("server", server);
 contextBridge.exposeInMainWorld("make", make)
+contextBridge.exposeInMainWorld("lsp", lsp);
