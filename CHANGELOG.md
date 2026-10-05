@@ -1,10 +1,8 @@
 # Changelog 📝
 
-## 0.6.0-alpha Dev Build 🧑‍💻
+## 0.6.0-alpha
 
 ### TypeScript LSP Update
-
-> ⚠️ Development build - this version is currently available on the `dev` branch.
 
 ### What was added? ✨
 
@@ -50,4 +48,4 @@
 
 ### Notes 📋
 
-NQ-Studio (especially the `dev` branch) is under development, so some features mentioned in `What was added?` may be incomplete or may not work correctly.
+NQ-Studio is under development, so some features mentioned in `What was added?` may be incomplete or may not work correctly.
