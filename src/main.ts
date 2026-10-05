@@ -10,6 +10,7 @@ import { SettingsManagerHandler, IDEHandler } from "./api/modules/IDE";
 import { UtilsHandler } from "./api/modules/utils"
 import { FilesystemHandler } from "./api/modules/filesystem"
 import { IconsHandler } from "./api/modules/icons";
+import { LSP } from "./api/modules/lsp";
 
 
 let win: BrowserWindow
@@ -30,6 +31,7 @@ const utilsHandler = new UtilsHandler(devMode);
 const filesystemHandler = new FilesystemHandler();
 const iconsHandler = new IconsHandler(true);
 const ideHandler = new IDEHandler();
+const lsp = new LSP();
 
 console.log("-=- End of debug messages -=-\n")
 const serverManager = new ServerManager();
@@ -55,7 +57,7 @@ function createBootstrap() {
         title: "NQ-Studio",
         icon: path.join("assets", "logo.png"),
     });
-
+    
     const window = win;
 
     window.on("close", (e) => {
@@ -77,6 +79,10 @@ function createBootstrap() {
 
     window.webContents.once("did-finish-load", () => {
         console.log("[NQ]: did-finish-load triggered")
+
+        console.log("[NQ]: Starting LSP (Language Server Protocol)...")
+        lsp.start(window);
+
         console.log("[NQ]: Sending BOOT call");
         window.webContents.send("nq:boot");
     });
@@ -97,4 +103,20 @@ app.whenReady().then(() => {
 
 ipcMain.handle("openDevTools", () => {
     win.webContents.openDevTools();
+});
+
+ipcMain.on("lsp:open", (_, path, text, languageId) => {
+    lsp.openFile(path, text, languageId);
+});
+
+ipcMain.on("lsp:change", (_, path, version, text) => {
+    lsp.changeFile(path, version, text);
+})
+
+ipcMain.handle("lsp:completion", async (_, path, line, character) => {
+    return await lsp.completion(
+        path,
+        line,
+        character
+    );
 });
