@@ -8,7 +8,7 @@
 <p align="center">
     <img src="https://img.shields.io/github/stars/gusdev-p/NQ-Studio">
     <img src="https://img.shields.io/github/license/gusdev-p/NQ-Studio">
-    <img src="https://img.shields.io/badge/version-0.5.0--alpha-blue">
+    <img src="https://img.shields.io/badge/version-0.6.0--alpha-blue">
 </p>
 
 <p align="center">
@@ -51,7 +51,7 @@ NQ-Studio is still under development, we don't recommend you use it for now, bec
 But if you don't mind that, you can use the IDE :)
 
 ### Changelog 🎯
-NQ-Studio is now in the `0.5.0-alpha` version! To see the changes check: [CHANGELOG.md](./CHANGELOG.md)
+NQ-Studio is now in the `0.6.0-alpha` version! To see the changes check: [CHANGELOG.md](./CHANGELOG.md)
 
 --- 
 
@@ -77,7 +77,7 @@ This command executes other three steps:
 
 - `make distclean` : Removes the `dist` directory, good for clean old builds.
 
-- `make build` : Compiles all the TypeScript(which is not included :0) into JavaScript(which is included!) and copies essential files to the `dist` directory.
+- `make build` : Compiles all the TypeScript into JavaScript and copies essential files to the `dist` directory.
 
 - `make preview` : Launches **Electron** and opens the IDE.
 
