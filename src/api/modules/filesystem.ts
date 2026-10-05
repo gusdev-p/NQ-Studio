@@ -1,6 +1,7 @@
 import { ipcMain, app } from "electron";
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 
 /*
 NQ-Studio Filesystem API.
@@ -132,6 +133,10 @@ export class FilesystemHandler {
 
         ipcMain.handle("relativePath", async (_, rootPath: string, toRelativePath: string) => {
             return path.relative(rootPath, toRelativePath);
+        });
+
+        ipcMain.handle("toUri", async (_, path: string) => {
+            return pathToFileURL(path).toString();
         });
     }
 }
