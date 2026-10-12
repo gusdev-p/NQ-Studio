@@ -4,5 +4,5 @@ terminar a aba do makefile - sidebar.ts, makefileParser.ts
 
 PELA AMOR DE DEUS FAÇA NA ORDEM EU DO FUTURO
 
+refatorar TUDO a respeito do TREE VIEW (sim TUDO)(uma classe principal q manuseia tudo?)
 melhorar e dar utilidade pra down-bar (mostrar a linguagem usada? package.json?)
-fazer o codemirror mostar os erros e etc do LSP de typescript e javascript ;)
