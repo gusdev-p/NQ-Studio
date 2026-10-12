@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import { ReloadHTML, reloadImage, ReloadMarkdown } from "../../events/preview";
 export class SecondarySideBar {
     private root: HTMLElement;
 
@@ -208,8 +209,23 @@ export class SecondarySideBar {
         reloadBtn.style.padding = "3px 5px";
         reloadBtn.style.cursor = "pointer";
         reloadBtn.onclick = () => {
-            document.dispatchEvent(new CustomEvent("reloadHTML"));
+            ReloadHTML();
         }
+
+        const closeBtn = document.createElement("button");
+        closeBtn.id = "HTMl-preview-close-btn";
+        closeBtn.innerText = "×";
+        closeBtn.style.flexShrink = "0";
+        closeBtn.style.background = "var(--onSurfaceColor)";
+        closeBtn.style.color = "var(--fontColor)";
+        closeBtn.style.border = "none";
+        closeBtn.style.borderRadius = "8px";
+        closeBtn.style.padding = "3px 5px";
+        closeBtn.style.cursor = "pointer";
+
+        closeBtn.addEventListener("click", () => {
+            this.hide()
+        });
 
         const devToolsBtn = document.createElement("button");
         devToolsBtn.id = "HTMLPreviewDevToolsBtn";
@@ -229,6 +245,7 @@ export class SecondarySideBar {
         toolBar.appendChild(pathDiv);
         toolBar.appendChild(reloadBtn);
         toolBar.appendChild(devToolsBtn);
+        toolBar.appendChild(closeBtn);
 
         const screenWrapper = document.createElement("div");
         screenWrapper.id = "HTMLPreviewScreenWrapper";
@@ -298,11 +315,27 @@ export class SecondarySideBar {
         reloadBtn.style.borderRadius = "8px";
         reloadBtn.style.padding = "3px 5px";
         reloadBtn.onclick = () => {
-            document.dispatchEvent(new CustomEvent("reloadImage"));
+            reloadImage();
         }
+
+        const closeBtn = document.createElement("button");
+        closeBtn.id = "HTMl-preview-close-btn";
+        closeBtn.innerText = "×";
+        closeBtn.style.flexShrink = "0";
+        closeBtn.style.background = "var(--onSurfaceColor)";
+        closeBtn.style.color = "var(--fontColor)";
+        closeBtn.style.border = "none";
+        closeBtn.style.borderRadius = "8px";
+        closeBtn.style.padding = "3px 5px";
+        closeBtn.style.cursor = "pointer";
+
+        closeBtn.addEventListener("click", () => {
+            this.hide()
+        });
 
         toolbar.appendChild(pathDiv);
         toolbar.appendChild(reloadBtn);
+        toolbar.appendChild(closeBtn);
 
         const wrapper = document.createElement("div");
         wrapper.id = "imagePreviewWrapper"
@@ -385,11 +418,74 @@ export class SecondarySideBar {
         this.currentMd = md;
         console.log(md);
 
+        
         const mdSource = await window.nq.openFile(md);
-
+        
         this.content.style.background = "var(--surfaceColor)";
         this.content.style.color = "var(--fontColor)";
         this.content.innerHTML = DOMPurify.sanitize(marked.parse(mdSource) as string);
+
+        const toolBar = document.createElement("div");
+        toolBar.id = "HTMLPreviewToolBar"
+        toolBar.style.backgroundColor = "var(--surfaceColor)";
+        toolBar.style.width = "100%";
+        toolBar.style.height = "30px";
+        toolBar.style.display = "flex";
+        toolBar.style.justifyContent = "space-around";
+        toolBar.style.boxSizing = "border-box";
+        toolBar.style.padding = "5px";
+        toolBar.style.gap = "6px";
+
+        const pathDiv = document.createElement("div");
+        pathDiv.id = "HTMLPreviewPathDiv";
+        pathDiv.style.background = "#444";
+        pathDiv.textContent = md;
+        pathDiv.style.color = "#f1f1f1";
+        pathDiv.style.borderRadius = "8px";
+        pathDiv.style.padding = "3px 6px";
+        pathDiv.style.flex = "1";
+        pathDiv.style.minWidth = "0";
+        pathDiv.style.whiteSpace = "nowrap";
+        pathDiv.style.overflow = "hidden";
+        pathDiv.style.textOverflow = "ellipsis"
+        pathDiv.style.display = "flex";
+        pathDiv.style.alignItems = "center";
+        pathDiv.style.cursor = "text";
+
+        const reloadBtn = document.createElement("button");
+        reloadBtn.id = "HTMLPreviewReloadBtn";
+        reloadBtn.innerText = "Reload";
+        reloadBtn.style.flexShrink = "0";
+        reloadBtn.style.background = "var(--onSurfaceColor)";
+        reloadBtn.style.color = "var(--fontColor)";
+        reloadBtn.style.border = "none";
+        reloadBtn.style.borderRadius = "8px";
+        reloadBtn.style.padding = "3px 5px";
+        reloadBtn.style.cursor = "pointer";
+        reloadBtn.onclick = () => {
+            ReloadMarkdown();
+        }
+
+        const closeBtn = document.createElement("button");
+        closeBtn.id = "HTMl-preview-close-btn";
+        closeBtn.innerText = "×";
+        closeBtn.style.flexShrink = "0";
+        closeBtn.style.background = "var(--onSurfaceColor)";
+        closeBtn.style.color = "var(--fontColor)";
+        closeBtn.style.border = "none";
+        closeBtn.style.borderRadius = "8px";
+        closeBtn.style.padding = "3px 5px";
+        closeBtn.style.cursor = "pointer";
+
+        closeBtn.addEventListener("click", () => {
+            this.hide()
+        });
+
+        toolBar.appendChild(pathDiv);
+        toolBar.appendChild(reloadBtn);
+        toolBar.appendChild(closeBtn);
+
+        this.content.prepend(toolBar);
 
         const images = this.content.querySelectorAll("img");
         const elements = this.content.querySelectorAll(":scope > *");
