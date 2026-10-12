@@ -1,3 +1,5 @@
+import { HTMLPreview, MarkdownPreview, ServerHTMLPreview, ServerHTMLPreviewOpenInBrowser } from "../../events/preview";
+
 export class FileBar {
     private root: HTMLElement
 
@@ -75,11 +77,7 @@ export class FileBar {
                 console.log("é html!")
                 runButton.innerText = "Preview.";
                 runButton.onclick = async () => {
-                    document.dispatchEvent(new CustomEvent("htmlPreview", {
-                        detail: {
-                            path: config.filePath
-                        }
-                    }));
+                    HTMLPreview(config.filePath);
                 }
                 const secondaryRunButton = document.createElement("button");
                 secondaryRunButton.style.backgroundColor = "var(--surfaceColor)";
@@ -90,11 +88,7 @@ export class FileBar {
 
                 secondaryRunButton.innerText = "Preview in server.";
                 secondaryRunButton.onclick = () => {
-                    document.dispatchEvent(new CustomEvent("server:htmlPreview", {
-                        detail: {
-                            path: config.filePath
-                        }
-                    }));
+                    ServerHTMLPreview(config.filePath);
                 }
 
                 const tertiaryRunButton = document.createElement("button");
@@ -106,11 +100,7 @@ export class FileBar {
 
                 tertiaryRunButton.innerText = "Preview in browser.";
                 tertiaryRunButton.onclick = () => {
-                    document.dispatchEvent(new CustomEvent("server:openInBrowser", {
-                        detail: {
-                            path: config.filePath
-                        }
-                    }));
+                    ServerHTMLPreviewOpenInBrowser(config.filePath);
                 }
 
                 section.appendChild(runButton);
@@ -122,11 +112,7 @@ export class FileBar {
                 console.log("é md!")
                 runButton.innerText = "Preview.";
                 runButton.onclick = async () => {
-                    document.dispatchEvent(new CustomEvent("markdownPreview", {
-                        detail: {
-                            path: config.filePath,
-                        },
-                    }));
+                    MarkdownPreview(config.filePath);
                 }
                 section.appendChild(runButton);
                 break;
@@ -135,5 +121,9 @@ export class FileBar {
 
 
         this.fileBar.appendChild(section);
+    }
+
+    removeFile() {
+        this.fileBar.replaceChildren();
     }
 }
