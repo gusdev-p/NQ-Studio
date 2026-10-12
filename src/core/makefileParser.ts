@@ -1,4 +1,4 @@
-import { open } from "fs/promises"
+import { FileHandle, open } from "fs/promises"
 
 export class MakefileParser {
     constructor() {
@@ -7,7 +7,13 @@ export class MakefileParser {
 
     async parse(filePath: string) {
         console.log("parse! e path: ", filePath)
-        const content = await open(filePath)
+        let content: FileHandle
+        try {
+            content = await open(filePath)
+        } catch (e) {
+            console.error("Cant parse file:", e);
+            return;
+        }
 
         let functions: Array<{value: string | undefined, line: number}> = []
         let variables: Array<{ name: string | undefined, value: string | undefined, line: number }> = []
@@ -25,7 +31,7 @@ export class MakefileParser {
                 calls.push({ value: line, line: lineCount });
             }
 
-            if (!line.startsWith("$(") && !line.startsWith("\t$(") && !line.startsWith("#")) {
+            if (!line.startsWith("$(") && !line.startsWith("\t$(") && !line.startsWith("#") && !line.startsWith("@") && !line.startsWith("\t@")) {
                 if (line.includes(":")) {
                     if (line.includes("=")) {
                         variables.push({ name: line.split(":=")[0], value: line.split(":=")[1], line: lineCount });
