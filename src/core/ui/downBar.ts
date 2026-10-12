@@ -40,6 +40,10 @@ export class DownBar {
                 return "JavaScript";
             }
 
+            case "typescript": {
+                return "TypeScript";
+            }
+
             case "css": {
                 return "CSS";
             }
@@ -56,6 +60,10 @@ export class DownBar {
                 return "JSON";
             }
 
+            case "jsonc": {
+                return "JSON With Comments"
+            }
+
             case "markdown": {
                 return "Markdown";
             }
@@ -68,7 +76,7 @@ export class DownBar {
 
     private async initListeners() {
         document.addEventListener("nqeditor:change-language", async (e: any) => {
-            const lang = e.detail.language;
+            const lang = e.detail.lang;
 
             this.langTitle.innerText = this.languageToReadable(lang);
         });
