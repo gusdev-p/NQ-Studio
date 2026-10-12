@@ -3,11 +3,13 @@ import { mainSideBar } from "./ui/mainSideBar.js";
 import { terminalView } from "./ui/terminal/terminalView.js";
 import { SecondarySideBar } from "./ui/secondaryBar.js";
 import { FileBar } from "./ui/fileBar.js";
-import { buildMonacoTheme } from "./themes.js";
 import { nqEditor } from "./ui/renderer/nqEditor.js";
 import { FileTabs } from "./ui/fileTabs.js";
 import { Extension } from "@codemirror/state";
 import { buildCMTheme } from "./cmTheme.js";
+import { PropertiesTabManager, type PropertiesTabType } from "../api/modules/propertiesTabManager.js";
+import { NotificationManager, NotificationType } from "./ui/notify/notificationManager.js";
+import { parse } from "jsonc-parser"
 
 import { initListeners } from "../main/script.js";
 import { DownBar } from "./ui/downBar.js";
@@ -32,12 +34,14 @@ export let fileTabs: FileTabs;
 export let downBar: DownBar;
 let terminalVisible = true
 
+const propertiesTab = new PropertiesTabManager(document.body);
+
 let isDark: boolean;
 
 export async function setEditorTheme(): Promise<Extension> {
     const settingsPath = await window.nq.joinPath(await window.nq.getAppPath("appData"), "nq-studio", "themes.json");
-    const themeToMount = await window.nq.getSetting("editor", "defaultTheme");
-    const configRoot = JSON.parse(await window.nq.openFile(settingsPath));
+    const themeToMount = await window.nq.getSetting("Editor", "Default Theme");
+    const configRoot = parse(await window.nq.openFile(settingsPath));
 
     const resolvedKey = themeToMount === "auto"
         ? (isDark ? "dark" : "light")
@@ -96,28 +100,19 @@ async function initUI() {
     fileBtn.style.border = "none";
     fileBtn.style.borderRadius = "3px";
 
-    const fileMenu = document.createElement("div");
-    fileMenu.id = "fileMenu";
-    fileMenu.className = "dropdown";
-    fileMenu.style.position = "absolute";
-    fileMenu.style.top = "100%";
-    fileMenu.style.left = "0";
-    fileMenu.style.display = "none";
-    fileMenu.style.background = "#333";
-    fileMenu.style.border = "1px solid #666";
-    fileMenu.style.minWidth = "180px";
-    fileMenu.style.zIndex = "1000";
-
-    const createProjectBtn = document.createElement("button");
-    createProjectBtn.id = "createProjectButton";
-    createProjectBtn.innerText = "Create Project.";
-
-    fileMenu.appendChild(createProjectBtn)
+    const fileButtons: PropertiesTabType = {
+        name: "File",
+        buttons: [
+            {
+                name: "Create New Project.",
+                worker: () => {}
+            }
+        ]
+    }
 
     fileBtn.addEventListener("click", (e) => {
         e.stopPropagation()
-        fileMenu.style.display =
-            fileMenu.style.display === "block" ? "none": "block";
+        propertiesTab.addPropertiesTab(fileButtons, e);
     });
 
     const fileContainer = document.createElement("div");
@@ -133,40 +128,29 @@ async function initUI() {
     devBtn.style.border = "none";
     devBtn.style.borderRadius = "3px";
     
-    const devMenu = document.createElement("div");
-    devMenu.id = "devMenu";
-    devMenu.className = "dropdown";
-    devMenu.style.position = "absolute";
-    devMenu.style.top = "100%";
-    devMenu.style.left = "0";
-    devMenu.style.display = "none";
-    devMenu.style.background = "#333";
-    devMenu.style.border = "1px solid #666";
-    devMenu.style.minWidth = "180px";
-    devMenu.style.zIndex = "1000";
-
-    const devToolsBtn = document.createElement("button");
-    devToolsBtn.id = "devToolsButton";
-    devToolsBtn.innerText = "Open dev tools.";
-    devToolsBtn.onclick = () => {
-        document.dispatchEvent(new CustomEvent("toggleDevTools"));
+    const devButtons: PropertiesTabType = {
+        name: "Developer Options:",
+        buttons: [
+            {
+                name: "Open DevTools.",
+                worker: async () => {
+                    await window.nq.openDevTools();
+                }
+            }
+        ]
     }
     
-    devMenu.appendChild(devToolsBtn)
     
     devBtn.addEventListener("click", (e) => {
         e.stopPropagation()
-        devMenu.style.display =
-        devMenu.style.display === "block" ? "none": "block";
+        propertiesTab.addPropertiesTab(devButtons, e);
     });
     
     const devContainer = document.createElement("div");
     devContainer.style.position = "relative";
     
     fileContainer.appendChild(fileBtn);
-    fileContainer.appendChild(fileMenu);
     devContainer.appendChild(devBtn);
-    devContainer.appendChild(devMenu);
 
     topBar.appendChild(logoSrc),
     topBar.appendChild(fileContainer);
@@ -210,6 +194,7 @@ async function initUI() {
     editor.style.background = "var(--backgroundColor, #222)";
     editor.style.boxSizing = "border-box";
     editor.style.border = "1px solid var(--borderColor)";
+    editor.style.position = "relative";
 
     const terminal = document.createElement("div");
     terminal.id = "terminal";
@@ -297,6 +282,15 @@ async function initUI() {
     main.appendChild(editor);
     main.appendChild(terminal);
     downBar = new DownBar(main);
+    const notificationManager = new NotificationManager(editor);
+
+    const notification: NotificationType = {
+        title: "NQ-Studio",
+        message: "Welcome Back!",
+        type: "info"
+    }
+      
+    notificationManager.notify(notification)
 
     const workspace = document.createElement("div");
     workspace.id = "workspace"
