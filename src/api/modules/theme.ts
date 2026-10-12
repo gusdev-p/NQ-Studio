@@ -40,9 +40,9 @@ export class ThemeHandler {
                 isDarkTheme = electronDark;
             }
 
-            const themeConfig = settingsManager.get("themes", "default");
-            const darkTheme = settingsManager.get("themes", "dark", "theme");
-            const lightTheme = settingsManager.get("themes", "light", "theme");
+            const themeConfig = settingsManager.get("Themes", "Active Theme");
+            const darkTheme = settingsManager.get("Themes", "Dark", "Theme");
+            const lightTheme = settingsManager.get("Themes", "Light", "Theme");
             if (this.verbose) {
                 console.log("theme config:", themeConfig);
                 console.log("is dark theme:", isDarkTheme);
@@ -56,7 +56,7 @@ export class ThemeHandler {
                 return { theme: lightTheme, isDark: false };
             } else {
                 this.verbose ? console.log("custom theme mode!") : null;
-                return { theme: settingsManager.get("themes", themeConfig, "theme"), isDark: settingsManager.get("themes", themeConfig, "variant") === "dark" };
+                return { theme: settingsManager.get("Themes", themeConfig, "Theme"), isDark: settingsManager.get("Themes", themeConfig, "Variant") === "dark" };
             }
         });
     }
