@@ -1,3 +1,5 @@
+import { DeleteTab, TabOpen } from "../../events/tabs";
+
 interface TabInfo {
     element: HTMLDivElement;
     path: string;
@@ -195,13 +197,7 @@ export class FileTabs {
         tab.style.cursor = "pointer";
 
         tab.addEventListener("click", (e) => {
-            document.dispatchEvent(new CustomEvent("tabOpen", {
-                detail: {
-                    identifier: identifier,
-                    oldIdentifier: this.activeIdentifier,
-                    path: filePath,
-                }
-            }));
+            TabOpen(identifier, String(this.activeIdentifier), filePath)
         });
 
         tab.addEventListener("mouseenter", (e) => {
@@ -239,11 +235,7 @@ export class FileTabs {
 
         closeTab.addEventListener("click", (e) => {
             e.stopPropagation();
-            document.dispatchEvent(new CustomEvent("deleteTab", {
-                detail: {
-                    identifier: identifier,
-                }
-            }));
+            DeleteTab(identifier);
         });
 
         tab.appendChild(tabLogo);
