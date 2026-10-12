@@ -1,6 +1,9 @@
 import fs from "fs";
 import { app, ipcMain } from "electron";
 import path from "path";
+import { parse } from "jsonc-parser";
+
+export const SETTINGS_PATH = path.resolve(app.getPath("appData"), "nq-studio", "settings.jsonc");
 
 /**
  * ## Result
@@ -48,7 +51,7 @@ export class SettingsManager {
      */
     open(path: string): Result {
         try {
-            this.config = JSON.parse(fs.readFileSync(path, "utf-8"));
+            this.config = parse(fs.readFileSync(path, "utf-8"));
             this.path = path;
             console.log(`Settings-manager log -=-
 Setting imported:
@@ -79,15 +82,49 @@ ${JSON.stringify(this.config, null, 4)}
 
         return value;
     }
+
+    /**
+     * ## Set
+     * Re-write or define a setting to the main settings file.
+     * 
+     * NOTE: You probably should re-open the setting file after this operation to sync the new values.
+     * @param key The setting name.
+     * @param value The setting value.
+     * @param rewrite If `true` re-writes the entire settings file, key parameter will be ignored.
+     * @returns Absolutely nothing.
+     */
+    set(key: string, value: string, rewrite: boolean = false) {
+        console.log(rewrite);
+        if (!this.config) return;
+
+        if (rewrite) {
+            try {
+                const content = parse(value);
+                fs.writeFileSync(this.path, JSON.stringify(content));
+                return;
+            } catch (e) {
+                console.error("[Settings Manager]: Cant re-write the config file:", e)
+            }
+        }
+
+        try {
+            const content = parse(this.path);
+            content[key] = value;
+            fs.writeFileSync(this.path, JSON.stringify(content));
+            return;
+        } catch (e) {
+            console.error("[Settings Manager]: Cant define the setting:", key, " error:", e)
+        }
+    }
+
+    getSettingContent() {
+        return this.config;
+    }
 }
 
 
 export const settingsManager = new SettingsManager();
 
 settingsManager.open(
-    path.join(
-        app.getPath("appData"),
-        "nq-studio",
-        "settings.json"
-    )
+    SETTINGS_PATH
 )
