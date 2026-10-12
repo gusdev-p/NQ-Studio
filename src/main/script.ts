@@ -1,9 +1,13 @@
-import { eventLoopUtilization } from "perf_hooks";
-import { side_bar, nqeditor, secondary_side_bar, fileBar, fileTabs } from "../core/renderer.js";
+import { side_bar, nqeditor, secondary_side_bar, fileBar, fileTabs} from "../core/renderer.js";
 import { TabDumps } from "../core/ui/fileTabs.js";
+import { DeleteFile } from "../events/tree.js";
+import { HideSecondarySideBar, OpenRoot, OpenSecondarySideBar, ToggleTerminal, UpdateTree } from "../events/IDE.js";
+import { CreateFile } from "../events/sideBar.js";
+import { ReloadHTML, ReloadMarkdown } from "../events/preview.js";
+import { parse } from "jsonc-parser";
 
 let waitForO = false;
-let secondaryBarOpen = false;
+let secondaryBarOpen = false
 
 const filesToNotOpen = [".jpg", ".png", ".jpeg", ".svg", ".gif"];
 
@@ -25,25 +29,17 @@ document.addEventListener("keydown", async (e) => {
             return;
         }
 
-        document.dispatchEvent(new CustomEvent("openRoot", {
-            detail: {
-                path: result,
-            }
-        }));
+        OpenRoot(String(result));
     }
     
     if (e.key.toLowerCase() === "delete") {
-        document.dispatchEvent(new CustomEvent("deleteFile"));
+        DeleteFile()
     }
 
     if (e.ctrlKey && e.key.toLowerCase() === "n") {
         const result = await window.nq.ask("Create file", "Enter file name:");
         if (result === null) return
-        document.dispatchEvent(new CustomEvent("createFile", {
-            detail: {
-                name: result,
-            },
-        }));
+        CreateFile(String(result));
     }
 
     if (e.ctrlKey && e.key.toLowerCase() === "w") {
@@ -52,10 +48,10 @@ document.addEventListener("keydown", async (e) => {
 
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "p") {
         if (!secondaryBarOpen) {
-            document.dispatchEvent(new CustomEvent("openSecondarySideBar"));
+            OpenSecondarySideBar()
             secondaryBarOpen = true
         } else {
-            document.dispatchEvent(new CustomEvent("hideSecondarySideBar"));
+            HideSecondarySideBar()
             secondaryBarOpen = false;
         }
     }
@@ -65,11 +61,11 @@ document.addEventListener("keydown", async (e) => {
     }
 
     if (e.ctrlKey && e.key.toLowerCase() === "j") {
-        document.dispatchEvent(new CustomEvent("toggleTerminal"))
+        ToggleTerminal()
     }
 
     if (e.key.toLowerCase() === "f5") {
-        document.dispatchEvent(new CustomEvent("updateTree"))
+        UpdateTree()
     }
 
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
@@ -91,7 +87,7 @@ document.addEventListener("createDir", async (e: any) => {
         if (!result.success) {
             await window.nq.warn("Cant create directory", String(result.error));
         } else {
-            document.dispatchEvent(new CustomEvent("updateTree"));
+            UpdateTree()
         }
     } catch (e) {
         console.error("Failed to create directory:", e);
@@ -123,7 +119,7 @@ document.addEventListener("createFile", async (e: any) => {
     if (!result.success) {
         await window.nq.warn("Cant create file", String(result.error));
     } else {
-        document.dispatchEvent(new CustomEvent("updateTree"));
+        UpdateTree()
     }
 });
 
@@ -132,7 +128,7 @@ document.addEventListener("renameFile", async (e: any) => {
     const targetName = await window.nq.ask("Rename file:", "Enter the new file name:");
     const result = await window.nq.renameFile(path, String(targetName));
     if (result.success) {
-        document.dispatchEvent(new CustomEvent("updateTree"));
+        UpdateTree()
     } else {
         await window.nq.warn("Cant rename file", String(result.error));
     }
@@ -169,7 +165,9 @@ document.addEventListener("deleteFile", async (e) => {
             type = "file"
         }
 
-        const confirm = await window.nq.askQuestion(`You want to delete this ${type}`, "You really want to delete: '" + target + "'?");
+        const askPermission = await window.nq.getSetting("File Management", "Ask Permission");
+
+        const confirm = askPermission ? await window.nq.askQuestion(`You want to delete this ${type}`, "You really want to delete: '" + target + "'?"): true;
 
         console.log("confirm: " + confirm);
         if (!confirm) {
@@ -185,7 +183,7 @@ document.addEventListener("deleteFile", async (e) => {
         if (!result.success) {
             await window.nq.warn(`Cant delete ${type}`, String(result.error));
         } else {
-            document.dispatchEvent(new CustomEvent("updateTree"));
+            UpdateTree()
             await window.nq.setSelected(await window.nq.getRoot());
         }
 });
@@ -223,6 +221,7 @@ export async function initListeners() {
 
             if (activeTab) {
                 fileTabs.setActive(tabs.activeTab);
+                fileBar.appendFile({fileName: await window.nq.getFileName(tabs.activeTab), fileType: await window.nq.getFileExt(tabs.activeTab), filePath: tabs.activeTab})
 
                 nqeditor.setContent(
                     activeTab.buffer,
@@ -258,6 +257,25 @@ export async function initListeners() {
         console.log(await window.nq.getRoot());
         side_bar.defineTreeView(await window.nq.getRoot());
     });
+
+    document.addEventListener("openFile", async (e:any) => {
+        const path = e.detail.path;
+
+        const content = await window.nq.openFile(path);
+        const name = await window.nq.getFileName(path);
+        const ext = await window.nq.getFileExt(path);
+
+        nqeditor.setContent(content, path);
+        nqeditor.setLanguage(
+            nqeditor.toLanguage(
+                ext
+            )
+        );
+
+        fileTabs.addFile(path, path);
+        fileTabs.setActive(path);
+        fileBar.appendFile({fileName: name, filePath: path, filetype: ext});
+    })
 
     document.addEventListener("fileOpened", async (e: any) => {
         // properties
@@ -341,6 +359,7 @@ export async function initListeners() {
         );
 
         fileTabs.setActive(fileIdentifier);
+        fileBar.appendFile({fileName: newTab.fileName, fileType: await window.nq.getFileExt(newTab.path), filePath: newTab.path});
     }); 
 
     document.addEventListener("deleteTab", async (e: any) => {
@@ -350,13 +369,15 @@ export async function initListeners() {
         if (!tab) return;
 
         if (tab.modified) {
-            const deleteTab = await window.nq.askQuestion("Unsaved tab", `The tab of '${tab.fileName}' was not saved\nYou want to delete anyway?`);
+            const askPermission = await window.nq.getSetting("File Management", "Ask Permission");
+
+            const deleteTab = askPermission ? true : await window.nq.askQuestion("Unsaved tab", `The tab of '${tab.fileName}' was not saved\nYou want to delete anyway?`);
             
             if (!deleteTab) return;
         }
 
         fileTabs.removeFile(fileIdentifier);
-
+        fileBar.removeFile()
 
         if (fileTabs.tabs < 1) {
             nqeditor.setContent(
@@ -385,6 +406,12 @@ export async function initListeners() {
         if (e.ctrlKey && e.key.toLowerCase() === "s") {
             e.preventDefault()
             console.log("pedido de arquivo pra ser salvo!");
+
+            if (nqeditor.filePath === await window.nq.resolvePath(await window.nq.getAppPath("appData"), "nq-studio", "settings.jsonc")) {
+                await window.nq.saveFile(nqeditor.filePath, JSON.stringify(parse(nqeditor.getContent()), null, 4));
+                return;
+            }
+
             const result = await window.nq.saveFile(nqeditor.filePath, nqeditor.getContent())
             if (result.success) {
                 console.log("arquivo salvo!");
@@ -395,9 +422,11 @@ export async function initListeners() {
                 fileTabs.setModified(tabIdentifier, false);
 
                 if (secondary_side_bar.isOpen()) {
-                    document.dispatchEvent(new CustomEvent("reloadHTML"));
-                    document.dispatchEvent(new CustomEvent("reloadMarkdown"));
+                    ReloadHTML()
+                    ReloadMarkdown();
                 }
+            } else {
+                await window.nq.warn(`Cant save the file: '${nqeditor.filePath}'`, String(result.error));
             }
         }
     });
@@ -458,8 +487,18 @@ export async function initListeners() {
     });
 
     document.addEventListener("parseMakefile", async () => {
-        const parsed = await window.make.parse(await window.nq.resolvePath(await window.nq.getRoot(), "Makefile"));
+        let makefilePath = await window.nq.getLocalProperty("makefile");
+
+        if (!makefilePath) {
+            makefilePath = await window.nq.resolvePath(await window.nq.getRoot(), "makefile");
+        }
+
+        const parsed = await window.make.parse(makefilePath);
         console.log("parsed: ", parsed);
         side_bar.defineMakefileView(parsed);
+    });
+
+    document.addEventListener("setMainTarget", async (e: any) => {
+        await window.nq.setLocalProperty("main_target", e.detail.target);
     });
 }
