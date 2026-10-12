@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="126.80362mm"
+   height="126.5545mm"
+   viewBox="0 0 126.80362 126.5545"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="cross.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   sodipodi:docname="info.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showguides="true">
+    <sodipodi:guide
+       position="56.862278,72.549429"
+       orientation="1,0"
+       id="guide5"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="81.982138,70.646973"
+       orientation="1,0"
+       id="guide6"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="42.922146,35.594423"
+       orientation="0,-1"
+       id="guide7"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="45.168146,34.155641"
+       orientation="1,0"
+       id="guide8"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="48.923481,29.401381"
+       orientation="0,-1"
+       id="guide9"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="67.353232,95.713114"
+       orientation="0,-1"
+       id="guide10"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="34.21768,32.202798"
+       orientation="1,0"
+       id="guide11"
+       inkscape:locked="false" />
+    <inkscape:page
+       x="0"
+       y="0"
+       width="126.80362"
+       height="126.5545"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect10"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,8.8656355,0,1 @ F,0,0,1,0,10.2109,0,1 @ F,0,0,1,0,21.075809,0,1 @ F,0,0,1,0,0,0,1"
+       radius="13.34985"
+       unit="mm"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,8.8656355,0,1 @ F,0,0,1,0,10.2109,0,1 @ F,0,0,1,0,10.238957,0,1 @ F,0,0,1,0,8.8368188,0,1"
+       radius="13.34985"
+       unit="mm"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,13.34985,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="13.34985"
+       unit="mm"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-48.977257,-88.96479)">
+    <rect
+       style="fill:#5391ff;fill-opacity:1;stroke-width:13.2292"
+       id="rect2"
+       width="126.80362"
+       height="126.5545"
+       x="48.977257"
+       y="88.96479"
+       ry="14.444839" />
+    <g
+       id="g11"
+       transform="translate(-6.3376892,8.4458452)">
+      <path
+         style="fill:#000000;fill-opacity:1;stroke-width:16.583"
+         id="rect3"
+         width="25.161427"
+         height="66.266724"
+         x="102.28958"
+         y="114.87359"
+         ry="0"
+         inkscape:path-effect="#path-effect3"
+         sodipodi:type="rect"
+         rx="0"
+         d="m 102.28958,114.87359 h 11.81158 a 13.34985,13.34985 45 0 1 13.34985,13.34985 v 52.91687 h -25.16143 z"
+         transform="translate(3.5231317,4.9323843)" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke-width:16.583"
+         id="path3"
+         width="25.161427"
+         height="66.266724"
+         x="102.28958"
+         y="114.87359"
+         ry="0"
+         inkscape:path-effect="#path-effect5"
+         sodipodi:type="rect"
+         rx="0"
+         d="m 111.15522,114.87359 h 6.08489 a 10.2109,10.2109 45 0 1 10.2109,10.2109 v 45.81687 a 10.238957,10.238957 135 0 1 -10.23896,10.23895 h -6.08565 a 8.8368188,8.8368188 45 0 1 -8.83682,-8.83682 v -48.56427 a 8.8656355,8.8656355 135 0 1 8.86564,-8.86563 z"
+         transform="matrix(0,-1,1.0708199,0,-39.761022,297.21789)" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke-width:13.1829"
+         id="rect5"
+         width="25.014235"
+         height="23.604982"
+         x="105.87514"
+         y="92.664078"
+         ry="10.338606" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke-width:16.583"
+         id="path9"
+         width="25.161427"
+         height="66.266724"
+         x="102.28958"
+         y="114.87359"
+         ry="0"
+         inkscape:path-effect="#path-effect10"
+         sodipodi:type="rect"
+         rx="0"
+         d="m 111.15522,114.87359 h 6.08489 a 10.2109,10.2109 45 0 1 10.2109,10.2109 v 34.98001 a 21.075809,21.075809 135 0 1 -21.07581,21.07581 h -4.08562 v -57.40109 a 8.8656355,8.8656355 135 0 1 8.86564,-8.86563 z"
+         transform="matrix(0,-1,0.71931613,0,0.59545764,247.25571)" />
+    </g>
+  </g>
+</svg>
