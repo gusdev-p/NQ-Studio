@@ -24,14 +24,32 @@ export class FilesystemHandler {
             return fs.readFileSync(file, "utf-8");
         });
 
-        ipcMain.handle("saveFile", (_, path: string, content: string) => {
+        ipcMain.handle("saveFile", async (_, filePath: string, content: string) => {
             try {
-                fs.promises.writeFile(path, content, "utf-8");
+                fs.writeFileSync(filePath, content, "utf-8");
+
+                if (this.verbose) {
+                    const savedContent = await fs.promises.readFile(filePath, "utf-8");
+
+                    console.log("[SAVE DEBUG]", {
+                        path: filePath,
+                        expectedLength: content.length,
+                        savedLength: savedContent.length,
+                        matches: savedContent === content
+                    });
+                    
+                    console.log("[SAVE] Path:", filePath);
+                    console.log("[SAVE] Absolute:", path.isAbsolute(filePath));
+                    console.log("[SAVE] Exists:", fs.existsSync(filePath));
+                    console.log("[FileSystem]: Saved:", filePath);
+                }
+
                 return {
                     success: true,
                     error: null
                 };
             } catch (error) {
+                console.error("[FileSystem]: Failed to save:", filePath, error);
                 return {
                     success: false,
                     error: error instanceof Error ? error.message : "Unknown error."
