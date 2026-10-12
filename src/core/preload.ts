@@ -355,16 +355,33 @@ export const nq = {
         return ipcRenderer.invoke("relativePath", rootPath, toRelativePath);
     },
 
+    /**
+     * ## On Shutdown
+     * Executes a lambda before shutdown the IDE.
+     * @param callback The lambda.
+     */
     onShutdown(callback: () => void | Promise<void>): void {
         ipcRenderer.on("nq:shutdown", () => {
             callback();
+            ipcRenderer.invoke("nq:shutdown-now");
         })
     },
 
+    /**
+     * ## Shutdown Now
+     * Tells the IDE to shutdown immediately.
+     * @returns 
+     */
     shutdownNow() {
         return ipcRenderer.invoke("nq:shutdown-now");
     },
 
+    /**
+     * ## On Boot
+     * Triggers a lambda right after the IDE boots (after the main APIs are loaded)
+     * @param callback The lambda.
+     * @returns 
+     */
     onBoot(callback: () => void | Promise<void>): void {
         console.log("[PRELOAD]: registering BOOT listener");
         if (booted) {
@@ -377,8 +394,35 @@ export const nq = {
         });
     },
 
+    /**
+     * ## Path To URI
+     * Receives a path an transforms it into a file URL
+     * @example
+     * await window.nq.pathToUri("some_file.txt")
+     * // returns "file://some_file.txt"
+     * @param path The path.
+     * @returns The URL version of the path.
+     */
     pathToUri(path: string) {
         return ipcRenderer.invoke("toUri", path);
+    },
+
+    /**
+     * ## Set Setting
+     * Re-write or define a new setting to the main settings file.
+     * 
+     * NOTE: You may like to re-open the setting file before use this function to sync the new values.
+     * @param key The setting name. Note that if **rewrite** is `true` this parameter will be ignored.
+     * @param value The setting value
+     * @param rewrite If `true` deletes the old setting file and re-write with the `value` parameter.
+     * @returns 
+     */
+    setSetting(key: string, value: string, rewrite: boolean = false) {
+        return ipcRenderer.invoke("setSetting", key, value, rewrite);
+    },
+
+    getSettingContent() {
+        return ipcRenderer.invoke("getSettingContent");
     }
 };
 
