@@ -1,6 +1,6 @@
 import { basicSetup, EditorView } from "codemirror";
 import { EditorState, Compartment, type Extension } from "@codemirror/state";
-import { keymap, hoverTooltip, type Tooltip } from "@codemirror/view";
+import { keymap } from "@codemirror/view";
 import { indentWithTab } from "@codemirror/commands";
 import { linter, setDiagnostics, type Diagnostic } from "@codemirror/lint";
 import { autocompletion, CompletionContext } from "@codemirror/autocomplete";
@@ -10,7 +10,9 @@ import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { json } from "@codemirror/lang-json";
 import { markdown } from "@codemirror/lang-markdown";
-import { setEditorTheme } from "../../renderer";
+import { jsonc } from "@platformos/lang-jsonc";
+import { fileTabs, setEditorTheme } from "../../renderer";
+import { ChangeLanguage, FileModified } from "../../../events/editor";
 
 export class nqEditor {
     private view!: EditorView;
@@ -21,6 +23,8 @@ export class nqEditor {
     private themeCompartment = new Compartment();
     private languageCompartment = new Compartment();
     private themeExt: Extension = [];
+
+    private autoSaveTimer?: ReturnType<typeof setTimeout> | undefined;
 
     constructor() {
         this.ready = this.init();
@@ -71,18 +75,56 @@ export class nqEditor {
                 this.languageCompartment.of([]),
                 this.themeCompartment.of(this.themeExt),
                 linter(() => []),
-                EditorView.updateListener.of((update) => {
+                EditorView.updateListener.of(async (update) => {
                     if (!update.docChanged) return;
 
                     this.version++;
 
                     const text = update.state.doc.toString();
 
-                    document.dispatchEvent(new CustomEvent("fileModified", {
-                        detail: {
-                            path: this.filePath
-                        }
-                    }));
+                    const autoSave = await window.nq.getSetting("Editor", "Auto Save");
+                    const autoSaveDelay = await window.nq.getSetting("Editor", "Auto Save Delay");
+
+                    console.log(autoSave, autoSaveDelay);
+
+                    if (this.autoSaveTimer) {
+                        clearTimeout(this.autoSaveTimer);
+                        this.autoSaveTimer = undefined;
+                    }
+
+                    if (autoSave && autoSaveDelay !== null) {
+                        const targetPath = this.filePath;
+                        const targetText = text;
+
+                        this.autoSaveTimer = setTimeout(async () => {
+                            try {
+                                if (!targetPath) return;
+
+                                const result = await window.nq.saveFile(
+                                    targetPath,
+                                    targetText
+                                );
+
+                                if (!result.success) {
+                                    console.error(
+                                        "[Auto Save]: Failed:",
+                                        targetPath,
+                                        result.error
+                                    );
+                                    return;
+                                }
+
+                                console.log("[Auto Save]: Saved:", targetPath);
+                                fileTabs.setModified(targetPath, false);
+                            } catch (e) {
+                                console.error("[Auto Save]: Error:", e);
+                            } finally {
+                                this.autoSaveTimer = undefined;
+                            }
+                        }, autoSaveDelay);
+                    }
+                    
+                    FileModified(this.filePath);
 
                     if (this.filePath) {
                         window.lsp.change(
@@ -135,6 +177,11 @@ export class nqEditor {
                 )
             );
         }
+
+        if (this.autoSaveTimer) {
+            clearTimeout(this.autoSaveTimer);
+            this.autoSaveTimer = undefined;
+        }
     }
 
     getContent(): string {
@@ -150,12 +197,15 @@ export class nqEditor {
             html: html(),
             css: css(),
             json: json(),
+            jsonc: jsonc(),
             markdown: markdown(),
         } as Record<string, Extension>)[language] ?? [];
 
         this.view.dispatch({
             effects: this.languageCompartment.reconfigure(ext),
         });
+
+        ChangeLanguage(language);
     }
 
     toLanguage(ext: string): string {
@@ -164,6 +214,7 @@ export class nqEditor {
         if (ext === ".html") return "html";
         if (ext === ".css") return "css";
         if (ext === ".json") return "json";
+        if (ext === ".jsonc") return "jsonc";
         if (ext === ".md") return "markdown";
         return "plaintext";
     }
@@ -207,25 +258,5 @@ export class nqEditor {
                 result
             )
         );
-    }
-
-    private getHoverText(result: any): string {
-        const contents = result.contents;
-
-        if (!contents) return "";
-
-        if (typeof contents === "string") return contents;
-
-        if (Array.isArray(contents)) {
-            return contents.map((item: any) => {
-                if (typeof item === "string") return item;
-
-                return item.value ?? "";
-            }).join("\n\n");
-        }
-
-        if (contents.value) return contents.value;
-
-        return "";
     }
 }
