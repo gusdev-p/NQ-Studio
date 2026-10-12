@@ -11,6 +11,7 @@ import { UtilsHandler } from "./api/modules/utils"
 import { FilesystemHandler } from "./api/modules/filesystem"
 import { IconsHandler } from "./api/modules/icons";
 import { LSP } from "./api/modules/lsp";
+import { settingsManager } from "./core/settings/settingsManager";
 
 
 let win: BrowserWindow
@@ -25,12 +26,12 @@ if (typeof systemPreferences.getAccentColor === 'function') {
         console.log("Cant define the accent color :(")
     }
 }
-const themeHandler = new ThemeHandler();
+const themeHandler = new ThemeHandler(devMode);
 const settingsManagerHandler = new SettingsManagerHandler();
 const utilsHandler = new UtilsHandler(devMode);
-const filesystemHandler = new FilesystemHandler();
-const iconsHandler = new IconsHandler(true);
-const ideHandler = new IDEHandler();
+const filesystemHandler = new FilesystemHandler(devMode);
+const iconsHandler = new IconsHandler(devMode);
+const ideHandler = new IDEHandler(devMode);
 const lsp = new LSP();
 
 console.log("-=- End of debug messages -=-\n")
@@ -56,6 +57,7 @@ function createBootstrap() {
         },
         title: "NQ-Studio",
         icon: path.join("assets", "logo.png"),
+        backgroundColor: "#222",
     });
     
     const window = win;
@@ -88,6 +90,10 @@ function createBootstrap() {
     });
 
     window.loadFile(path.join(__dirname, "main", "index.html"));
+    window.once("ready-to-show", () => {
+        window.show();
+    })
+
     window.maximize();
 };
 
