@@ -23,7 +23,7 @@ export class IconsHandler {
     }
 
     private init(check: boolean) {
-        this.selected_icon_pack = settingsManager.get("icon_pack");
+        this.selected_icon_pack = settingsManager.get("Icon Pack");
 
         const icon_pack_root = path.join(app.getPath("appData"), "nq-studio", "icon_pack");
         this.icon_pack_path = path.join(icon_pack_root, this.selected_icon_pack);
@@ -60,12 +60,21 @@ export class IconsHandler {
     }
 
     private getIcon(filePath: string, isPath: boolean = true): string {
+        console.log(this.icons);
         if (!this. icons) {
             console.error("No icon pack defined, probably the pack is invalid or is missing some essential icon. Return to fallback icon...");
             return path.resolve("assets/icon_pack/generic_file.svg");
         }
 
         if (!isPath) {
+            const iconPath = this.icons[filePath];
+
+            if (typeof iconPath !== "string") {
+                console.warn(`[Icons Handler]: Icon: '${filePath}' not found in pack: '${this.selected_icon_pack}' :0`);
+
+                return path.resolve("assets/icon_pack/generic_file.svg");
+            }
+
             return path.join(this.icon_pack_path, this.icons[filePath]);
         }
 
@@ -81,6 +90,12 @@ export class IconsHandler {
                 case ".mjs":
                 case ".cjs": {
                     return path.join(this.icon_pack_path, this.icons.javascript ?? this.icons.generic_file);
+                }
+
+                case ".ts":
+                case ".mts":
+                case ".cts": {
+                    return path.join(this.icon_pack_path, this.icons.typescript ?? this.icons.generic_file);
                 }
 
                 case ".css": {
