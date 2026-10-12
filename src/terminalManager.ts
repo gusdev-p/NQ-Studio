@@ -32,8 +32,8 @@ export class terminalManager {
         
         const shell =
             process.platform === "win32"
-                ? settingsManager.get("console", "windows", "shell")
-                : settingsManager.get("console", "linux", "shell");
+                ? settingsManager.get("Console", "Shell", "Windows")
+                : settingsManager.get("Console", "Shell", "Linux");
         
         this.pty = pty.spawn(shell, [], {
                     cwd: cwd,
