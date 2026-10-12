@@ -25,6 +25,14 @@ export class SettingsManagerHandler {
         ipcMain.handle("getSetting", (_, ...keys: string[]) => {
             return settingsManager.get(...keys);
         });
+
+        ipcMain.handle("setSetting", (_, key: string, value: any, rewrite: boolean = false) => {
+            return settingsManager.set(key, value, rewrite);
+        });
+
+        ipcMain.handle("getSettingContent", () => {
+            return settingsManager.getSettingContent();
+        })
     }
 }
 
