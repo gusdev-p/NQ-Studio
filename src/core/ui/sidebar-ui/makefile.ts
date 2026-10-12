@@ -1,23 +1,28 @@
+import { PropertiesTabManager, type PropertiesTabType } from "../../../api/modules/propertiesTabManager";
+import { setMakefileMainTarget } from "../../../events/sideBar";
+
+const propertiesManager = new PropertiesTabManager(document.body);
+
 export async function defineMakefileView(root: HTMLDivElement | HTMLElement, parsedResult : {
-        functions: {
+    functions: {
         value: string | undefined;
         line: number;
-        }[];
+    }[];
         variables: {
         name: string | undefined;
         value: string | undefined;
         line: number;
-        }[];
-        commentaries: {
+    }[];
+    commentaries: {
         value: string;
         line: number;
         }[];
         calls: {
-        value: string;
+            value: string;
         line: number;
-        }[];
-        path: string;
-    }) {
+    }[];
+    path: string;
+}) {
         root.innerHTML = "";
         root.id = "MakefileView";
         root.style.boxSizing = "border-box";
@@ -25,6 +30,36 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
         root.style.display = "flex";
         root.style.flexDirection = "column";
         root.style.gap = "13px";
+
+        const toolBar = document.createElement("div");
+        toolBar.id = "toolbar";
+        toolBar.style.background = "var(--onSurfaceColor)";
+        toolBar.style.width = "100%";
+        toolBar.style.height = "30px";
+        toolBar.style.display = "flex";
+        toolBar.style.justifyContent = "space-around";
+        toolBar.style.boxSizing = "border-box";
+        toolBar.style.padding = "5px";
+        toolBar.style.gap = "6px";
+        toolBar.style.borderRadius = "8px"
+
+        const pathDiv = document.createElement("div");
+        pathDiv.id = "HTMLPreviewPathDiv";
+        pathDiv.style.background = "#444";
+        pathDiv.textContent = parsedResult.path;
+        pathDiv.style.color = "#f1f1f1";
+        pathDiv.style.borderRadius = "8px";
+        pathDiv.style.padding = "3px 6px";
+        pathDiv.style.flex = "1";
+        pathDiv.style.minWidth = "0";
+        pathDiv.style.whiteSpace = "nowrap";
+        pathDiv.style.overflow = "hidden";
+        pathDiv.style.textOverflow = "ellipsis"
+        pathDiv.style.display = "flex";
+        pathDiv.style.alignItems = "center";
+        pathDiv.style.cursor = "text";
+
+        toolBar.appendChild(pathDiv);
 
         const functions = document.createElement("div");
         functions.id = "functions";
@@ -60,6 +95,23 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
             functionDiv.style.borderRadius = "6px";
             functionDiv.style.boxSizing = "border-box";
             functionDiv.style.padding = "0 3px";
+
+            functionDiv.addEventListener("mousedown", (e) => {
+                if (e.button === 2) {
+                    const tab: PropertiesTabType = {
+                        name: String(functionOption.value),
+                        buttons: [
+                            {
+                                name: "Set as 'main' Target",
+                                worker: () => {
+                                    setMakefileMainTarget(String(functionOption.value));
+                                }
+                            }
+                        ]
+                    }
+                    propertiesManager.addPropertiesTab(tab, e)
+                }
+            })
             
             const functionTitle = document.createElement("label");
             functionTitle.innerText = `${functionOption.value}`;
@@ -107,5 +159,6 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
             count += 1;
         }
         
+        root.appendChild(toolBar);
         root.appendChild(functions);
     }
