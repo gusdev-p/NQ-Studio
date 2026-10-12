@@ -9,11 +9,11 @@ export class terminalView {
         this.init();
     }
     async init() {
-        const font = await window.nq.getSetting("console", "fontFamily");
+        const font = await window.nq.getSetting("Console", "Font Family");
         console.log("console font:", font, "type: ", typeof font);
         this.terminal = new Terminal({
             fontFamily: font,
-            fontSize: await window.nq.getSetting("console", "fontSize") || 14,
+            fontSize: await window.nq.getSetting("Console", "Font Size") || 14,
         });
         this.fitAddon = new FitAddon();
 
