@@ -1,0 +1,46 @@
+{
+    "Console": {
+        "Font Family": "JetBrainsMono Nerd Font",
+        "Font Size": 14,
+        "Shell": {
+            "Linux": "zsh",
+            "Windows": "powershell.exe"
+        }
+    },
+    "Themes": {
+        "Dark": {
+            "Variant": "dark",
+            "Theme": {
+                "--backgroundColor": "#222",
+                "--surfaceColor": "#333",
+                "--onSurfaceColor": "#444",
+                "--fontColor": "#f1f1f1",
+                "--borderColor": "#666",
+                "--accentColor": "#AD344CFF"
+            }
+        },
+        "Light": {
+            "Variant": "light",
+            "Theme": {
+                "--backgroundColor": "#bdbdbd",
+                "--surfaceColor": "#9f9f9f",
+                "--onSurfaceColor": "#adadad",
+                "--fontColor": "#1c1c1c",
+                "--borderColor": "#838383",
+                "--accentColor": "#AD344CFF"
+            }
+        },
+        "Active Theme": "Dark"
+    },
+    "Icon Pack": "nq-studio-icon-pack",
+    "Editor": {
+        "Font Family": "JetBrainsMono Nerd",
+        "Font Size": 14,
+        "Default Theme": "auto",
+        "Auto Save": true,
+        "Auto Save Delay": 1000
+    },
+    "File Management": {
+        "Ask Permission": true
+    }
+}
