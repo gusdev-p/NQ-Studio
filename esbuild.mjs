@@ -12,7 +12,7 @@ build({
     outdir: "dist",
     bundle: true,
     platform: "node",
-    external: ["electron", "path", "child_process", "fs", "fs/promises", "electron-prompt", "node-pty", "@xterm/xterm", "@xterm/addon-fit"],
+    external: ["electron", "path", "child_process", "fs", "fs/promises", "electron-prompt", "node-pty", "@xterm/xterm", "@xterm/addon-fit", "jsonc-parser"],
 });
 
 build({
