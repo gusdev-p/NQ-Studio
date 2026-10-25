@@ -1,65 +1,101 @@
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
-import { pathToFileURL } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import { BrowserWindow } from "electron";
+
+type LSPType = "typescript" | "html" | "css"
 
 export class LSP {
     private server: ChildProcessWithoutNullStreams | null = null;
     private buffer = Buffer.alloc(0);
-    private win: BrowserWindow | null = null;
-    private requestId = 2;
+    private servers = new Map<LSPType, ChildProcessWithoutNullStreams>();
+    private buffers = new Map<LSPType, Buffer>();
     private pendingRequests = new Map<number, (result: any) => void>();
+    private initializationPromises = new Map<LSPType, Promise<void>>();
+    private initializationResolvers = new Map<LSPType, {
+        resolve: () => void;
+        reject: (error: Error) => void;
+    }>();
+    private requestId = 2;
+    private win: BrowserWindow | null = null;
+    
 
-    start(win: BrowserWindow) {
-        if (this.server) {
-            console.log("[LSP]: Already running...");
+    start(win: BrowserWindow, type: LSPType = "typescript", root: string) {
+        if (this.servers.has(type)) {
+            console.log(`[LSP]: ${type} already running...`);
             return;
         }
 
         this.win = win;
+        this.buffers.set(type, Buffer.alloc(0));
 
-        console.log("[LSP]: Starting TypeScript Language Server...");
+        const { command, args } = this.getCommand(type);
 
-        this.server = spawn(
-            "npx",
-            ["typescript-language-server", "--stdio"],
-            {
-                stdio: ["pipe", "pipe", "pipe"]
+        console.log(`[LSP]: Starting ${type} Language Server...`);
+
+        const server = spawn(command, args, {stdio: ["pipe", "pipe", "pipe"]});
+
+        this.servers.set(type, server);
+
+        let resolveInitialization!: () => void;
+        let rejectInitialization!: (error: Error) => void;
+        const initialization = new Promise<void>((resolve, reject) => {
+            resolveInitialization = resolve;
+            rejectInitialization = reject;
+        });
+        void initialization.catch(() => {});
+        this.initializationPromises.set(type, initialization);
+        this.initializationResolvers.set(type, {
+            resolve: resolveInitialization,
+            reject: rejectInitialization
+        });
+
+        server.on("exit", (code, signal) => {
+            console.log(`[LSP]: ${type} exited, code=${code} signal${signal}`);
+
+            if (this.servers.get(type) === server) {
+                this.initializationResolvers.get(type)?.reject(
+                    new Error(`[LSP ${type}]: Server exited before initialization completed`)
+                );
+                this.initializationResolvers.delete(type);
+                this.initializationPromises.delete(type);
+                this.servers.delete(type);
+                this.buffers.delete(type);
             }
-        );
-
-        this.server.on("exit", (code, signal) => {
-            console.log(`[LSP]: Server exited, code=${code} signal=${signal}`);
-            this.server = null;
         });
 
-        this.server.stdout.on("data", data => {
-            console.log("[LSP RAW]:", data.toString());
-            this.handleData(data);
+        server.on("error", error => {
+            console.error(`[LSP ${type}]: Spawn error:`, error);
+            this.initializationResolvers.get(type)?.reject(error);
+            this.initializationResolvers.delete(type);
+        })
+
+        server.stdout.on("data", data => {
+            this.handleData(type, data);
         });
 
-        this.server.stderr.on("data", data => {
-            console.log("[LSP RAW STDERR]:", data.toString());
+        server.stderr.on("data", data => {
+            console.log(`[LSP ${type} ERROR]:`, data.toString());
         });
 
-        this.send({
+        const rootAsUri = pathToFileURL(root).toString();
+
+        this.send(type, {
             jsonrpc: "2.0",
             id: 1,
             method: "initialize",
             params: {
                 processId: process.pid,
-                rootUri: null,
+                rootUri: rootAsUri,
                 capabilities: {
                     textDocument: {
                         synchronization: {
                             dynamicRegistration: false
                         },
-
                         completion: {
                             completionItem: {
                                 snippetSupport: true
                             }
                         },
-
                         hover: {},
                         definition: {},
                         publishDiagnostics: {}
@@ -67,145 +103,195 @@ export class LSP {
                 }
             }
         });
-
         
-        console.log("[LSP]: Sever started!");
+        console.log(`[LSP]: ${type} started!`);
     }
 
-    stop() {
-        if (!this.server) {
+    stop(type: LSPType = "typescript") {
+        const server = this.servers.get(type);
+
+        if (!server) {
+            console.warn(`[LSP ${type}]: No LSP server initialized!`);
             return;
         }
 
-        this.server.kill();
-        this.server = null;
+        server?.kill();
+        this.initializationResolvers.get(type)?.reject(
+            new Error(`[LSP ${type}]: Server stopped before initialization completed`)
+        );
+        this.initializationResolvers.delete(type);
+        this.initializationPromises.delete(type);
+        this.servers.delete(type);
+        this.buffers.delete(type);
 
-        console.log("[LSP]: Server stopped.");
+        console.log(`[LSP ${type}]: LSP server killed!`);
     }
 
-    private send(message: object) {
-        if (!this.server) {
-            console.error("[LSP]: Cannot send... The server is not running!");
+    async hover(path: string, line: number, character: number, type: LSPType = "typescript") {
+        await this.waitUntilInitialized(type);
+
+        const uri = pathToFileURL(path).toString();
+        
+        return await this.request(type,
+            "textDocument/hover",
+            {
+                textDocument: {
+                    uri
+                },
+                position: {
+                    line,
+                    character
+                }
+            }
+        );
+    }
+
+    async switchTo(win: BrowserWindow, type:LSPType, root: string) {
+        for (const [serverType, server] of this.servers) {
+            if (serverType === type) continue;
+
+            server.kill();
+            this.initializationResolvers.get(serverType)?.reject(
+                new Error(`[LSP ${serverType}]: Server stopped before initialization completed`)
+            );
+            this.initializationResolvers.delete(serverType);
+            this.initializationPromises.delete(serverType);
+            this.servers.delete(serverType);
+            this.buffers.delete(serverType);
+        }
+
+        if (!this.servers.has(type)) {
+            this.start(win, type, root);
+        }
+
+        await this.waitUntilInitialized(type);
+    }
+
+    private async waitUntilInitialized(type: LSPType) {
+        const initialization = this.initializationPromises.get(type);
+
+        if (!initialization) {
+            throw new Error(`[LSP ${type}]: Server has not been started`);
+        }
+
+        await initialization;
+    }
+
+    private getCommand(type: LSPType) {
+        switch (type) {
+            case "typescript": {
+                return {
+                    command: "npx",
+                    args: ["typescript-language-server", "--stdio"]
+                };
+            }
+
+            case "html": {
+                return {
+                    command: "npx",
+                    args: [
+                        "--no-install",
+                        "vscode-html-language-server",
+                        "--stdio"
+                    ]
+                };
+            }
+
+            case "css": {
+                return {
+                    command: "npx",
+                    args: [
+                        "--no-install",
+                        "vscode-css-language-server",
+                        "--stdio"
+                    ]
+                };
+            }
+        }
+    }
+
+    private send(type: LSPType, message: object) {
+        const server = this.servers.get(type);
+
+        if (!server || server.killed) {
+            console.error(`[LSP ${type}]: Server is not running!`);
             return;
         }
 
         const json = JSON.stringify(message);
 
-        console.log("[LSP SEND]:", message);
-
         const packet = `Content-Length: ${Buffer.byteLength(json)}\r\n\r\n${json}`;
 
-        this.server.stdin.write(packet);
+        server.stdin.write(packet);
     }
 
-    private handleData(data: Buffer) {
-        this.buffer = Buffer.concat([
-            this.buffer,
+    private handleData(type: LSPType, data: Buffer) {
+        console.log(`[LSP ${type}]: Received ${data.length} bytes`)
+        let buffer = Buffer.concat([
+            this.buffers.get(type) ?? Buffer.alloc(0),
             data
         ]);
 
         while (true) {
             const separator = Buffer.from("\r\n\r\n");
+            const headerEnd = buffer.indexOf(separator);
 
-            const headerEnd = this.buffer.indexOf(separator);
+            if (headerEnd === -1) break;
 
-            if (headerEnd === -1) {
-                return;
-            }
-
-            const header = this.buffer
-                .subarray(0, headerEnd)
-                .toString("ascii");
-
-            const match = header.match(
-                /Content-Length:\s*(\d+)/i
-            );
+            const header = buffer.subarray(0, headerEnd).toString("ascii");
+            console.log(`[LSP ${type}]: Header:`, JSON.stringify(header));
+            const match = header.match(/Content-Length:\s*(\d+)/i);
 
             if (!match) {
-                console.error("[LSP]: Invalid header:");
-                console.error(header);
-
-                this.buffer = this.buffer.subarray(
-                    headerEnd + separator.length
-                );
-
+                buffer = buffer.subarray(headerEnd + separator.length);
                 continue;
             }
 
             const contentLength = Number(match[1]);
-
             const bodyStart = headerEnd + separator.length;
             const bodyEnd = bodyStart + contentLength;
 
-            console.log("[LSP PARSER]", {
-                bufferSize: this.buffer.length,
-                headerEnd,
-                contentLength,
-                bodyStart,
-                bodyEnd,
-                available: this.buffer.length - bodyStart
-            });
+            if (buffer.length < bodyEnd) {
+                console.log(`[LSP ${type}]: Incomplete message`, {
+                    expected: contentLength, received: buffer.length - bodyStart
+                });
+                break;
+            };
 
-            // A mensagem ainda não chegou inteira.
-            if (this.buffer.length < bodyEnd) {
-                console.log("[LSP]: Waiting for more data...");
-                return;
-            }
-
-            const bodyBuffer = this.buffer.subarray(
-                bodyStart,
-                bodyEnd
-            );
-
-            const body = bodyBuffer.toString("utf8");
-
-            // Remove a mensagem já processada.
-            this.buffer = this.buffer.subarray(bodyEnd);
+            const body = buffer.subarray(bodyStart, bodyEnd).toString("utf-8");
+            buffer = buffer.subarray(bodyEnd);
 
             try {
                 const message = JSON.parse(body);
 
-                console.log("[LSP RECEIVED]:", message);
+                console.log(`[LSP ${type}]: Message?:`, {
+                    id: message.id,
+                    method: message.method,
+                    hasResult: message.result !== undefined,
+                    error: message.error
+                });
 
-                this.handleMessage(message);
-            } catch (error) {
-                console.error(
-                    "[LSP]: Failed to parse JSON:",
-                    error
-                );
-
-                console.error(
-                    "[LSP]: Content-Length:",
-                    contentLength
-                );
-
-                console.error(
-                    "[LSP]: Actual bytes:",
-                    bodyBuffer.length
-                );
-
-                console.error(
-                    "[LSP]: Body start:",
-                    body.slice(0, 200)
-                );
-
-                console.error(
-                    "[LSP]: Body end:",
-                    body.slice(-200)
-                );
+                this.handleMessage(type, message);
+            } catch (e) {
+                console.log(`[LSP ${type}]: Invalid JSON:`, e);
             }
         }
+
+        this.buffers.set(type, buffer);
     }
 
-    private handleMessage(message: any) {
-        console.log("[LSP]", message);
-
+    private handleMessage(type: LSPType, message: any) {
         if (message.id !== undefined && this.pendingRequests.has(message.id)) {
-            const resolve = this.pendingRequests.get(message.id)!
+            const resolve = this.pendingRequests.get(message.id)!;
 
             this.pendingRequests.delete(message.id);
 
-            resolve(message.result);
+            if (message.error) {
+                console.error(`[LSP ${type}]: Request error:`, message.error);
+                resolve(null);
+            } else {
+                resolve(message.result);
+            }
 
             return;
         }
@@ -213,28 +299,46 @@ export class LSP {
         if (message.method === "textDocument/publishDiagnostics") {
             const { uri, diagnostics } = message.params;
 
-            console.log("[LSP]: diagnostics:", diagnostics);
-
-            this.win?.webContents.send("lsp:diagnostics", uri, diagnostics);
+            this.win?.webContents.send(
+                "lsp:diagnostics",
+                uri,
+                diagnostics
+            );
         }
 
-        if (message.id === 1 && message.result) {
-            console.log("[LSP]: Initialized!");
+        if (message.id === 1) {
+            const initialization = this.initializationResolvers.get(type);
 
-            this.send({
-                jsonrpc: "2.0",
-                method: "initialized",
-                params: {}
-            });
+            if (message.error) {
+                initialization?.reject(
+                    new Error(message.error.message ?? JSON.stringify(message.error))
+                );
+            } else if (message.result) {
+                console.log(`[LSP ${type}]: Initialize completed!`)
+                this.send(type, {
+                    jsonrpc: "2.0",
+                    method: "initialized",
+                    params: {}
+                });
+                initialization?.resolve();
+            }
 
-            return;
+            this.initializationResolvers.delete(type);
         }
     }
 
-    async completion(path: string, line: number, character: number) {
+    async completion(path: string, line: number, character: number, type: LSPType = "typescript") {
+        await this.waitUntilInitialized(type);
+
         const uri = pathToFileURL(path).toString();
 
-        return await this.request(
+        console.log(`[LSP ${type}]: Requesting completion:`, {
+            uri,
+            line,
+            character
+        });
+
+        const result = await this.request(type,
             "textDocument/completion",
             {
                 textDocument: {
@@ -249,12 +353,16 @@ export class LSP {
                 }
             }
         );
+
+        console.log(`[LSP ${type}]: Completion result:`, JSON.stringify(result, null, 2));
+        return result;
     }
 
-    openFile(path: string, text: string, languageId: string){
+    openFile(path: string, text: string, languageId: string, type: LSPType = "typescript") {
+        console.log(`[LSP ${type}]: Opening ${path} as ${languageId}...`);
         const uri = pathToFileURL(path).toString();
 
-        this.send({
+        this.send(type, {
             jsonrpc: "2.0",
             method: "textDocument/didOpen",
 
@@ -267,42 +375,48 @@ export class LSP {
                 }
             }
         });
+
     }
 
-    changeFile(path: string, version: number, text:string) {
-        const uri = pathToFileURL(path).toString();
+    changeFile(path: string, version: number, text:string, type: LSPType = "typescript") {
+        void this.waitUntilInitialized(type).then(() => {
+            const uri = pathToFileURL(path).toString();
 
-        this.send({
-            jsonrpc: "2.0",
-            method: "textDocument/didChange",
+            this.send(type, {
+                jsonrpc: "2.0",
+                method: "textDocument/didChange",
 
-            params: {
-                textDocument: {
-                    uri,
-                    version
-                },
-
-                contentChanges: [
-                    {
-                        text
-                    }
-                ]
-            }
+                params: {
+                    textDocument: {
+                        uri,
+                        version
+                    },
+                    contentChanges: [
+                        {
+                            text
+                        }
+                    ]
+                }
+            });
+        }).catch(error => {
+            console.error(`[LSP ${type}]: Failed to send document changes:`, error);
         });
     }
 
-    private request(method: string, params: any): Promise<any> {
-        return new Promise((resolve) => {
+    private request(type: LSPType, method: string, params: any): Promise<any> {
+        return new Promise(resolve => {
             const id = this.requestId++;
 
             this.pendingRequests.set(id, resolve);
 
-            this.send({
+            console.log(`[LSP ${type}]: -> Request`, {id, method});
+
+            this.send(type, {
                 jsonrpc: "2.0",
                 id,
                 method,
                 params
-            })
-        })
+            });
+        });
     }
 }
