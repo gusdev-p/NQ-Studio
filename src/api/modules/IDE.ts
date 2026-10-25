@@ -1,7 +1,7 @@
 import { settingsManager } from "../../core/settings/settingsManager";
 import path from "path";
 import fs from "fs";
-import { ipcMain, dialog, BrowserWindow, shell } from "electron";
+import { ipcMain, dialog, BrowserWindow, shell, app } from "electron";
 import { MakefileParser } from "../../core/makefileParser";
 
 /*
@@ -12,7 +12,6 @@ manage settings, and functions that all the IDE can use
 for different purposes.
 
 */
-
 
 const makefileParser = new MakefileParser();
 
@@ -229,6 +228,10 @@ export class IDEHandler {
 
         ipcMain.handle("make:parse", async (_, filePath: string) => {
             return await makefileParser.parse(filePath);
+        });
+
+        ipcMain.handle("getAppAsar", async () => {
+            return app.getAppPath();
         });
 
     }
