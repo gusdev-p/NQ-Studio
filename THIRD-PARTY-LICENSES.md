@@ -1,58 +1,558 @@
-├─ @types/trusted-types@1.0.6
-│  ├─ licenses: MIT
-│  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/trusted-types
-│  ├─ version: 1.0.6
-│  ├─ licenseFile: node_modules/@types/trusted-types/LICENSE
-│  ├─ path: NQ-Studio/node_modules/@types/trusted-types
-│  └─ licenseText: MIT License
+[@cacheable/memory@2.2.0](https://github.com/jaredwray/cacheable) - MIT
+[@cacheable/utils@2.5.0](https://github.com/jaredwray/cacheable) - MIT
+[@codemirror/autocomplete@6.20.4](git+https://code.haverbeke.berlin/codemirror/autocomplete) - MIT
+[@codemirror/commands@6.11.1](git+https://code.haverbeke.berlin/codemirror/commands) - MIT
+[@codemirror/lang-css@6.3.1](https://github.com/codemirror/lang-css) - MIT
+[@codemirror/lang-html@6.4.12](git+https://code.haverbeke.berlin/codemirror/lang-html) - MIT
+[@codemirror/lang-javascript@6.2.5](https://github.com/codemirror/lang-javascript) - MIT
+[@codemirror/lang-json@6.0.2](https://github.com/codemirror/lang-json) - MIT
+[@codemirror/lang-markdown@6.5.2](git+https://code.haverbeke.berlin/codemirror/lang-markdown) - MIT
+[@codemirror/language@6.13.1](git+https://code.haverbeke.berlin/codemirror/language) - MIT
+[@codemirror/lint@6.9.7](git+https://code.haverbeke.berlin/codemirror/lint) - MIT
+[@codemirror/search@6.7.2](git+https://code.haverbeke.berlin/codemirror/search) - MIT
+[@codemirror/state@6.7.6](git+https://code.haverbeke.berlin/codemirror/state) - MIT
+[@codemirror/streamparser@6.0.0](git+https://code.haverbeke.berlin/codemirror/streamparser) - MIT
+[@codemirror/theme-one-dark@6.1.3](https://github.com/codemirror/theme-one-dark) - MIT
+[@codemirror/view@6.43.15](git+https://code.haverbeke.berlin/codemirror/view) - MIT
+[@electron-internal/extract-zip@1.0.5](https://github.com/electron/extract-zip) - BSD-2-Clause
+[@electron/asar@3.4.1](https://github.com/electron/asar) - MIT
+[@electron/fuses@1.8.0](https://github.com/electron/fuses) - MIT
+[@electron/get@3.1.0](https://github.com/electron/get) - MIT
+[@electron/get@5.1.0](https://github.com/electron/get) - MIT
+[@electron/notarize@2.5.0](https://github.com/electron/notarize) - MIT
+[@electron/osx-sign@1.3.3](https://github.com/electron/osx-sign) - BSD-2-Clause
+[@electron/rebuild@4.2.1](https://github.com/electron/rebuild) - MIT
+[@electron/universal@2.0.3](https://github.com/electron/universal) - MIT
+[@electron/windows-sign@1.2.2](https://github.com/electron/windows-sign) - BSD-2-Clause
+[@esbuild/linux-x64@0.28.2](https://github.com/evanw/esbuild) - MIT
+[@eslint-community/eslint-utils@4.10.1](https://github.com/eslint-community/eslint-utils) - MIT
+[@eslint-community/regexpp@4.12.2](https://github.com/eslint-community/regexpp) - MIT
+[@eslint/config-array@0.23.5](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/config-helpers@0.7.0](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/core@0.17.0](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/core@1.2.1](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/css-tree@4.1.2](https://github.com/eslint/csstree) - MIT
+[@eslint/css@1.4.0](https://github.com/eslint/css) - Apache-2.0
+[@eslint/js@10.0.1](https://github.com/eslint/eslint) - MIT
+[@eslint/json@2.1.1](https://github.com/eslint/json) - Apache-2.0
+[@eslint/markdown@7.5.1](https://github.com/eslint/markdown) - MIT
+[@eslint/object-schema@3.0.5](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/plugin-kit@0.4.1](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/plugin-kit@0.7.3](https://github.com/eslint/rewrite) - Apache-2.0
+[@humanfs/core@0.19.2](https://github.com/humanwhocodes/humanfs) - Apache-2.0
+[@humanfs/node@0.16.8](https://github.com/humanwhocodes/humanfs) - Apache-2.0
+[@humanfs/types@0.15.0](https://github.com/humanwhocodes/humanfs) - Apache-2.0
+[@humanwhocodes/module-importer@1.0.1](https://github.com/humanwhocodes/module-importer) - Apache-2.0
+[@humanwhocodes/momoa@3.3.13](https://github.com/humanwhocodes/momoa) - Apache-2.0
+[@humanwhocodes/retry@0.4.3](https://github.com/humanwhocodes/retry) - Apache-2.0
+[@isaacs/fs-minipass@4.0.1](https://github.com/npm/fs-minipass) - ISC
+[@keyv/bigmap@1.3.1](https://github.com/jaredwray/keyv) - MIT
+[@keyv/serialize@1.1.1](https://github.com/jaredwray/keyv) - MIT
+[@lezer/common@1.5.3](git+https://code.haverbeke.berlin/lezer/common) - MIT
+[@lezer/css@1.3.9](git+https://code.haverbeke.berlin/lezer/css) - MIT
+[@lezer/highlight@1.2.5](git+https://code.haverbeke.berlin/lezer/highlight) - MIT
+[@lezer/html@1.3.13](https://github.com/lezer-parser/html) - MIT
+[@lezer/javascript@1.5.6](git+https://code.haverbeke.berlin/lezer/javascript) - MIT
+[@lezer/json@1.0.3](https://github.com/lezer-parser/json) - MIT
+[@lezer/lr@1.4.11](git+https://code.haverbeke.berlin/lezer/lr) - MIT
+[@lezer/markdown@1.8.1](git+https://code.haverbeke.berlin/lezer/markdown) - MIT
+[@malept/cross-spawn-promise@2.0.0](https://github.com/malept/cross-spawn-promise) - Apache-2.0
+[@malept/flatpak-bundler@0.4.0](https://github.com/malept/flatpak-bundler) - MIT
+[@marijn/find-cluster-break@1.0.4](git+https://code.haverbeke.berlin/marijn/find-cluster-break) - MIT
+[@noble/hashes@1.8.0](https://github.com/paulmillr/noble-hashes) - MIT
+[@peculiar/asn1-schema@2.11.0](https://github.com/PeculiarVentures/asn1-schema) - MIT
+[@peculiar/json-schema@1.1.12](https://github.com/PeculiarVentures/json-schema) - MIT
+[@peculiar/utils@2.0.3](https://github.com/PeculiarVentures/pvtsutils) - MIT
+[@peculiar/webcrypto@1.7.1](https://github.com/PeculiarVentures/webcrypto) - MIT
+[@platformos/lang-jsonc@0.1.0](https://github.com/Platform-OS/platformos-tools) - MIT
+[@sindresorhus/is@4.6.0](https://github.com/sindresorhus/is) - MIT
+[@szmarczak/http-timer@4.0.6](https://github.com/szmarczak/http-timer) - MIT
+[@types/body-parser@1.19.6](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/cacheable-request@6.0.3](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/connect@3.4.38](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/debug@4.1.13](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/esrecurse@4.3.1](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/estree@1.0.9](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/express-serve-static-core@5.1.3](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/express@5.0.6](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/fs-extra@9.0.13](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/http-cache-semantics@4.2.0](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/http-errors@2.0.5](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/json-schema@7.0.15](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/keyv@3.1.4](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/mdast@4.0.4](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/ms@2.1.0](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/node@24.19.2](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/node@25.9.9](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/qs@6.15.1](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/range-parser@1.2.7](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/responselike@1.0.3](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/send@1.2.1](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/serve-static@2.2.0](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/trusted-types@2.0.7](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@types/unist@3.0.3](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
+[@typescript-eslint/eslint-plugin@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/parser@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/project-service@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/scope-manager@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/tsconfig-utils@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/type-utils@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/types@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/typescript-estree@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/utils@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/visitor-keys@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@vscode/l10n@0.0.18](https://github.com/Microsoft/vscode-l10n) - MIT
+[@xmldom/xmldom@0.8.15](https://github.com/xmldom/xmldom) - MIT
+[@xterm/addon-fit@0.11.0](https://github.com/xtermjs/xterm.js/tree/master/addons/addon-fit) - MIT
+[@xterm/xterm@6.0.0](https://github.com/xtermjs/xterm.js) - MIT
+[abbrev@4.0.0](https://github.com/npm/abbrev-js) - ISC
+[accepts@2.0.0](https://github.com/jshttp/accepts) - MIT
+[acorn-jsx@5.3.2](https://github.com/acornjs/acorn-jsx) - MIT
+[acorn@8.19.0](https://github.com/acornjs/acorn) - MIT
+[agent-base@7.1.4](https://github.com/TooTallNate/proxy-agents) - MIT
+[ajv@6.15.0](https://github.com/ajv-validator/ajv) - MIT
+[ajv@8.20.0](https://github.com/ajv-validator/ajv) - MIT
+[ansi-regex@5.0.1](https://github.com/chalk/ansi-regex) - MIT
+[ansi-styles@4.3.0](https://github.com/chalk/ansi-styles) - MIT
+[app-builder-lib@26.17.0](https://github.com/electron-userland/electron-builder) - MIT
+[argparse@2.0.1](https://github.com/nodeca/argparse) - Python-2.0
+[asn1js@3.1.0](https://github.com/PeculiarVentures/ASN1.js) - BSD-3-Clause
+[async-exit-hook@2.0.1](https://github.com/tapppi/async-exit-hook) - MIT
+[async@3.2.6](https://github.com/caolan/async) - MIT
+[asynckit@0.4.0](https://github.com/alexindigo/asynckit) - MIT
+[at-least-node@1.0.0](https://github.com/RyanZim/at-least-node) - ISC
+[aws4@1.13.2](https://github.com/mhart/aws4) - MIT
+[balanced-match@1.0.2](https://github.com/juliangruber/balanced-match) - MIT
+[balanced-match@4.0.4](https://github.com/juliangruber/balanced-match) - MIT
+[base64-js@1.5.1](https://github.com/beatgammit/base64-js) - MIT
+[bluebird@3.7.2](https://github.com/petkaantonov/bluebird) - MIT
+[body-parser@2.4.0](https://github.com/expressjs/body-parser) - MIT
+[boolbase@1.0.0](https://github.com/fb55/boolbase) - ISC
+[boolean@3.2.0](https://github.com/thenativeweb/boolean) - MIT
+[brace-expansion@1.1.21](https://github.com/juliangruber/brace-expansion) - MIT
+[brace-expansion@2.1.7](https://github.com/juliangruber/brace-expansion) - MIT
+[brace-expansion@5.0.12](https://github.com/juliangruber/brace-expansion) - MIT
+[buffer-from@1.1.2](https://github.com/LinusU/buffer-from) - MIT
+[builder-util-runtime@9.7.0](https://github.com/electron-userland/electron-builder) - MIT
+[builder-util@26.16.0](https://github.com/electron-userland/electron-builder) - MIT
+[bundle-name@4.1.1](https://github.com/sindresorhus/bundle-name) - MIT
+[bytes@3.1.2](https://github.com/visionmedia/bytes.js) - MIT
+[bytestreamjs@2.0.1](https://github.com/PeculiarVentures/ByteStream.js) - BSD-3-Clause
+[cacheable-lookup@5.0.4](https://github.com/szmarczak/cacheable-lookup) - MIT
+[cacheable-request@7.0.4](https://github.com/lukechilds/cacheable-request) - MIT
+[cacheable@2.5.0](https://github.com/jaredwray/cacheable) - MIT
+[call-bind-apply-helpers@1.0.2](https://github.com/ljharb/call-bind-apply-helpers) - MIT
+[call-bound@1.0.4](https://github.com/ljharb/call-bound) - MIT
+[ccount@2.0.1](https://github.com/wooorm/ccount) - MIT
+[chalk@4.1.2](https://github.com/chalk/chalk) - MIT
+[character-entities@2.0.2](https://github.com/wooorm/character-entities) - MIT
+[chownr@3.0.0](https://github.com/isaacs/chownr) - BlueOak-1.0.0
+[chromium-pickle-js@0.2.0](https://github.com/electron/node-chromium-pickle-js) - MIT
+[ci-info@4.3.1](https://github.com/watson/ci-info) - MIT
+[ci-info@4.4.0](https://github.com/watson/ci-info) - MIT
+[cliui@8.0.1](https://github.com/yargs/cliui) - ISC
+[clone-response@1.0.3](https://github.com/sindresorhus/clone-response) - MIT
+[codemirror-lang-makefile@0.1.1](git+https://git.sr.ht/~mattmundell/codemirror-lang-makefile) - MIT
+[codemirror@6.0.2](https://github.com/codemirror/basic-setup) - MIT
+[color-convert@2.0.1](https://github.com/Qix-/color-convert) - MIT
+[color-name@1.1.4](https://github.com/colorjs/color-name) - MIT
+[combined-stream@1.0.8](https://github.com/felixge/node-combined-stream) - MIT
+[commander@5.1.0](https://github.com/tj/commander.js) - MIT
+[commander@9.5.0](https://github.com/tj/commander.js) - MIT
+[compare-version@0.1.2](https://github.com/kevva/compare-version) - MIT
+[concat-map@0.0.1](https://github.com/substack/node-concat-map) - MIT
+[content-disposition@2.0.1](https://github.com/jshttp/content-disposition) - MIT
+[content-type@2.1.0](https://github.com/jshttp/content-type) - MIT
+[cookie-signature@1.2.2](https://github.com/visionmedia/node-cookie-signature) - MIT
+[cookie@0.7.2](https://github.com/jshttp/cookie) - MIT
+[core-js@3.51.0](https://github.com/zloirock/core-js) - MIT
+[core-util-is@1.0.3](https://github.com/isaacs/core-util-is) - MIT
+[crelt@1.0.7](git+https://code.haverbeke.berlin/marijn/crelt) - MIT
+[cross-dirname@0.1.0](https://github.com/JumpLink/cross-dirname) - MIT
+[cross-spawn@7.0.6](https://github.com/moxystudio/node-cross-spawn) - MIT
+[css-select@5.2.2](https://github.com/fb55/css-select) - BSD-2-Clause
+[css-what@6.2.2](https://github.com/fb55/css-what) - BSD-2-Clause
+[debug@4.4.3](https://github.com/debug-js/debug) - MIT
+[decode-named-character-reference@1.3.0](https://github.com/wooorm/decode-named-character-reference) - MIT
+[decompress-response@6.0.0](https://github.com/sindresorhus/decompress-response) - MIT
+[deep-is@0.1.4](https://github.com/thlorenz/deep-is) - MIT
+[default-browser-id@5.0.1](https://github.com/sindresorhus/default-browser-id) - MIT
+[default-browser@5.5.1](https://github.com/sindresorhus/default-browser) - MIT
+[defer-to-connect@2.0.1](https://github.com/szmarczak/defer-to-connect) - MIT
+[define-data-property@1.1.4](https://github.com/ljharb/define-data-property) - MIT
+[define-lazy-prop@3.0.0](https://github.com/sindresorhus/define-lazy-prop) - MIT
+[define-properties@1.2.1](https://github.com/ljharb/define-properties) - MIT
+[delayed-stream@1.0.0](https://github.com/felixge/node-delayed-stream) - MIT
+[depd@2.0.0](https://github.com/dougwilson/nodejs-depd) - MIT
+[dequal@2.0.3](https://github.com/lukeed/dequal) - MIT
+[detect-node@2.1.0](https://github.com/iliakan/detect-node) - MIT
+[devlop@1.1.0](https://github.com/wooorm/devlop) - MIT
+[dir-compare@4.2.0](https://github.com/gliviu/dir-compare) - MIT
+[dmg-builder@26.17.0](https://github.com/electron-userland/electron-builder) - MIT
+[dom-serializer@2.0.0](https://github.com/cheeriojs/dom-serializer) - MIT
+[domelementtype@2.3.0](https://github.com/fb55/domelementtype) - BSD-2-Clause
+[domhandler@5.0.3](https://github.com/fb55/domhandler) - BSD-2-Clause
+[dompurify@3.4.17](https://github.com/cure53/DOMPurify) - (MPL-2.0 OR Apache-2.0)
+[domutils@3.2.2](https://github.com/fb55/domutils) - BSD-2-Clause
+[dotenv-expand@11.0.7](https://github.com/motdotla/dotenv-expand) - BSD-2-Clause
+[dotenv@16.6.1](https://github.com/motdotla/dotenv) - BSD-2-Clause
+[dunder-proto@1.0.1](https://github.com/es-shims/dunder-proto) - MIT
+[duplexer2@0.1.4](https://github.com/deoxxa/duplexer2) - BSD-3-Clause
+[ee-first@1.1.1](https://github.com/jonathanong/ee-first) - MIT
+[ejs@3.1.10](https://github.com/mde/ejs) - Apache-2.0
+[electron-builder-squirrel-windows@26.17.0](https://github.com/electron-userland/electron-builder) - MIT
+[electron-builder@26.17.0](https://github.com/electron-userland/electron-builder) - MIT
+[electron-publish@26.16.0](https://github.com/electron-userland/electron-builder) - MIT
+[electron-winstaller@5.4.0](https://github.com/electron/windows-installer) - MIT
+[electron@42.11.18](https://github.com/electron/electron) - MIT
+[emoji-regex@8.0.0](https://github.com/mathiasbynens/emoji-regex) - MIT
+[encodeurl@2.0.0](https://github.com/pillarjs/encodeurl) - MIT
+[end-of-stream@1.4.5](https://github.com/mafintosh/end-of-stream) - MIT
+[entities@4.5.0](https://github.com/fb55/entities) - BSD-2-Clause
+[env-paths@2.2.1](https://github.com/sindresorhus/env-paths) - MIT
+[env-paths@3.0.0](https://github.com/sindresorhus/env-paths) - MIT
+[err-code@2.0.3](https://github.com/IndigoUnited/js-err-code) - MIT
+[es-define-property@1.0.1](https://github.com/ljharb/es-define-property) - MIT
+[es-errors@1.3.0](https://github.com/ljharb/es-errors) - MIT
+[es-object-atoms@1.1.2](https://github.com/ljharb/es-object-atoms) - MIT
+[es-set-tostringtag@2.1.0](https://github.com/es-shims/es-set-tostringtag) - MIT
+[es6-error@4.1.1](https://github.com/bjyoungblood/es6-error) - MIT
+[esbuild@0.28.2](https://github.com/evanw/esbuild) - MIT
+[escalade@3.2.0](https://github.com/lukeed/escalade) - MIT
+[escape-html@1.0.3](https://github.com/component/escape-html) - MIT
+[escape-string-regexp@4.0.0](https://github.com/sindresorhus/escape-string-regexp) - MIT
+[escape-string-regexp@5.0.0](https://github.com/sindresorhus/escape-string-regexp) - MIT
+[eslint-scope@9.1.2](https://github.com/eslint/js) - BSD-2-Clause
+[eslint-visitor-keys@3.4.3](https://github.com/eslint/eslint-visitor-keys) - Apache-2.0
+[eslint-visitor-keys@5.0.1](https://github.com/eslint/js) - Apache-2.0
+[eslint@10.13.0](https://github.com/eslint/eslint) - MIT
+[espree@11.2.0](https://github.com/eslint/js) - BSD-2-Clause
+[esquery@1.7.0](https://github.com/estools/esquery) - BSD-3-Clause
+[esrecurse@4.3.0](https://github.com/estools/esrecurse) - BSD-2-Clause
+[estraverse@5.3.0](https://github.com/estools/estraverse) - BSD-2-Clause
+[esutils@2.0.3](https://github.com/estools/esutils) - BSD-2-Clause
+[etag@1.8.1](https://github.com/jshttp/etag) - MIT
+[exponential-backoff@3.1.3](https://github.com/coveooss/exponential-backoff) - Apache-2.0
+[express@5.3.0](https://github.com/expressjs/express) - MIT
+[fast-deep-equal@3.1.3](https://github.com/epoberezkin/fast-deep-equal) - MIT
+[fast-json-stable-stringify@2.1.0](https://github.com/epoberezkin/fast-json-stable-stringify) - MIT
+[fast-levenshtein@2.0.6](https://github.com/hiddentao/fast-levenshtein) - MIT
+[fast-uri@3.1.9](https://github.com/fastify/fast-uri) - BSD-3-Clause
+[fault@2.0.1](https://github.com/wooorm/fault) - MIT
+[fdir@6.5.0](https://github.com/thecodrr/fdir) - MIT
+[file-entry-cache@11.1.5](https://github.com/jaredwray/cacheable) - MIT
+[filelist@1.0.6](https://github.com/mde/filelist) - Apache-2.0
+[finalhandler@2.1.1](https://github.com/pillarjs/finalhandler) - MIT
+[find-up@5.0.0](https://github.com/sindresorhus/find-up) - MIT
+[flat-cache@6.1.23](https://github.com/jaredwray/cacheable) - MIT
+[flatted@3.4.4](https://github.com/WebReflection/flatted) - ISC
+[form-data@4.0.6](https://github.com/form-data/form-data) - MIT
+[format@0.2.2](https://github.com/samsonjs/format) - MIT
+[forwarded@0.2.0](https://github.com/jshttp/forwarded) - MIT
+[fresh@2.0.0](https://github.com/jshttp/fresh) - MIT
+[fs-extra@10.1.0](https://github.com/jprichardson/node-fs-extra) - MIT
+[fs-extra@11.3.1](https://github.com/jprichardson/node-fs-extra) - MIT
+[fs-extra@11.4.1](https://github.com/jprichardson/node-fs-extra) - MIT
+[fs-extra@7.0.1](https://github.com/jprichardson/node-fs-extra) - MIT
+[fs-extra@8.1.0](https://github.com/jprichardson/node-fs-extra) - MIT
+[fs-extra@9.1.0](https://github.com/jprichardson/node-fs-extra) - MIT
+[fs.realpath@1.0.0](https://github.com/isaacs/fs.realpath) - ISC
+[function-bind@1.1.2](https://github.com/Raynos/function-bind) - MIT
+[get-caller-file@2.0.5](https://github.com/stefanpenner/get-caller-file) - ISC
+[get-intrinsic@1.3.0](https://github.com/ljharb/get-intrinsic) - MIT
+[get-proto@1.0.1](https://github.com/ljharb/get-proto) - MIT
+[get-stream@5.2.0](https://github.com/sindresorhus/get-stream) - MIT
+[github-slugger@2.0.0](https://github.com/Flet/github-slugger) - ISC
+[glob-parent@6.0.2](https://github.com/gulpjs/glob-parent) - ISC
+[glob@7.2.3](https://github.com/isaacs/node-glob) - ISC
+[global-agent@3.0.0](https://github.com/gajus/global-agent) - BSD-3-Clause
+[globals@17.13.0](https://github.com/sindresorhus/globals) - MIT
+[globalthis@1.0.4](https://github.com/ljharb/System.global) - MIT
+[gopd@1.2.0](https://github.com/ljharb/gopd) - MIT
+[got@11.8.6](https://github.com/sindresorhus/got) - MIT
+[graceful-fs@4.2.11](https://github.com/isaacs/node-graceful-fs) - ISC
+[has-flag@4.0.0](https://github.com/sindresorhus/has-flag) - MIT
+[has-property-descriptors@1.0.2](https://github.com/inspect-js/has-property-descriptors) - MIT
+[has-symbols@1.1.0](https://github.com/inspect-js/has-symbols) - MIT
+[has-tostringtag@1.0.2](https://github.com/inspect-js/has-tostringtag) - MIT
+[hashery@1.5.1](https://github.com/jaredwray/hashery) - MIT
+[hasown@2.0.4](https://github.com/inspect-js/hasOwn) - MIT
+[he@1.2.0](https://github.com/mathiasbynens/he) - MIT
+[highlight.js@11.12.0](https://github.com/highlightjs/highlight.js) - BSD-3-Clause
+[hookified@1.15.1](https://github.com/jaredwray/hookified) - MIT
+[hookified@2.2.0](https://github.com/jaredwray/hookified) - MIT
+[hosted-git-info@4.1.0](https://github.com/npm/hosted-git-info) - ISC
+[http-cache-semantics@4.3.0](https://github.com/kornelski/http-cache-semantics) - BSD-2-Clause
+[http-errors@2.0.1](https://github.com/jshttp/http-errors) - MIT
+[http-proxy-agent@7.0.2](https://github.com/TooTallNate/proxy-agents) - MIT
+[http2-wrapper@1.0.3](https://github.com/szmarczak/http2-wrapper) - MIT
+[https-proxy-agent@7.0.6](https://github.com/TooTallNate/proxy-agents) - MIT
+[iconv-lite@0.7.3](https://github.com/pillarjs/iconv-lite) - MIT
+[ignore@5.3.2](https://github.com/kaelzhang/node-ignore) - MIT
+[ignore@7.0.13](https://github.com/kaelzhang/node-ignore) - MIT
+[imurmurhash@0.1.4](https://github.com/jensyt/imurmurhash-js) - MIT
+[inflight@1.0.6](https://github.com/npm/inflight) - ISC
+[inherits@2.0.4](https://github.com/isaacs/inherits) - ISC
+[ipaddr.js@1.9.1](https://github.com/whitequark/ipaddr.js) - MIT
+[is-docker@3.0.0](https://github.com/sindresorhus/is-docker) - MIT
+[is-extglob@2.1.1](https://github.com/jonschlinkert/is-extglob) - MIT
+[is-fullwidth-code-point@3.0.0](https://github.com/sindresorhus/is-fullwidth-code-point) - MIT
+[is-glob@4.0.3](https://github.com/micromatch/is-glob) - MIT
+[is-in-ssh@1.0.0](https://github.com/sindresorhus/is-in-ssh) - MIT
+[is-inside-container@1.0.0](https://github.com/sindresorhus/is-inside-container) - MIT
+[is-promise@4.0.0](https://github.com/then/is-promise) - MIT
+[is-wsl@3.1.1](https://github.com/sindresorhus/is-wsl) - MIT
+[isarray@1.0.0](https://github.com/juliangruber/isarray) - MIT
+[isbinaryfile@4.0.10](https://github.com/gjtorikian/isBinaryFile) - MIT
+[isbinaryfile@5.0.7](https://github.com/gjtorikian/isBinaryFile) - MIT
+[isexe@2.0.0](https://github.com/isaacs/isexe) - ISC
+[isexe@3.1.5](https://github.com/isaacs/isexe) - BlueOak-1.0.0
+[isexe@4.0.0](https://github.com/isaacs/isexe) - BlueOak-1.0.0
+[jake@10.9.4](https://github.com/jakejs/jake) - Apache-2.0
+[jiti@2.7.0](https://github.com/unjs/jiti) - MIT
+[js-yaml@4.3.2](https://github.com/nodeca/js-yaml) - MIT
+[json-buffer@3.0.1](https://github.com/dominictarr/json-buffer) - MIT
+[json-schema-traverse@0.4.1](https://github.com/epoberezkin/json-schema-traverse) - MIT
+[json-schema-traverse@1.0.0](https://github.com/epoberezkin/json-schema-traverse) - MIT
+[json-stable-stringify-without-jsonify@1.0.1](https://github.com/samn/json-stable-stringify) - MIT
+[json-stringify-safe@5.0.1](https://github.com/isaacs/json-stringify-safe) - ISC
+[json5@2.2.3](https://github.com/json5/json5) - MIT
+[jsonc-parser@3.3.1](https://github.com/microsoft/node-jsonc-parser) - MIT
+[jsonfile@4.0.0](https://github.com/jprichardson/node-jsonfile) - MIT
+[jsonfile@6.2.1](https://github.com/jprichardson/node-jsonfile) - MIT
+[keyv@4.5.4](https://github.com/jaredwray/keyv) - MIT
+[keyv@5.6.0](https://github.com/jaredwray/keyv) - MIT
+[lazy-val@1.0.5](https://github.com/develar/lazy-val) - MIT
+[levn@0.4.1](https://github.com/gkz/levn) - MIT
+[locate-path@6.0.0](https://github.com/sindresorhus/locate-path) - MIT
+[lodash@4.18.1](https://github.com/lodash/lodash) - MIT
+[longest-streak@3.1.0](https://github.com/wooorm/longest-streak) - MIT
+[lowercase-keys@2.0.0](https://github.com/sindresorhus/lowercase-keys) - MIT
+[lru-cache@6.0.0](https://github.com/isaacs/node-lru-cache) - ISC
+[markdown-table@3.0.4](https://github.com/wooorm/markdown-table) - MIT
+[marked@18.1.1](https://github.com/markedjs/marked) - MIT
+[matcher@3.0.0](https://github.com/sindresorhus/matcher) - MIT
+[math-intrinsics@1.1.0](https://github.com/es-shims/math-intrinsics) - MIT
+[mdast-util-find-and-replace@3.0.3](https://github.com/syntax-tree/mdast-util-find-and-replace) - MIT
+[mdast-util-from-markdown@2.1.0](https://github.com/syntax-tree/mdast-util-from-markdown) - MIT
+[mdast-util-frontmatter@2.0.1](https://github.com/syntax-tree/mdast-util-frontmatter) - MIT
+[mdast-util-gfm-autolink-literal@2.0.1](https://github.com/syntax-tree/mdast-util-gfm-autolink-literal) - MIT
+[mdast-util-gfm-footnote@2.1.0](https://github.com/syntax-tree/mdast-util-gfm-footnote) - MIT
+[mdast-util-gfm-strikethrough@2.0.1](https://github.com/syntax-tree/mdast-util-gfm-strikethrough) - MIT
+[mdast-util-gfm-table@2.0.0](https://github.com/syntax-tree/mdast-util-gfm-table) - MIT
+[mdast-util-gfm-task-list-item@2.0.0](https://github.com/syntax-tree/mdast-util-gfm-task-list-item) - MIT
+[mdast-util-gfm@3.1.0](https://github.com/syntax-tree/mdast-util-gfm) - MIT
+[mdast-util-phrasing@4.1.0](https://github.com/syntax-tree/mdast-util-phrasing) - MIT
+[mdast-util-to-markdown@2.2.0](https://github.com/syntax-tree/mdast-util-to-markdown) - MIT
+[mdast-util-to-string@4.0.0](https://github.com/syntax-tree/mdast-util-to-string) - MIT
+[mdn-data@2.37.2](https://github.com/mdn/data) - CC0-1.0
+[media-typer@1.1.1](https://github.com/jshttp/media-typer) - MIT
+[merge-descriptors@2.0.0](https://github.com/sindresorhus/merge-descriptors) - MIT
+[micromark-core-commonmark@2.0.4](https://github.com/micromark/micromark/tree/main/packages/micromark-core-commonmark) - MIT
+[micromark-extension-frontmatter@2.0.0](https://github.com/micromark/micromark-extension-frontmatter) - MIT
+[micromark-extension-gfm-autolink-literal@2.1.0](https://github.com/micromark/micromark-extension-gfm-autolink-literal) - MIT
+[micromark-extension-gfm-footnote@2.1.0](https://github.com/micromark/micromark-extension-gfm-footnote) - MIT
+[micromark-extension-gfm-strikethrough@2.1.0](https://github.com/micromark/micromark-extension-gfm-strikethrough) - MIT
+[micromark-extension-gfm-table@2.1.2](https://github.com/micromark/micromark-extension-gfm-table) - MIT
+[micromark-extension-gfm-tagfilter@2.0.0](https://github.com/micromark/micromark-extension-gfm-tagfilter) - MIT
+[micromark-extension-gfm-task-list-item@2.1.0](https://github.com/micromark/micromark-extension-gfm-task-list-item) - MIT
+[micromark-extension-gfm@3.0.0](https://github.com/micromark/micromark-extension-gfm) - MIT
+[micromark-factory-destination@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-factory-destination) - MIT
+[micromark-factory-label@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-factory-label) - MIT
+[micromark-factory-space@2.1.0](https://github.com/micromark/micromark/tree/main/packages/micromark-factory-space) - MIT
+[micromark-factory-title@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-factory-title) - MIT
+[micromark-factory-whitespace@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-factory-whitespace) - MIT
+[micromark-util-character@2.1.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-character) - MIT
+[micromark-util-chunked@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-chunked) - MIT
+[micromark-util-classify-character@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-classify-character) - MIT
+[micromark-util-combine-extensions@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-combine-extensions) - MIT
+[micromark-util-decode-numeric-character-reference@2.0.2](https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-numeric-character-reference) - MIT
+[micromark-util-decode-string@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-string) - MIT
+[micromark-util-edit-map@1.0.0](https://github.com/micromark/micromark/tree/main/packages/micromark-util-edit-map) - MIT
+[micromark-util-encode@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-encode) - MIT
+[micromark-util-html-tag-name@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-html-tag-name) - MIT
+[micromark-util-normalize-identifier@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-normalize-identifier) - MIT
+[micromark-util-resolve-all@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-resolve-all) - MIT
+[micromark-util-sanitize-uri@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-sanitize-uri) - MIT
+[micromark-util-subtokenize@2.1.0](https://github.com/micromark/micromark/tree/main/packages/micromark-util-subtokenize) - MIT
+[micromark-util-symbol@2.0.1](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol) - MIT
+[micromark-util-types@2.0.3](https://github.com/micromark/micromark/tree/main/packages/micromark-util-types) - MIT
+[micromark@4.0.3](https://github.com/micromark/micromark/tree/main/packages/micromark) - MIT
+[mime-db@1.52.0](https://github.com/jshttp/mime-db) - MIT
+[mime-db@1.54.0](https://github.com/jshttp/mime-db) - MIT
+[mime-types@2.1.35](https://github.com/jshttp/mime-types) - MIT
+[mime-types@3.0.2](https://github.com/jshttp/mime-types) - MIT
+[mime@2.6.0](https://github.com/broofa/mime) - MIT
+[mimic-response@1.0.1](https://github.com/sindresorhus/mimic-response) - MIT
+[mimic-response@3.1.0](https://github.com/sindresorhus/mimic-response) - MIT
+[minimatch@10.2.6](https://github.com/isaacs/minimatch) - BlueOak-1.0.0
+[minimatch@3.1.5](https://github.com/isaacs/minimatch) - ISC
+[minimatch@5.1.9](https://github.com/isaacs/minimatch) - ISC
+[minimatch@9.0.9](https://github.com/isaacs/minimatch) - ISC
+[minimist@1.2.8](https://github.com/minimistjs/minimist) - MIT
+[minipass@7.1.3](https://github.com/isaacs/minipass) - BlueOak-1.0.0
+[minizlib@3.1.0](https://github.com/isaacs/minizlib) - MIT
+[mkdirp@0.5.6](https://github.com/substack/node-mkdirp) - MIT
+[ms@2.1.3](https://github.com/vercel/ms) - MIT
+[natural-compare@1.4.0](https://github.com/litejs/natural-compare-lite) - MIT
+[negotiator@1.1.0](https://github.com/jshttp/negotiator) - MIT
+[node-abi@4.38.0](https://github.com/electron/node-abi) - MIT
+[node-addon-api@7.1.1](https://github.com/nodejs/node-addon-api) - MIT
+[node-api-version@0.2.1](https://github.com/timfish/node-api-version) - MIT
+[node-gyp@12.4.0](https://github.com/nodejs/node-gyp) - MIT
+[node-html-parser@6.1.13](https://github.com/taoqf/node-fast-html-parser) - MIT
+[node-int64@0.4.0](https://github.com/broofa/node-int64) - MIT
+[node-pty@1.1.0](https://github.com/microsoft/node-pty) - MIT
+[nopt@9.0.0](https://github.com/npm/nopt) - ISC
+[normalize-url@6.1.0](https://github.com/sindresorhus/normalize-url) - MIT
+[nq-studio@1.0.0](undefined) - GPL-3.0-only
+[nth-check@2.1.1](https://github.com/fb55/nth-check) - BSD-2-Clause
+[object-inspect@1.13.4](https://github.com/inspect-js/object-inspect) - MIT
+[object-keys@1.1.1](https://github.com/ljharb/object-keys) - MIT
+[on-finished@2.4.1](https://github.com/jshttp/on-finished) - MIT
+[once@1.4.0](https://github.com/isaacs/once) - ISC
+[open@11.0.4](https://github.com/sindresorhus/open) - MIT
+[optionator@0.9.4](https://github.com/gkz/optionator) - MIT
+[p-cancelable@2.1.1](https://github.com/sindresorhus/p-cancelable) - MIT
+[p-limit@3.1.0](https://github.com/sindresorhus/p-limit) - MIT
+[p-locate@5.0.0](https://github.com/sindresorhus/p-locate) - MIT
+[parseurl@1.3.3](https://github.com/pillarjs/parseurl) - MIT
+[path-exists@4.0.0](https://github.com/sindresorhus/path-exists) - MIT
+[path-is-absolute@1.0.1](https://github.com/sindresorhus/path-is-absolute) - MIT
+[path-key@3.1.1](https://github.com/sindresorhus/path-key) - MIT
+[path-to-regexp@8.4.2](https://github.com/pillarjs/path-to-regexp) - MIT
+[pe-library@0.4.1](https://github.com/jet2jet/pe-library-js) - MIT
+[picocolors@1.1.1](https://github.com/alexeyraspopov/picocolors) - ISC
+[picomatch@2.3.2](https://github.com/micromatch/picomatch) - MIT
+[picomatch@4.0.7](https://github.com/micromatch/picomatch) - MIT
+[pkijs@3.4.2](https://github.com/PeculiarVentures/PKI.js) - BSD-3-Clause
+[plist@3.1.0](https://github.com/TooTallNate/node-plist) - MIT
+[postject@1.0.0-alpha.6](https://github.com/nodejs/postject) - MIT
+[powershell-utils@0.2.1](https://github.com/sindresorhus/powershell-utils) - MIT
+[prelude-ls@1.2.1](https://github.com/gkz/prelude-ls) - MIT
+[proc-log@6.1.0](https://github.com/npm/proc-log) - ISC
+[process-nextick-args@2.0.1](https://github.com/calvinmetcalf/process-nextick-args) - MIT
+[progress@2.0.3](https://github.com/visionmedia/node-progress) - MIT
+[promise-retry@2.0.1](https://github.com/IndigoUnited/node-promise-retry) - MIT
+[proper-lockfile@4.1.2](https://github.com/moxystudio/node-proper-lockfile) - MIT
+[proxy-addr@2.0.8](https://github.com/jshttp/proxy-addr) - MIT
+[pump@3.0.4](https://github.com/mafintosh/pump) - MIT
+[punycode@2.3.1](https://github.com/mathiasbynens/punycode.js) - MIT
+[pvtsutils@1.3.6](https://github.com/PeculiarVentures/pvtsutils) - MIT
+[pvutils@1.2.0](https://github.com/PeculiarVentures/pvutils) - MIT
+[qified@0.10.1](https://github.com/jaredwray/qified) - MIT
+[qs@6.16.1](https://github.com/ljharb/qs) - BSD-3-Clause
+[quick-lru@5.1.1](https://github.com/sindresorhus/quick-lru) - MIT
+[range-parser@1.3.0](https://github.com/jshttp/range-parser) - MIT
+[raw-body@3.0.2](https://github.com/stream-utils/raw-body) - MIT
+[read-binary-file-arch@1.0.6](https://github.com/samuelmaddock/read-binary-file-arch) - MIT
+[readable-stream@2.3.8](https://github.com/nodejs/readable-stream) - MIT
+[regenerator-runtime@0.13.11](https://github.com/facebook/regenerator/tree/main/packages/runtime) - MIT
+[request-light@0.7.0](https://github.com/microsoft/node-request-light) - MIT
+[require-directory@2.1.1](https://github.com/troygoode/node-require-directory) - MIT
+[require-from-string@2.0.2](https://github.com/floatdrop/require-from-string) - MIT
+[resedit@1.7.2](https://github.com/jet2jet/resedit-js) - MIT
+[resolve-alpn@1.2.1](https://github.com/szmarczak/resolve-alpn) - MIT
+[responselike@2.0.1](https://github.com/sindresorhus/responselike) - MIT
+[retry@0.12.0](https://github.com/tim-kos/node-retry) - MIT
+[rimraf@2.6.3](https://github.com/isaacs/rimraf) - ISC
+[roarr@2.15.4](https://github.com/gajus/roarr) - BSD-3-Clause
+[router@2.2.0](https://github.com/pillarjs/router) - MIT
+[run-applescript@7.1.0](https://github.com/sindresorhus/run-applescript) - MIT
+[safe-buffer@5.1.2](https://github.com/feross/safe-buffer) - MIT
+[safer-buffer@2.1.2](https://github.com/ChALkeR/safer-buffer) - MIT
+[sanitize-filename@1.6.4](https://github.com/parshap/node-sanitize-filename) - WTFPL OR ISC
+[sax@1.6.1](https://github.com/isaacs/sax-js) - BlueOak-1.0.0
+[semver-compare@1.0.0](https://github.com/substack/semver-compare) - MIT
+[semver@5.7.2](https://github.com/npm/node-semver) - ISC
+[semver@6.3.1](https://github.com/npm/node-semver) - ISC
+[semver@7.7.4](https://github.com/npm/node-semver) - ISC
+[semver@7.8.5](https://github.com/npm/node-semver) - ISC
+[send@1.2.1](https://github.com/pillarjs/send) - MIT
+[serialize-error@7.0.1](https://github.com/sindresorhus/serialize-error) - MIT
+[serve-static@2.2.1](https://github.com/expressjs/serve-static) - MIT
+[setprototypeof@1.2.0](https://github.com/wesleytodd/setprototypeof) - ISC
+[shebang-command@2.0.0](https://github.com/kevva/shebang-command) - MIT
+[shebang-regex@3.0.0](https://github.com/sindresorhus/shebang-regex) - MIT
+[side-channel-list@1.0.1](https://github.com/ljharb/side-channel-list) - MIT
+[side-channel-map@1.0.1](https://github.com/ljharb/side-channel-map) - MIT
+[side-channel-weakmap@1.0.2](https://github.com/ljharb/side-channel-weakmap) - MIT
+[side-channel@1.1.1](https://github.com/ljharb/side-channel) - MIT
+[signal-exit@3.0.7](https://github.com/tapjs/signal-exit) - ISC
+[simple-update-notifier@2.0.0](https://github.com/alexbrazier/simple-update-notifier) - MIT
+[source-map-js@1.2.2](https://github.com/7rulnik/source-map-js) - BSD-3-Clause
+[source-map-support@0.5.21](https://github.com/evanw/node-source-map-support) - MIT
+[source-map@0.6.1](https://github.com/mozilla/source-map) - BSD-3-Clause
+[sprintf-js@1.1.3](https://github.com/alexei/sprintf.js) - BSD-3-Clause
+[stat-mode@1.0.0](https://github.com/TooTallNate/stat-mode) - MIT
+[statuses@2.0.2](https://github.com/jshttp/statuses) - MIT
+[string-width@4.2.3](https://github.com/sindresorhus/string-width) - MIT
+[string_decoder@1.1.1](https://github.com/nodejs/string_decoder) - MIT
+[strip-ansi@6.0.1](https://github.com/chalk/strip-ansi) - MIT
+[style-mod@4.1.4](git+https://code.haverbeke.berlin/marijn/style-mod) - MIT
+[sumchecker@3.0.1](https://github.com/malept/sumchecker) - Apache-2.0
+[supports-color@7.2.0](https://github.com/chalk/supports-color) - MIT
+[tar@7.5.22](https://github.com/isaacs/node-tar) - BlueOak-1.0.0
+[temp-file@3.4.0](https://github.com/develar/temp-file) - MIT
+[temp@0.9.4](https://github.com/bruce/node-temp) - MIT
+[tiny-async-pool@1.3.0](https://github.com/rxaviers/async-pool) - MIT
+[tinyglobby@0.2.17](https://github.com/SuperchupuDev/tinyglobby) - MIT
+[tmp-promise@3.0.3](https://github.com/benjamingr/tmp-promise) - MIT
+[tmp@0.2.7](https://github.com/raszi/node-tmp) - MIT
+[toidentifier@1.0.1](https://github.com/component/toidentifier) - MIT
+[truncate-utf8-bytes@1.0.2](https://github.com/parshap/truncate-utf8-bytes) - WTFPL
+[ts-api-utils@2.5.0](https://github.com/JoshuaKGoldberg/ts-api-utils) - MIT
+[tslib@2.8.1](https://github.com/Microsoft/tslib) - 0BSD
+[type-check@0.4.0](https://github.com/gkz/type-check) - MIT
+[type-fest@0.13.1](https://github.com/sindresorhus/type-fest) - (MIT OR CC0-1.0)
+[type-is@2.1.0](https://github.com/jshttp/type-is) - MIT
+[typescript-eslint@8.72.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[typescript-language-server@6.0.2](https://github.com/typescript-language-server/typescript-language-server) - Apache-2.0
+[typescript@4.9.5](https://github.com/Microsoft/TypeScript) - Apache-2.0
+[typescript@6.0.3](https://github.com/microsoft/TypeScript) - Apache-2.0
+[undici-types@7.24.6](https://github.com/nodejs/undici) - MIT
+[undici@6.29.1](https://github.com/nodejs/undici) - MIT
+[undici@7.30.1](https://github.com/nodejs/undici) - MIT
+[unist-util-is@6.0.1](https://github.com/syntax-tree/unist-util-is) - MIT
+[unist-util-stringify-position@4.0.0](https://github.com/syntax-tree/unist-util-stringify-position) - MIT
+[unist-util-visit-parents@6.0.2](https://github.com/syntax-tree/unist-util-visit-parents) - MIT
+[unist-util-visit@5.1.0](https://github.com/syntax-tree/unist-util-visit) - MIT
+[universalify@0.1.2](https://github.com/RyanZim/universalify) - MIT
+[universalify@2.0.1](https://github.com/RyanZim/universalify) - MIT
+[unpipe@1.0.0](https://github.com/stream-utils/unpipe) - MIT
+[unzipper@0.12.5](https://github.com/ZJONSSON/node-unzipper) - MIT
+[uri-js@4.4.1](https://github.com/garycourt/uri-js) - BSD-2-Clause
+[utf8-byte-length@1.0.5](https://github.com/parshap/utf8-byte-length) - (WTFPL OR MIT)
+[util-deprecate@1.0.2](https://github.com/TooTallNate/util-deprecate) - MIT
+[vary@1.1.2](https://github.com/jshttp/vary) - MIT
+[vscode-css-languageservice@6.3.10](https://github.com/Microsoft/vscode-css-languageservice) - MIT
+[vscode-html-languageservice@5.6.2](https://github.com/Microsoft/vscode-html-languageservice) - MIT
+[vscode-json-languageservice@5.7.2](https://github.com/Microsoft/vscode-json-languageservice) - MIT
+[vscode-jsonrpc@9.0.3](https://github.com/Microsoft/vscode-languageserver-node) - MIT
+[vscode-langservers-extracted@4.10.0](https://github.com/hrsh7th/vscode-langservers-extracted) - MIT
+[vscode-languageserver-protocol@3.18.4](https://github.com/Microsoft/vscode-languageserver-node) - MIT
+[vscode-languageserver-textdocument@1.0.16](https://github.com/Microsoft/vscode-languageserver-node) - MIT
+[vscode-languageserver-types@3.17.5](https://github.com/Microsoft/vscode-languageserver-node) - MIT
+[vscode-languageserver-types@3.18.4](https://github.com/Microsoft/vscode-languageserver-node) - MIT
+[vscode-languageserver@10.1.2](https://github.com/Microsoft/vscode-languageserver-node) - MIT
+[vscode-markdown-languageservice@0.5.0](https://github.com/microsoft/vscode-markdown-languageservice) - MIT
+[vscode-nls@5.2.0](https://github.com/Microsoft/vscode-nls) - MIT
+[vscode-uri@3.2.0](https://github.com/microsoft/vscode-uri) - MIT
+[w3c-keyname@2.2.8](https://github.com/marijnh/w3c-keyname) - MIT
+[webcrypto-core@1.9.2](https://github.com/PeculiarVentures/webcrypto-core) - MIT
+[which@2.0.2](https://github.com/isaacs/node-which) - ISC
+[which@5.0.0](https://github.com/npm/node-which) - ISC
+[which@6.0.1](https://github.com/npm/node-which) - ISC
+[word-wrap@1.2.5](https://github.com/jonschlinkert/word-wrap) - MIT
+[wrap-ansi@7.0.0](https://github.com/chalk/wrap-ansi) - MIT
+[wrappy@1.0.2](https://github.com/npm/wrappy) - ISC
+[wsl-utils@1.0.1](https://github.com/sindresorhus/wsl-utils) - MIT
+[xmlbuilder@15.1.1](https://github.com/oozcitak/xmlbuilder-js) - MIT
+[y18n@5.0.8](https://github.com/yargs/y18n) - ISC
+[yallist@4.0.0](https://github.com/isaacs/yallist) - ISC
+[yallist@5.0.0](https://github.com/isaacs/yallist) - BlueOak-1.0.0
+[yargs-parser@21.1.1](https://github.com/yargs/yargs-parser) - ISC
+[yargs@17.7.3](https://github.com/yargs/yargs) - MIT
+[yocto-queue@0.1.0](https://github.com/sindresorhus/yocto-queue) - MIT
+[zwitch@2.0.4](https://github.com/wooorm/zwitch) - MIT
 
-    Copyright (c) Microsoft Corporation.
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE
-└─ monaco-editor@0.53.0
-   ├─ licenses: MIT
-   ├─ repository: https://github.com/microsoft/monaco-editor
-   ├─ publisher: Microsoft Corporation
-   ├─ name: monaco-editor
-   ├─ version: 0.53.0
-   ├─ licenseFile: node_modules/monaco-editor/LICENSE
-   ├─ path: NQ-Studio/node_modules/monaco-editor
-   ├─ licenseText: The MIT License (MIT)
-
-Copyright (c) 2016 - present Microsoft Corporation
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-   └─ copyright: Copyright (c) 2016 - present Microsoft Corporation
