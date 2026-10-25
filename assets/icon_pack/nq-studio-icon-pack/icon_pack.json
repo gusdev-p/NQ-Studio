@@ -17,6 +17,7 @@
         "success": "icons/success.svg",
         "error": "icons/error.svg",
         "warning": "icons/warn.svg",
-        "info": "icons/info.svg"
+        "info": "icons/info.svg",
+        "terminal": "icons/terminal.svg"
     }
 }
