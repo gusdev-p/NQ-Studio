@@ -6,9 +6,16 @@
 </p>
 
 <p align="center">
+<<<<<<< HEAD
     <img src="https://img.shields.io/github/stars/gusdev-p/NQ-Studio">
     <img src="https://img.shields.io/github/license/gusdev-p/NQ-Studio">
     <img src="https://img.shields.io/badge/version-0.6.0--alpha-blue">
+=======
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome">
+    <img src="https://img.shields.io/badge/version-0.6.1--alpha-blue" alt="Version 0.6.1-alpha">
+    <img src="https://img.shields.io/github/license/gusdev-p/NQ-Studio" alt="License GPL-3.0">
+    <img src="https://img.shields.io/badge/status-unstable-yellow" alt="This version is unstable!">
+>>>>>>> 83cf12c (new update: 0.6.1-alpha)
 </p>
 
 <p align="center">
