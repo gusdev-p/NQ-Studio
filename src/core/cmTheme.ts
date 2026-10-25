@@ -34,12 +34,12 @@ const STYLE_TAGS = {
     attributeName:      t.attributeName,
 } as const;
 
-export function buildCMTheme(config: NQThemeConfig): Extension {
+export async function buildCMTheme(config: NQThemeConfig): Promise<Extension> {
     const { settings: s, styles, variant } = config;
 
     const view = EditorView.theme({
-        "&": { color: s.foreground, backgroundColor: s.background },
-        ".cm-content": { caretColor: s.caret },
+        "&": { color: s.foreground, backgroundColor: s.background, fontSize: `${await window.nq.getSetting("Editor", "Font Size")}px` },
+        ".cm-content": { caretColor: s.caret, fontFamily: `'${await window.nq.getSetting("Editor", "Font Family")}', monospace` },
         ".cm-cursor, .cm-dropCursor": { borderLeftColor: s.caret },
         "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": {
             backgroundColor: s.selection,
