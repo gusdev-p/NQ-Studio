@@ -5,7 +5,31 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "node esbuild.mjs",
-    "preview": "electron ."
+    "preview": "electron .",
+    "pack:dir": "npm run build && electron-builder --dir",
+    "pack:linux": "npm run build && electron-builder --linux AppImage deb"
+  },
+  "build": {
+    "appId": "dev.gusdev.nq-studio",
+    "productName": "NQ-Studio",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "maintainer": "Gusdev-p",
+      "icon": "assets/logo.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development"
+    }
   },
   "keywords": [
     "ide",
@@ -24,7 +48,7 @@
     "programming",
     "nq-studio"
   ],
-  "author": "GusDev",
+  "author": "GusDev-p",
   "license": "GPL-3.0-only",
   "type": "commonjs",
   "devDependencies": {
@@ -37,10 +61,10 @@
     "@xterm/addon-fit": "^0.11.0",
     "@xterm/xterm": "^6.0.0",
     "electron": "^42.7.1",
+    "electron-builder": "^26.15.3",
     "esbuild": "^0.28.1",
     "eslint": "^10.8.0",
     "globals": "^17.9.0",
-    "node-pty": "^1.1.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "typescript-language-server": "^6.0.1"
@@ -61,11 +85,15 @@
     "@lezer/highlight": "^1.2.5",
     "@platformos/lang-jsonc": "^0.1.0",
     "codemirror": "^6.0.2",
+    "codemirror-lang-makefile": "^0.1.1",
     "dompurify": "^3.4.12",
     "express": "^5.2.1",
+    "highlight.js": "^11.12.0",
     "jsonc-parser": "^3.3.1",
     "marked": "^18.0.7",
+    "node-pty": "^1.1.0",
     "open": "^11.0.0",
+    "vscode-langservers-extracted": "^4.10.0",
     "vscode-languageserver-protocol": "^3.18.4"
   }
 }
