@@ -1,46 +1,85 @@
 {
+    // Console (terminal) Setttings
     "Console": {
+        // The console font
         "Font Family": "JetBrainsMono Nerd Font",
+
+        // The console font size
         "Font Size": 14,
+
+        // The default shell. Ex.: bash
         "Shell": {
+            // The default shell for Linux-based systems
             "Linux": "zsh",
+            // The default shell for windows systems
             "Windows": "powershell.exe"
         }
     },
+    // Theme settings
     "Themes": {
+        // Dark theme
         "Dark": {
+            // The variant to the editor theme match well
             "Variant": "dark",
+            // The theme pallete
             "Theme": {
-                "--backgroundColor": "#222",
-                "--surfaceColor": "#333",
-                "--onSurfaceColor": "#444",
-                "--fontColor": "#f1f1f1",
-                "--borderColor": "#666",
-                "--accentColor": "#AD344CFF"
+                "--backgroundColor": "#222", // background color
+                "--surfaceColor": "#333", // surface color (on top of the background)
+                "--onSurfaceColor": "#444", // on surface color (on top of the surface)
+                "--fontColor": "#f1f1f1", // font color
+                "--borderColor": "#666", // border color
+                "--linkColor": "#79b8ff", // link color
+                "--accentColor": "#AD344CFF" // optional: accent color
             }
         },
+        // Light theme
         "Light": {
+            // The variant to the editor theme match well
             "Variant": "light",
+            // The theme pallete
             "Theme": {
-                "--backgroundColor": "#bdbdbd",
-                "--surfaceColor": "#9f9f9f",
-                "--onSurfaceColor": "#adadad",
-                "--fontColor": "#1c1c1c",
-                "--borderColor": "#838383",
-                "--accentColor": "#AD344CFF"
+                "--backgroundColor": "#bdbdbd", // background color
+                "--surfaceColor": "#9f9f9f", // surface color (on top of the background)
+                "--onSurfaceColor": "#adadad", // on surface color (on top of the surface)
+                "--fontColor": "#1c1c1c", // font color
+                "--borderColor": "#838383", // border color
+                "--linkColor": "#1c71d8", // link color
+                "--accentColor": "#AD344CFF" // optional: accent color
             }
         },
+        // The active theme
+        // If you want an automatic selection, use the 'auto' value.
         "Active Theme": "Dark"
     },
+    // The icon pack
+    // Note: If your icon pack don't exists, it will fall into the fallback icons.
     "Icon Pack": "nq-studio-icon-pack",
+    // Editor settings
     "Editor": {
+        // Editor font
         "Font Family": "JetBrainsMono Nerd",
+        // Editor font size
         "Font Size": 14,
+        // Editor theme
+        // If is 'auto' the theme will be based on the 'variant' value of the IDE theme
         "Default Theme": "auto",
+        // Editor auto save
         "Auto Save": true,
+        // Editor auto save delay
+        // Note: If the auto save option is off, this will make no changes
         "Auto Save Delay": 1000
     },
+    // File management settings
     "File Management": {
+        // Ask permission after delete a tab, or a file (folders included!)
         "Ask Permission": true
+    },
+    // Input settings
+    // Note: only one key for the input ex.: ctrl+f6 (wrong); f6 (right)
+    "Input": {
+      // key for execute the main target from the makefile
+      "Run main target": "f6",
+      // key for execute the active file
+      "Run active file": "f5"
     }
 }
