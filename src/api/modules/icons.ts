@@ -60,7 +60,6 @@ export class IconsHandler {
     }
 
     private getIcon(filePath: string, isPath: boolean = true): string {
-        console.log(this.icons);
         if (!this. icons) {
             console.error("No icon pack defined, probably the pack is invalid or is missing some essential icon. Return to fallback icon...");
             return path.resolve("assets/icon_pack/generic_file.svg");
@@ -102,6 +101,7 @@ export class IconsHandler {
                     return path.join(this.icon_pack_path, this.icons.css ?? this.icons.generic_file);
                 }
 
+                case ".jsonc":
                 case ".json": {
                     return path.join(this.icon_pack_path, this.icons.json ?? this.icons.generic_file);
                 }
