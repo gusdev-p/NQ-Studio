@@ -1,53 +1,56 @@
 # Changelog 📝
 
-## 0.6.0-alpha Dev Build 🧑‍💻
+## 0.6.1-alpha — Dev Build 🧑‍💻
 
-### TypeScript LSP Update
+### UX & Refactoring Update
 
-> ⚠️ Development build - this version is currently available on the `dev` branch.
+> ⚠️ **Development build** — This version is currently available on the `dev` branch.
 
-### What was added? ✨
+### ✨ New Features
 
-* 🎨 `New UI`: UI changes to make it look prettier 💅
+- 🎨 **Preview Toolbars:** Every preview now has its own toolbar, featuring the file path, a reload button, and a close button.
 
-* 🖼️ `Support for .svg and .gif`: You can now view vector images and GIFs!
+- 🔔 **IDE Events:** Say goodbye to those annoying `document.dispatchEvent(...)` calls! You can now trigger IDE events directly, such as `OpenFile`.
 
-* 📁 `Icons added`: No more boring emojis! These new .svg icons took me an eternity to create...
+- 📄 **JSONC Support:** JSON with comments is finally here! Files with the `.jsonc` extension can now include comments.
 
-* 🖥️ `TypeScript Support` : TypeScript is finally here! JavaScript is still supported, of course ;)
+- ⚙️ **Settings:** Customize NQ-Studio with the first set of configurable options. More customization is planned for future updates.
 
-* ☕ `TypeScript LSP (Language Server Protocol) Support` : Now the editor actually knows what you are writing!
+- 💻 **Notification Manager:** A new module for displaying notifications. It's still under testing, but here's the best part: **this is the first module developed entirely within NQ-Studio!**
 
-* ⚙️ `IDE lifecycle events` : Now NQ-Studio knows when the IDE is booting or when you want close!
+- 🖥️ **Automatic Tab Updates:** Open tabs without unsaved changes are now automatically refreshed to prevent outdated file contents.
 
-* 📖 `File Tabs` : Now you can open more than 1 file per time!
+- 🌐 **HTML Language Server:** Added HTML language server support to improve your front-end development experience.
 
-* ⏱️ `Tab persistence` : Your tabs are saved each time you close the IDE.
+- 🎨 **CSS Language Server:** CSS language server integration makes working with stylesheets easier and more convenient.
 
-### Changes 🔧
+- 🖱️ **LSP Hover Documentation:** Hover over functions and other supported symbols to view documentation directly in the editor.
 
-* 💻 `Editor` : While developing the update I developed HATE for monaco-editor. So I switched it back ;)
+- 🖼️ **Build Logo & Improved Logging:** The build process now displays the NQ-Studio ASCII logo and provides more informative logs.
 
-* 🌐 `API calls`: All API calls (yes, every single one) have been refactored and are now organized into modules! (You're welcome, future me.)
+### 🔧 Improvements
 
-* 📄 `Renderer (Refactored)` : The [renderer.ts](./src/core/renderer.ts) was doing more than a simple renderer... So refactored!
+- 📂 **Tree View Refactoring:** Completely reworked [`treeViewManager.ts`](./src/core/ui/treeView/treeViewManager.ts) to improve its structure and maintainability.
 
-### Incomplete features 🚧
+### 🚧 Work in Progress
 
-* ⚙️ `Properties tab`: Just needs some fine-tuning... Don't worry! I promise that in the next update this will be finally done :)
+- ⚙️ **Properties Tab:** This feature was nearly complete, but was accidentally removed during the Tree View refactoring. It'll be back in the next update, I promise!
 
-* 📄 `Makefile tab`: For now, you can open Makefiles and execute their targets! May I will update this part in the next update ;)
+- 📄 **Makefile Tab:** Still needs some fine-tuning, but it can already detect and display the variables found in your Makefile.
 
-### Bug fixes 👾
+- 🛠️ **Building NQ-Studio:** You can now build NQ-Studio for AppImage and Debian package formats. These builds are experimental and are not officially supported yet.
 
-* Bug fixed in `setImagePreview()` - [secondaryBar.ts](./src/core/ui/secondaryBar.ts): The image path contained a duplicated root path.
+### 👾 Bug Fixes
 
-* Bug fixes across all `API calls` - [API modules](./src/api/modules): Some API calls were returning things that didn't make any sense (thanks, past me), such as functions that were supposed to return a boolean but returned nothing instead.
+- 📑 **File Tabs** ([`fileTabs.ts`](./src/core/ui/fileTabs.ts)): Fixed issues related to tab state management and buffers.
 
-* Bug fixed in all the `built-in previews` - [secondaryBar.ts](./src/core/ui/secondaryBar.ts): Every time you save a file the Markdown preview opens for nothing.
+- 📄 **File Bar** ([`fileBar.ts`](./src/core/ui/fileBar.ts)): Fixed issues affecting file bar behavior, including HTML preview execution.
 
-* Bug fixed in the `HTML preview` - [secondaryBar.ts](./src/core/ui/secondaryBar.ts): If you want to check your file directly (without any server) it works fine, but if you use any server the preview just wont work.
+- 📝 **Editor Diagnostics** ([`nqEditor.ts`](./src/core/ui/renderer/nqEditor.ts)): Resolved an issue where editor errors would unexpectedly disappear while coding.
 
-### Notes 📋
+- 📂 **Tree View** ([`treeViewManager.ts`](./src/core/ui/treeView/treeViewManager.ts)): Fixed an issue that prevented the project root from updating correctly when switching projects.
 
-NQ-Studio (especially the `dev` branch) is under development, so some features mentioned in `What was added?` may be incomplete or may not work correctly.
+### 📋 Notes
+
+NQ-Studio, especially the `dev` branch, is still under active development. Some features listed above may be incomplete, unstable, or behave unexpectedly.
+
