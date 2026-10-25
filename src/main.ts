@@ -83,7 +83,7 @@ function createBootstrap() {
         console.log("[NQ]: did-finish-load triggered")
 
         console.log("[NQ]: Starting LSP (Language Server Protocol)...")
-        lsp.start(window);
+        lsp.start(window, "typescript", ideHandler.globalRoot);
 
         console.log("[NQ]: Sending BOOT call");
         window.webContents.send("nq:boot");
@@ -111,18 +111,24 @@ ipcMain.handle("openDevTools", () => {
     win.webContents.openDevTools();
 });
 
-ipcMain.on("lsp:open", (_, path, text, languageId) => {
-    lsp.openFile(path, text, languageId);
+ipcMain.on("lsp:open", async (_, path, text, languageId, type = "typescript") => {
+    await lsp.switchTo(win, type, ideHandler.globalRoot);
+
+    lsp.openFile(path, text, languageId, type);
 });
 
-ipcMain.on("lsp:change", (_, path, version, text) => {
-    lsp.changeFile(path, version, text);
-})
+ipcMain.on("lsp:change", (_, path, version, text, type = "typescript") => {
+    lsp.changeFile(path, version, text, type);
+});
 
-ipcMain.handle("lsp:completion", async (_, path, line, character) => {
-    return await lsp.completion(
-        path,
-        line,
-        character
-    );
+ipcMain.handle("lsp:completion", async (_, path, line, character, type = "typescript") => {
+    return await lsp.completion(path, line, character, type);
+});
+
+ipcMain.handle("lsp:hover", async (_, path: string, line: number, character: number, type = "typescript") => {
+    return await lsp.hover(path, line, character, type);
+});
+
+ipcMain.handle("lsp:kill", (_, type?: "typescript" | "html" | "css") => {
+    lsp.stop(type);
 });
