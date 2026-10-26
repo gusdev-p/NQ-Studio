@@ -24,10 +24,13 @@ export class DownBar {
         langTitle.id = "langTitle";
         langTitle.style.color = "var(--fontColor)";
 
-
         this.langTitle = langTitle;
         this.bar = downBar;
 
+        const spacer = document.createElement("div");
+        spacer.id = "down-bar-spacer";
+        spacer.style.flex = "1";
+        this.bar.appendChild(spacer);
         this.bar.appendChild(this.langTitle);
         this.root.appendChild(this.bar);
 
