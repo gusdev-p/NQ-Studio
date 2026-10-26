@@ -1,4 +1,5 @@
 export const OpenRoot = (path: string) => {
+    console.log("troca de root!");
     document.dispatchEvent(new CustomEvent("openRoot", {
         detail: {
             path: path
