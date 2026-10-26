@@ -39,8 +39,8 @@ export class SettingsManager {
     private path!: string
     private config!: any
 
-    constructor() {
-        console.log("-=- Settings-manager boot! -=-");
+    constructor(private verbose: boolean = false) {
+        this.verbose ?? console.log("-=- Settings-manager boot! -=-");
     }
 
     /**
@@ -53,7 +53,7 @@ export class SettingsManager {
         try {
             this.config = parse(fs.readFileSync(path, "utf-8"));
             this.path = path;
-            console.log(`Settings-manager log -=-
+            this.verbose ?? console.log(`Settings-manager log -=-
 Setting imported:
 ----------------->
 ${JSON.stringify(this.config, null, 4)}
@@ -94,7 +94,7 @@ ${JSON.stringify(this.config, null, 4)}
      * @returns Absolutely nothing.
      */
     set(key: string, value: string, rewrite: boolean = false) {
-        console.log(rewrite);
+        this.verbose ?? console.log(rewrite);
         if (!this.config) return;
 
         if (rewrite) {
@@ -123,7 +123,7 @@ ${JSON.stringify(this.config, null, 4)}
 }
 
 
-export const settingsManager = new SettingsManager();
+export const settingsManager = new SettingsManager(process.argv.includes("--dev-mode") || process.argv.includes("-d"));
 
 settingsManager.open(
     SETTINGS_PATH
