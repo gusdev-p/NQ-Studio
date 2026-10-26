@@ -1,0 +1,117 @@
+/*
+ * NQ-Studio - TypeScript Hover Syntax Highlighting
+ * Based on GitHub Dark and NQ-Studio editor themes
+ */
+
+/* Code blocks */
+.nq-lsp-hover pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.nq-lsp-hover code.hljs {
+    padding: 3px 5px;
+}
+
+/* Base */
+.nq-lsp-hover .hljs {
+    color: var(--fontColor, #f1f1f1);
+    background: var(--onSurfaceColor, #333333);
+}
+
+/* Keywords: const, let, return, new, import, type */
+.nq-lsp-hover .hljs-doctag,
+.nq-lsp-hover .hljs-keyword,
+.nq-lsp-hover .hljs-meta .hljs-keyword,
+.nq-lsp-hover .hljs-template-tag,
+.nq-lsp-hover .hljs-template-variable {
+    color: #f66151;
+}
+
+/* Types and declarations */
+.nq-lsp-hover .hljs-type,
+.nq-lsp-hover .hljs-built_in {
+    color: #dc8add;
+}
+
+/* Classes, functions and methods */
+.nq-lsp-hover .hljs-title,
+.nq-lsp-hover .hljs-title.class_,
+.nq-lsp-hover .hljs-title.class_.inherited__,
+.nq-lsp-hover .hljs-title.function_,
+.nq-lsp-hover .hljs-function {
+    color: #e5a50a;
+}
+
+/* Variables, parameters and properties */
+.nq-lsp-hover .hljs-variable,
+.nq-lsp-hover .hljs-params,
+.nq-lsp-hover .hljs-property,
+.nq-lsp-hover .hljs-attr {
+    color: #99c1f1;
+}
+
+/* Strings and template literals */
+.nq-lsp-hover .hljs-string,
+.nq-lsp-hover .hljs-regexp,
+.nq-lsp-hover .hljs-meta .hljs-string {
+    color: #5c9820;
+}
+
+/* Numbers and literals */
+.nq-lsp-hover .hljs-number {
+    color: #f9f06b;
+}
+
+.nq-lsp-hover .hljs-literal {
+    color: #ffa348;
+}
+
+/* Comments */
+.nq-lsp-hover .hljs-comment,
+.nq-lsp-hover .hljs-code,
+.nq-lsp-hover .hljs-formula {
+    color: #447b0c;
+    font-style: italic;
+}
+
+/* Operators and punctuation */
+.nq-lsp-hover .hljs-operator,
+.nq-lsp-hover .hljs-punctuation,
+.nq-lsp-hover .hljs-subst {
+    color: var(--fontColor, #f1f1f1);
+}
+
+/* Tags and names */
+.nq-lsp-hover .hljs-name,
+.nq-lsp-hover .hljs-tag {
+    color: #f6d32d;
+}
+
+/* Symbols and special values */
+.nq-lsp-hover .hljs-symbol {
+    color: #ffa348;
+}
+
+/* Markdown headings inside documentation */
+.nq-lsp-hover .hljs-section {
+    color: #3584e4;
+    font-weight: bold;
+}
+
+/* Bold and italic */
+.nq-lsp-hover .hljs-strong {
+    font-weight: bold;
+}
+
+.nq-lsp-hover .hljs-emphasis {
+    font-style: italic;
+}
+
+/* Links */
+.nq-lsp-hover .hljs-link {
+    color: #3584e4;
+    text-decoration: underline;
+}
