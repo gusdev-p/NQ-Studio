@@ -1,15 +1,33 @@
-import { side_bar, nqeditor, secondary_side_bar, fileBar, fileTabs} from "../core/renderer.js";
+import { side_bar, nqeditor, secondary_side_bar, fileBar, fileTabs, treeView, notificationManager } from "../core/renderer.js";
 import { TabDumps } from "../core/ui/fileTabs.js";
 import { DeleteFile } from "../events/tree.js";
 import { HideSecondarySideBar, OpenRoot, OpenSecondarySideBar, ToggleTerminal, UpdateTree } from "../events/IDE.js";
 import { CreateFile } from "../events/sideBar.js";
 import { ReloadHTML, ReloadMarkdown } from "../events/preview.js";
-import { parse } from "jsonc-parser";
+import { NotificationType } from "../core/ui/notify/notificationManager.js";
+import { saveTreeViewState } from "../core/ui/treeView/treeViewManager.js";
 
 let waitForO = false;
 let secondaryBarOpen = false
+let oldTreeView: any;
 
 const filesToNotOpen = [".jpg", ".png", ".jpeg", ".svg", ".gif"];
+
+
+async function setTreeView(path: string) {
+    side_bar.content.replaceChildren();
+    
+    const saved = await window.nq.getLocalProperty("treeView");
+    console.log("opened treeview:", saved);
+
+    if (saved && saved.root === path && Array.isArray(saved.items)) {
+        console.log("getted!")
+        await side_bar.defineTreeView(path, await treeView.mountFromDump(saved.items));
+    } else {
+        console.log("push")
+        await side_bar.defineTreeView(path, await treeView.mountTreeView());
+    }
+}
 
 document.addEventListener("keydown", async (e) => {
     // pra debug :)
@@ -64,7 +82,8 @@ document.addEventListener("keydown", async (e) => {
         ToggleTerminal()
     }
 
-    if (e.key.toLowerCase() === "f5") {
+    if (e.ctrlKey && e.key.toLowerCase() === "f5") {
+        await saveTreeViewState()
         UpdateTree()
     }
 
@@ -87,6 +106,7 @@ document.addEventListener("createDir", async (e: any) => {
         if (!result.success) {
             await window.nq.warn("Cant create directory", String(result.error));
         } else {
+            await saveTreeViewState()
             UpdateTree()
         }
     } catch (e) {
@@ -119,6 +139,7 @@ document.addEventListener("createFile", async (e: any) => {
     if (!result.success) {
         await window.nq.warn("Cant create file", String(result.error));
     } else {
+        await saveTreeViewState()
         UpdateTree()
     }
 });
@@ -128,6 +149,7 @@ document.addEventListener("renameFile", async (e: any) => {
     const targetName = await window.nq.ask("Rename file:", "Enter the new file name:");
     const result = await window.nq.renameFile(path, String(targetName));
     if (result.success) {
+        await saveTreeViewState()
         UpdateTree()
     } else {
         await window.nq.warn("Cant rename file", String(result.error));
@@ -183,6 +205,7 @@ document.addEventListener("deleteFile", async (e) => {
         if (!result.success) {
             await window.nq.warn(`Cant delete ${type}`, String(result.error));
         } else {
+            await saveTreeViewState()
             UpdateTree()
             await window.nq.setSelected(await window.nq.getRoot());
         }
@@ -197,7 +220,8 @@ export async function initListeners() {
 
         if (!rawTabs) return;
 
-        const tabs = JSON.parse(rawTabs) as TabDumps;
+        console.log("raw tabs:", rawTabs)
+        const tabs = rawTabs as TabDumps;
 
         for (const tab of tabs.tabs) {
             await fileTabs.addFile(tab.identifier, tab.path);
@@ -211,8 +235,16 @@ export async function initListeners() {
                 );
                 return;
             }
+            if (tab.modified === false) {
+                const tabContent = await window.nq.openFile(tab.path);
+                
+                if (!tabContent) return;
+                
+                fileTabs.setBuffer(newTab, tabContent);
+            } else {
+                fileTabs.setBuffer(newTab, tab.buffer);
+            }
 
-            fileTabs.setBuffer(newTab, tab.buffer);
             fileTabs.setModified(tab.identifier, tab.modified);
         }
 
@@ -230,11 +262,14 @@ export async function initListeners() {
 
                 nqeditor.setLanguage(
                     nqeditor.toLanguage(
-                        await window.nq.getFileExt(activeTab.path)
+                        await window.nq.getFileExt(activeTab.path),
+                        activeTab.fileName
                     )
                 );
             }
         }
+
+        await setTreeView(await window.nq.getRoot())
     });
 
     window.nq.onShutdown(async () => {
@@ -248,14 +283,16 @@ export async function initListeners() {
 
         const dump = fileTabs.dumpTabs();
         console.log(dump);
-        await window.nq.setLocalProperty("fileTabs", JSON.stringify(dump, null, 4));
+        await window.nq.setLocalProperty("fileTabs", dump);
+
+        await saveTreeViewState();
 
         await window.nq.shutdownNow();
     });
 
     document.addEventListener("treeView", async () => {
         console.log(await window.nq.getRoot());
-        side_bar.defineTreeView(await window.nq.getRoot());
+        await setTreeView(await window.nq.getRoot());
     });
 
     document.addEventListener("openFile", async (e:any) => {
@@ -268,7 +305,8 @@ export async function initListeners() {
         nqeditor.setContent(content, path);
         nqeditor.setLanguage(
             nqeditor.toLanguage(
-                ext
+                ext,
+                String(name)
             )
         );
 
@@ -322,7 +360,8 @@ export async function initListeners() {
         nqeditor.setContent(newTab.buffer, newTab.path);
         nqeditor.setLanguage(
             nqeditor.toLanguage(
-                fileType
+                fileType,
+                String(fileName)
             )
         );
 
@@ -354,7 +393,8 @@ export async function initListeners() {
         nqeditor.setContent(newTab.buffer, newTab.path);
         nqeditor.setLanguage(
             nqeditor.toLanguage(
-                await window.nq.getFileExt(newTab.path)
+                await window.nq.getFileExt(newTab.path),
+                newTab.fileName
             )
         );
 
@@ -385,7 +425,7 @@ export async function initListeners() {
                 await window.nq.getRoot()
             );
             nqeditor.setLanguage(
-                nqeditor.toLanguage(".txt")
+                nqeditor.toLanguage(".txt", "")
             );
         }
 
@@ -408,7 +448,7 @@ export async function initListeners() {
             console.log("pedido de arquivo pra ser salvo!");
 
             if (nqeditor.filePath === await window.nq.resolvePath(await window.nq.getAppPath("appData"), "nq-studio", "settings.jsonc")) {
-                await window.nq.saveFile(nqeditor.filePath, JSON.stringify(parse(nqeditor.getContent()), null, 4));
+                await window.nq.saveFile(nqeditor.filePath, nqeditor.getContent());
                 return;
             }
 
@@ -429,19 +469,37 @@ export async function initListeners() {
                 await window.nq.warn(`Cant save the file: '${nqeditor.filePath}'`, String(result.error));
             }
         }
+
+        if (e.key.toLowerCase() === await window.nq.getSetting("Input", "Run main target")) {
+            const target = await window.nq.getLocalProperty("main_target");
+
+            if (target) {
+                const child = window.terminal.executeInTerminal(`make ${target}`);
+            } else {
+                const notification: NotificationType = {
+                    title: "Make",
+                    message: "No target defined to make.",
+                    type: "error"
+                }
+
+                await notificationManager.notify(notification);
+            }
+        }
     });
 
     document.addEventListener("openRoot", async (e: any) => {
         await window.nq.setRoot(e.detail.path);
         await window.terminal.changeCwd(e.detail.path);
+        treeView.setRoot(e.detail.path);
+        await window.nq.setSelected(e.detail.path);
         console.log("pedido de troca de root!");
         console.log(e.detail.path);
-        await side_bar.defineTreeView(e.detail.path);
         await window.nq.initNqDir();
+        await setTreeView(e.detail.path);
     });
 
     document.addEventListener("updateTree", async () => {
-        await side_bar.defineTreeView(await window.nq.getRoot());
+        await setTreeView(await window.nq.getRoot());
     });
 
     document.addEventListener("openSecondarySideBar", () =>{
