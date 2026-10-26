@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file:; font-src 'self' data:; connect-src 'self' ws: wss:;">
     <script src="script.js"></script>
     <script src="../core/renderer.js" type="module"></script>
     <style>
@@ -11,7 +12,7 @@
             height: 100%;
             min-height: 0;
         }
-
+        
         #editor .cm-editor {
             height: 100%;
         }
@@ -19,29 +20,30 @@
         #editor .cm-scroller {
             overflow: auto;
         }
-
+        
         body {
             overflow: hidden;
             box-sizing: border-box;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            user-select: none;
         }
 
         ::-webkit-scrollbar {
             display: none;
         }
-
+        
         .selected {
             background: color-mix(in srgb,var(--accentColor) 50%, transparent);
             color: var(--fontColor);
             border-radius: 4px;
         }
-
-        .hover {
+        
+        .hover:not(.selected) {
             background: rgba(255, 255, 255, 0.15);
             font-weight: bold;
             border-radius: 4px;
         }
-
+        
         .xterm-helper-textarea {
             position: absolute;
             opacity: 0;
@@ -49,19 +51,21 @@
             height: 1px;
             left: -9999px;
         }
-
+        
         .xterm-helpers {
             height: 1px;
             position: absolute;
             overflow: hidden;
         }
-
+        
         #terminal,
         #terminalContent,
         .xterm {
             box-sizing: border-box;
         }
     </style>
+    <link rel="stylesheet" href="css/lsp.css">
+    <link rel="stylesheet" href="css/typescript.css">
 </head>
 <body>
 </body>
