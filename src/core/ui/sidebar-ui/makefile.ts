@@ -1,4 +1,5 @@
 import { PropertiesTabManager, type PropertiesTabType } from "../../../api/modules/propertiesTabManager";
+import { OpenFile } from "../../../events/editor";
 import { setMakefileMainTarget } from "../../../events/sideBar";
 
 const propertiesManager = new PropertiesTabManager(document.body);
@@ -74,7 +75,7 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
 
         const functionsTitle = document.createElement("div");
         functionsTitle.style.width = "100%";
-        functionsTitle.innerText = "Targets or Rules.";
+        functionsTitle.innerText = "Targets or Rules";
         functionsTitle.style.color = "var(--fontColor)";
         functionsTitle.style.borderBottom = "2px solid var(--borderColor)";
         functionsTitle.style.fontWeight = "bold";
@@ -158,7 +159,106 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
             functions.appendChild(functionDiv);
             count += 1;
         }
+
+        const variables = document.createElement("div");
+        variables.id = "variables";
+        variables.style.display = "flex";
+        variables.style.flexDirection = "column";
+        variables.style.gap = "8px";
+        variables.style.background = "var(--onSurfaceColor)";
+        variables.style.borderRadius = "8px";
+        variables.style.overflow = "hidden";
+        variables.style.boxSizing = "border-box";
+        variables.style.padding = "5px"
+
+        const variablesTitle = document.createElement("div");
+        variablesTitle.style.width = "100%";
+        variablesTitle.innerText = "Variables";
+        variablesTitle.style.color = "var(--fontColor)";
+        variablesTitle.style.borderBottom = "2px solid var(--borderColor)";
+        variablesTitle.style.fontWeight = "bold";
+
+        variables.appendChild(variablesTitle);
+
+        let variables_count = 0;
+        for (const variableOption of parsedResult.variables) {
+            const variableDiv = document.createElement("div");
+            variableDiv.style.color = "var(--fontColor)";
+            variableDiv.style.background = "var(--onSurfaceColor)";
+            variableDiv.style.border = "none";
+            variableDiv.style.textAlign = "left";
+            variableDiv.id = `function-${count}`;
+            variableDiv.style.cursor = "pointer";
+            variableDiv.style.display = "flex";
+            variableDiv.style.justifyContent = "space-between";
+            variableDiv.style.borderRadius = "6px";
+            variableDiv.style.boxSizing = "border-box";
+            variableDiv.style.padding = "0 3px";
+
+            variableDiv.addEventListener("mousedown", (e) => {
+                if (e.button === 2) {
+                    const tab: PropertiesTabType = {
+                        name: String(variableOption.value),
+                        buttons: [
+                            {
+                                name: "Set as 'main' Target",
+                                worker: () => {
+                                    setMakefileMainTarget(String(variableOption.value));
+                                }
+                            }
+                        ]
+                    }
+                    propertiesManager.addPropertiesTab(tab, e)
+                }
+            })
+            
+            const variableTitle = document.createElement("label");
+            variableTitle.innerText = `${variableOption.value}`;
+            variableTitle.style.color = "var(--fontColor)";
+
+            const variableLine = document.createElement("label");
+            variableLine.innerText = `Line: ${variableOption.line}`;
+            variableLine.style.color = "var(--fontColor)";
+
+            variableDiv.appendChild(variableTitle);
+            variableDiv.appendChild(variableLine);
+
+            variableDiv.addEventListener("mouseenter", () => {
+                variableDiv.style.background = "var(--surfaceColor)";
+                variableTitle.innerText = `${variableOption.value}`;
+                variableTitle.style.fontWeight = "bold";
+            });
+
+            variableLine.addEventListener("mouseenter", () => {
+                variableLine.style.fontWeight = "bold";
+                variableTitle.style.fontWeight = "";
+            });
+
+            variableLine.addEventListener("mouseleave", () => {
+                variableLine.style.fontWeight = "";
+            });
+
+            variableDiv.addEventListener("mouseleave", () => {
+                variableDiv.style.background = "var(--onSurfaceColor)";
+                variableTitle.innerText = `${variableOption.value}`;
+                variableTitle.style.fontWeight = "";
+            });
+
+            variableDiv.addEventListener("click", async () => {
+                await window.nq.getLocalProperty("makefile") === undefined
+                    ? OpenFile("makefile")
+                    : OpenFile(await window.nq.getLocalProperty("makefile"));
+            });
+
+            variableTitle.addEventListener("click", () => {
+                
+            });
+
+            variables.appendChild(variableDiv);
+            variables_count += 1;
+        }
         
         root.appendChild(toolBar);
         root.appendChild(functions);
+        root.appendChild(variables);
     }
