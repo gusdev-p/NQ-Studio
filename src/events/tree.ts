@@ -19,3 +19,7 @@ export const RenameFile = (path: string) => {
 export const DeleteFile = () => {
     document.dispatchEvent(new CustomEvent("deleteFile"));
 }
+
+export const FolderOpened = () => {
+    document.dispatchEvent(new CustomEvent("folderOpened"));
+}
