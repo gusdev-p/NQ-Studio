@@ -13,6 +13,7 @@ import { parse } from "jsonc-parser"
 
 import { initListeners } from "../main/script.js";
 import { DownBar } from "./ui/downBar.js";
+import { TreeViewManager } from "./ui/treeView/treeViewManager.js";
 
 console.log("-=- renderer boot! -=-")
 
@@ -32,6 +33,8 @@ export let secondary_side_bar: SecondarySideBar;
 export let fileBar: FileBar;
 export let fileTabs: FileTabs;
 export let downBar: DownBar;
+export let treeView: TreeViewManager;
+export let notificationManager: NotificationManager
 let terminalVisible = true
 
 const propertiesTab = new PropertiesTabManager(document.body);
@@ -68,6 +71,10 @@ async function initTheme() {
     });
 };
 
+async function initTreeView() {
+    treeView = new TreeViewManager(await window.nq.getRoot());
+}
+
 async function initUI() {
     document.body.style.background = "var(--backgroundColor)";
 
@@ -87,7 +94,7 @@ async function initUI() {
     // logo
     const logoSrc = document.createElement("img");
     logoSrc.id = "LogoSrc";
-    logoSrc.src = await window.nq.resolvePath("assets/logo.png");
+    logoSrc.src = await window.nq.resolvePath(await window.nq.getAppAsar(), "assets", "logo.png");
     logoSrc.style.maxWidth = "100px";
     logoSrc.style.maxHeight = "30px"
 
@@ -282,7 +289,7 @@ async function initUI() {
     main.appendChild(editor);
     main.appendChild(terminal);
     downBar = new DownBar(main);
-    const notificationManager = new NotificationManager(editor);
+    notificationManager = new NotificationManager(editor);
 
     const notification: NotificationType = {
         title: "NQ-Studio",
@@ -320,6 +327,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         await initTheme();
         await initUI();
         await initListeners();
-        await side_bar.defineTreeView(await window.nq.getRoot());
+        await initTreeView();
     }, 0.3);
 });
