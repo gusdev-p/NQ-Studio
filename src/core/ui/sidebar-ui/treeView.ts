@@ -1,6 +1,5 @@
-import { TreeView } from "../treeView/treeRender";
-
-export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: string) {
+export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: string, treeView: HTMLDivElement) {
+    root.replaceChildren();
     root.innerHTML = "";
     root.id = "treeView";
     root.style.boxSizing = "border-box";
@@ -8,6 +7,12 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     root.style.gap = "0";
     root.style.display = "flex";
     root.style.flexDirection = "column";
+    root.style.height = "100%";
+    root.style.minHeight = "0";
+
+    treeView.style.flex = "1";
+    treeView.style.minHeight = "0";
+    treeView.style.overflowY = "auto";
 
     const src = await window.nq.getTree(tree);
     const topBar = document.createElement("div");
@@ -19,6 +24,7 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     topBar.style.display = "flex";
     topBar.style.alignItems = "center";
     topBar.style.borderBottom = "solid 1px var(--borderColor)";
+    topBar.style.flexShrink = "0";
 
     const createDirBtn = document.createElement("button");
     createDirBtn.style.background = "var(--onSurfaceColor)";
@@ -169,6 +175,5 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     topBar.appendChild(createFileBtn);
 
     root.appendChild(topBar);
-    const treeView = new TreeView(src) as HTMLDivElement;
     root.appendChild(treeView);
 }
