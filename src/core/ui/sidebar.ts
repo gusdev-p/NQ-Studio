@@ -17,7 +17,8 @@ export class SideBar {
 
         this.sidebar = document.createElement("div");
         this.sidebar.id = "sideBar";
-        this.sidebar.style.height = "calc(100vh - 10px)";
+        this.sidebar.style.height = "100%";
+        this.sidebar.style.minHeight = "0";
         this.sidebar.style.width = "300px";
         this.sidebar.style.display = "flex";
         this.sidebar.style.flexDirection = "row";
@@ -89,16 +90,21 @@ export class SideBar {
         this.wrapper.id = "sideBarWrapper"
         this.wrapper.style.display = "flex";
         this.wrapper.style.flexShrink = "0";
-        // this.wrapper.style.margin = "0 8px 0 8px";
         this.wrapper.style.overflow = "hidden";
         this.wrapper.style.borderRadius = "8px";
-        this.wrapper.style.border = "1px solid var(--borderColor)"
-        
+        this.wrapper.style.border = "1px solid var(--borderColor)";
+        this.wrapper.style.boxSizing = "border-box"
+        this.wrapper.style.height = "100%";
+        this.wrapper.style.minHeight = "0";
+
         this.content = document.createElement("div");
         this.content.id = "content";
         this.content.style.flex = "1";
-        this.content.style.overflowY = "auto";
         this.content.style.minHeight = "0";
+        this.content.style.overflow = "hidden";
+        // this.content.style.height = "100%";
+        // this.content.style.minHeight = "0";
+        // this.content.style.minWidth = "0";
 
         this.sidebar.appendChild(this.content);
 
@@ -112,8 +118,8 @@ export class SideBar {
      * 
      * @param tree 
      */
-    async defineTreeView(tree: string) {
-        defineTreeView(this.content, tree);
+    async defineTreeView(tree: string, treeView: HTMLDivElement) {
+        await defineTreeView(this.content, tree, treeView);
     }
 
     async defineMakefileView(parsedResult : {
