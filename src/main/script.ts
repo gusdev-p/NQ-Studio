@@ -174,6 +174,8 @@ document.addEventListener("deleteFile", async (e) => {
         console.log("--- delete ---")
         const target = await window.nq.getSelected();
         console.log("target: ", target)
+        if (!target) return;
+
         const stat = await window.nq.stat(target);
 
         if (target === ".") return;
@@ -222,30 +224,33 @@ export async function initListeners() {
 
         console.log("raw tabs:", rawTabs)
         const tabs = rawTabs as TabDumps;
+        try {
+            for (const tab of tabs.tabs) {
+                await fileTabs.addFile(tab.identifier, tab.path);
 
-        for (const tab of tabs.tabs) {
-            await fileTabs.addFile(tab.identifier, tab.path);
+                const newTab = fileTabs.getTab(tab.identifier);
 
-            const newTab = fileTabs.getTab(tab.identifier);
+                if (!newTab) {
+                    await window.nq.warn(
+                        "Something went wrong",
+                        `cant initialize the tab: '${tab.identifier}' :(`
+                    );
+                    return;
+                }
+                if (tab.modified === false) {
+                    const tabContent = await window.nq.openFile(tab.path);
+                    
+                    if (!tabContent) return;
+                    
+                    fileTabs.setBuffer(newTab, tabContent);
+                } else {
+                    fileTabs.setBuffer(newTab, tab.buffer);
+                }
 
-            if (!newTab) {
-                await window.nq.warn(
-                    "Something went wrong",
-                    `cant initialize the tab: '${tab.identifier}' :(`
-                );
-                return;
+                fileTabs.setModified(tab.identifier, tab.modified);
             }
-            if (tab.modified === false) {
-                const tabContent = await window.nq.openFile(tab.path);
-                
-                if (!tabContent) return;
-                
-                fileTabs.setBuffer(newTab, tabContent);
-            } else {
-                fileTabs.setBuffer(newTab, tab.buffer);
-            }
-
-            fileTabs.setModified(tab.identifier, tab.modified);
+        } catch (e) {
+            console.log("[Tabs Loading]:", e);
         }
 
         if (tabs.activeTab) {
@@ -400,6 +405,7 @@ export async function initListeners() {
 
         fileTabs.setActive(fileIdentifier);
         fileBar.appendFile({fileName: newTab.fileName, fileType: await window.nq.getFileExt(newTab.path), filePath: newTab.path});
+        e.detail.onOpened?.();
     }); 
 
     document.addEventListener("deleteTab", async (e: any) => {
