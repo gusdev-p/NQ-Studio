@@ -1,5 +1,6 @@
 type PropertiesButton = {
     name: string;
+    type: "button" | "spacer";
     worker: () => void | Promise<void>;
 }
 
@@ -9,7 +10,7 @@ export type PropertiesTabType = {
 }
 
 export class PropertiesTabManager {
-    private currentTab: HTMLDivElement | null = null;
+	private currentTab: HTMLDivElement | null = null;
 
     constructor(private root: HTMLDivElement | HTMLElement) {}
 
@@ -64,10 +65,21 @@ export class PropertiesTabManager {
 
         root.appendChild(title);
 
-        tab.buttons.forEach(({ name, worker }, index) => {
+        tab.buttons.forEach(({ name, type, worker }, index) => {
+            if (type === "spacer") {
+                const spacer = document.createElement("div");
+                spacer.id = "spacer";
+                spacer.style.background = "var(--borderColor)";
+                spacer.style.width = "100%";
+                spacer.style.height = "1px";
+
+                root.appendChild(spacer);
+                return;
+            }
+          
             const button = document.createElement("button");
 
-            button.id = `button-${name}`;
+            button.id = `button-${name}`;     
             button.innerText = name;
 
             button.style.color = "var(--fontColor)";
