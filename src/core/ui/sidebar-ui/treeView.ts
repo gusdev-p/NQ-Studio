@@ -1,4 +1,6 @@
-export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: string, treeView: HTMLDivElement) {
+import { treeView } from "../../renderer";
+
+export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: string, treeViewDiv: HTMLDivElement) {
     root.replaceChildren();
     root.innerHTML = "";
     root.id = "treeView";
@@ -10,11 +12,10 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     root.style.height = "100%";
     root.style.minHeight = "0";
 
-    treeView.style.flex = "1";
-    treeView.style.minHeight = "0";
-    treeView.style.overflowY = "auto";
+    treeViewDiv.style.flex = "1";
+    treeViewDiv.style.minHeight = "0";
+    treeViewDiv.style.overflowY = "auto";
 
-    const src = await window.nq.getTree(tree);
     const topBar = document.createElement("div");
     topBar.id = "topBar";
     topBar.style.width = "100%";
@@ -27,6 +28,7 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     topBar.style.flexShrink = "0";
 
     const createDirBtn = document.createElement("button");
+    createDirBtn.id = "create-dir-button";
     createDirBtn.style.background = "var(--onSurfaceColor)";
     createDirBtn.style.width = "30px";
     createDirBtn.style.height = "30px";
@@ -63,103 +65,21 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
 
     createFileBtn.appendChild(fileLogo);
 
-    let dirInput: HTMLInputElement | null = null;
+    createDirBtn.addEventListener("click", async () => {
+        
+        const selected = treeView.getSelectedItem();
 
-    createDirBtn.addEventListener("click", () => {
-        if (dirInput) {
-            dirInput.remove();
-            dirInput = null;
-            return;
-        } else if (fileInput) {
-            fileInput.remove();
-            fileInput = null;
-        }
+        if (!selected) return;
 
-        dirInput = document.createElement("input");
-        dirInput.placeholder = "Enter directory name:";
-        dirInput.style.background = "var(--onSurfaceColor)";
-        dirInput.style.border = "none";
-        dirInput.style.outline = "none";
-        dirInput.style.padding = "3px 5px";
-        dirInput.style.borderRadius = "6px";
-        dirInput.style.color = "var(--fontColor)";
-
-        topBar.after(dirInput);
-        dirInput.focus();
-
-        const input = dirInput;
-
-        const keydown = (e: KeyboardEvent) => {
-            if (e.key === "Enter") {
-                document.dispatchEvent(new CustomEvent("createDir", {
-                    detail: { name: input.value }
-                }));
-
-                input.remove();
-                dirInput = null;
-                document.removeEventListener("keydown", keydown);
-
-            } else if (e.key === "Escape") {
-                input.remove();
-                dirInput = null;
-                document.removeEventListener("keydown", keydown);
-            }
-        };
-
-        document.addEventListener("keydown", keydown);
+        await selected.showCreateInput("directory");
     });
 
-    let fileInput: HTMLInputElement | null = null;
+    createFileBtn.addEventListener("click", async () => {
+        const selected = treeView.getSelectedItem();
 
-    createFileBtn.addEventListener("click", () => {
-        if (fileInput) {
-            fileInput.remove();
-            fileInput = null;
-            return;
-        } else if (dirInput) {
-            dirInput.remove();
-            dirInput = null
-        }
+        if (!selected) return;
 
-        fileInput = document.createElement("input");
-
-        fileInput.placeholder = "Enter file name:";
-        fileInput.style.backgroundColor = "var(--onSurfaceColor)";
-        fileInput.style.border = "none";
-        fileInput.style.outline = "none";
-        fileInput.style.padding = "3px 5px";
-        fileInput.style.borderRadius = "6px";
-        fileInput.style.color = "var(--fontColor)";
-
-        topBar.after(fileInput);
-        fileInput.focus();
-
-        const input = fileInput;
-
-        const keydown = (e: KeyboardEvent) => {
-            if (e.key === "Enter") {
-                console.log("create-file:", input.value);
-
-                document.dispatchEvent(new CustomEvent("createFile", {
-                    detail: {
-                        name: input.value
-                    }
-                }));
-
-                input.remove();
-                fileInput = null;
-
-                document.removeEventListener("keydown", keydown);
-
-            } else if (e.key === "Escape") {
-                input.remove();
-                fileInput = null;
-
-                document.removeEventListener("keydown", keydown);
-            }
-        };
-
-        document.addEventListener("keydown", keydown);
+        await selected.showCreateInput("file");
     });
     
     const spacer = document.createElement("div");
@@ -175,5 +95,5 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     topBar.appendChild(createFileBtn);
 
     root.appendChild(topBar);
-    root.appendChild(treeView);
+    root.appendChild(treeViewDiv);
 }
