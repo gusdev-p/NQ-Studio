@@ -16,6 +16,7 @@ help:
 	@echo "copy-settings: Copy the local settings (from the IDE source code folder) to your home."
 	@echo "copy-icon-pack: Copy the local icon pack (the default one in the IDE source code folder) to your home."
 	@echo "backup-settings: Copy the global settings to the IDE source code folder."
+	@echo "send-state: Copy the base IDE state file (from the IDE source code folder) to your home."
 	@echo "reset-settings: Copy the local settings (from the IDE source code folder) to your home."
 	@echo "gen-third-party: Generate the 'THIRD-PARTY-LICENSES.md' file."
 
@@ -67,6 +68,10 @@ backup-settings:
 reset-settings:
 	@cp -r ./configs/settings.jsonc ~/.config/nq-studio/settings.jsonc
 	@echo "Settings reset done! ([local] -> [global])"
+
+send-state:
+	@cp -r ./configs/saves.json ~/.config/nq-studio/saves.json
+	@echo "Base IDE state file installed! ([local] -> [global])"
 
 gen-third-party:
 	npx --yes license-checker --markdown > THIRD-PARTY-LICENSES.md
