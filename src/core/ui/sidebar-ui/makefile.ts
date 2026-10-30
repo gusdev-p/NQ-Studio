@@ -104,6 +104,7 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
                         buttons: [
                             {
                                 name: "Set as 'main' Target",
+								type: "button",
                                 worker: () => {
                                     setMakefileMainTarget(String(functionOption.value));
                                 }
@@ -194,23 +195,6 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
             variableDiv.style.borderRadius = "6px";
             variableDiv.style.boxSizing = "border-box";
             variableDiv.style.padding = "0 3px";
-
-            variableDiv.addEventListener("mousedown", (e) => {
-                if (e.button === 2) {
-                    const tab: PropertiesTabType = {
-                        name: String(variableOption.value),
-                        buttons: [
-                            {
-                                name: "Set as 'main' Target",
-                                worker: () => {
-                                    setMakefileMainTarget(String(variableOption.value));
-                                }
-                            }
-                        ]
-                    }
-                    propertiesManager.addPropertiesTab(tab, e)
-                }
-            })
             
             const variableTitle = document.createElement("label");
             variableTitle.innerText = `${variableOption.value}`;
@@ -245,9 +229,12 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
             });
 
             variableDiv.addEventListener("click", async () => {
-                await window.nq.getLocalProperty("makefile") === undefined
-                    ? OpenFile("makefile")
-                    : OpenFile(await window.nq.getLocalProperty("makefile"));
+				OpenFile(
+					await window.nq.resolvePath(
+						await window.nq.getRoot(),
+						await window.nq.getLocalProperty("makefile") ?? "makefile"
+					)
+				);
             });
 
             variableTitle.addEventListener("click", () => {
