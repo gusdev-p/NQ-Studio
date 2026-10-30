@@ -9,7 +9,7 @@ ipcRenderer.on("nq:boot", () => {
     booted = true;
 });
 
-export type LSPType = "typescript" | "html" | "css";
+export type LSPType = "typescript" | "html" | "css" | "json";
 
 export const nq = {
     /**
@@ -98,7 +98,7 @@ export const nq = {
      * Returns the current selected path.
      * @returns the current selected path.
      */
-    getSelected(): Promise<string> {
+    getSelected(): Promise<string | null> {
         return ipcRenderer.invoke("getSelected");
     },
     /**
@@ -525,6 +525,10 @@ export const lsp = {
 
     hover(path: string, line: number, character: number, type: LSPType = "typescript") {
         return ipcRenderer.invoke("lsp:hover", path, line, character, type);
+    },
+
+    definition(path: string, line: number, character: number, type: LSPType = "typescript") {
+        return ipcRenderer.invoke("lsp:definition", path, line, character, type);
     },
 
     onDiagnostics(callback: (uri: string, diagnostics: any[]) => void | Promise<void>) {
