@@ -72,11 +72,19 @@ async function initTheme() {
 };
 
 async function initTreeView() {
-    treeView = new TreeViewManager(await window.nq.getRoot());
+    treeView = new TreeViewManager(await window.nq.getRoot(), propertiesTab);
 }
 
 async function initUI() {
     document.body.style.background = "var(--backgroundColor)";
+
+    const windowFont = await window.nq.getSetting("UI", "Font");
+    
+    if (windowFont === "auto") {
+        document.body.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"
+    } else {
+        document.body.style.fontFamily = windowFont;
+    }
 
     // topbar
     const topBar = document.createElement("div");
@@ -112,6 +120,7 @@ async function initUI() {
         buttons: [
             {
                 name: "Create New Project.",
+                type: "button",
                 worker: () => {}
             }
         ]
@@ -140,6 +149,7 @@ async function initUI() {
         buttons: [
             {
                 name: "Open DevTools.",
+                type: "button",
                 worker: async () => {
                     await window.nq.openDevTools();
                 }
