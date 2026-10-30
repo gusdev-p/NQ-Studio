@@ -82,7 +82,27 @@ export class IconsHandler {
         const isDir = fs.statSync(filePath).isDirectory();
 
         if (isDir) {
-            return path.resolve(this.icon_pack_path, this.icons.folder);
+            switch (fileName.toLowerCase()) {
+                case "src": {
+                    return path.join(this.icon_pack_path, this.icons.folder_src ?? this.icons.folder);
+                }
+
+                case "assets": {
+                    return path.join(this.icon_pack_path, this.icons.folder_assets ?? this.icons.folder);
+                }
+
+                case "config":
+                case "configs": {
+                    return path.join(this.icon_pack_path, this.icons.folder_settings ?? this.icons.folder);
+                }
+
+                case ".nq": {
+                    return path.join(this.icon_pack_path, this.icons.folder_nq ?? this.icons.folder);
+                }
+                default: {
+                    return path.resolve(this.icon_pack_path, this.icons.folder);
+                } 
+            }
         } else {
             switch (fileExt) {
                 case ".js":
@@ -122,6 +142,10 @@ export class IconsHandler {
                     switch (fileName.toLowerCase()) {
                         case "makefile": {
                             return path.join(this.icon_pack_path, this.icons.makefile ?? this.icons.generic_file);
+                        }
+
+                        case "todo": {
+                            return path.join(this.icon_pack_path, this.icons.todo ?? this.icons.generic_file);
                         }
 
                         default: {
