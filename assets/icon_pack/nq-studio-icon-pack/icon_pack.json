@@ -18,6 +18,11 @@
         "error": "icons/error.svg",
         "warning": "icons/warn.svg",
         "info": "icons/info.svg",
-        "terminal": "icons/terminal.svg"
+        "terminal": "icons/terminal.svg",
+        "folder_assets": "icons/folder_assets.svg",
+        "folder_nq": "icons/folder_nq.svg",
+        "folder_settings": "icons/folder_settings.svg",
+        "folder_src": "icons/folder_src.svg",
+        "todo": "icons/todo.svg"
     }
 }
