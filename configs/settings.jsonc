@@ -57,7 +57,7 @@
     // Editor settings
     "Editor": {
         // Editor font
-        "Font Family": "JetBrainsMono Nerd",
+        "Font Family": "JetBrainsMono Nerd, monospace", // note that the 'monospace' is used if the first option fails
         // Editor font size
         "Font Size": 14,
         // Editor theme
@@ -73,6 +73,12 @@
     "File Management": {
         // Ask permission after delete a tab, or a file (folders included!)
         "Ask Permission": true
+    },
+    // User Interface settings
+    "UI": {
+      // the UI font
+      // Note: Use 'auto' for an automatically selection of your font
+      "Font": "JetBrainsMono Nerd, monospace" // note that the 'monospace' is used if the first option fails
     },
     // Input settings
     // Note: only one key for the input ex.: ctrl+f6 (wrong); f6 (right)
