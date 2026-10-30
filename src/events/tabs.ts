@@ -1,9 +1,10 @@
-export const TabOpen = (identifier: string, oldIdentifier: string, path: string) => {
+export const TabOpen = (identifier: string, oldIdentifier: string, path: string, onOpened?: () => void) => {
     document.dispatchEvent(new CustomEvent("tabOpen", {
         detail: {
             identifier: identifier,
             oldIdentifier: oldIdentifier,
-            path: path
+            path: path,
+            onOpened
         }
     }));
 }
