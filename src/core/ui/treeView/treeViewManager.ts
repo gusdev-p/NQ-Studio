@@ -1,5 +1,5 @@
 import { PropertiesTabManager, PropertiesTabType } from "../../../api/modules/propertiesTabManager";
-import { DefineMake } from "../../../events/sideBar";
+import { CreateDir, CreateFile, DefineMake } from "../../../events/sideBar";
 import { DeleteFile, FileOpened, FolderOpened, RenameFile } from "../../../events/tree";
 import { treeView } from "../../renderer";
 import { TreeNode } from "./treeProvider";
@@ -16,7 +16,7 @@ export interface TreeViewDump {
     items: TreeItemDump[];
 }
 
-class TreeItem {
+export class TreeItem {
     public logo!: HTMLImageElement
     private root!: HTMLDivElement
     public isOpen: boolean = false;
@@ -24,10 +24,11 @@ class TreeItem {
     private tab!: HTMLDivElement;
     private children: TreeItem[] = [];
     private selected: boolean = false;
+    private createInput: HTMLInputElement | null = null;
 
     constructor(
         public identifier: string,
-        private node: TreeNode,
+        public node: TreeNode,
         private propertiesManager: PropertiesTabManager
     ) {}
 
@@ -39,6 +40,11 @@ class TreeItem {
         this.root.style.gap = "5px";
         this.root.style.borderRadius = "6px";
         this.root.style.userSelect = "none";
+
+        this.root.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            await this.select()
+        });
 
         this.root.addEventListener("mouseenter", () => {
             this.root.classList.add("hover");
@@ -69,15 +75,15 @@ class TreeItem {
 
         this.root.appendChild(itemDiv);
 
-        this.root.addEventListener("click", async (e) => {
+        this.root.addEventListener("contextmenu", async (e) => {
             e.stopPropagation();
             this.selected = true;
             await this.select();
 
-            if (e.button === 2) {
-                e.preventDefault();
-                this.showProperties(e);
-            }
+            e.preventDefault();
+            console.log("click do mouse!")
+            this.showProperties(e);
+            
         });
 
         this.root.addEventListener("dblclick", async (e) => {
@@ -112,6 +118,7 @@ class TreeItem {
         this.root.classList.remove("hover");
         this.root.classList.add("selected");
 
+        treeView.setSelectedItem(this);
         await window.nq.setSelected(this.node.path);
     }
 
@@ -121,20 +128,29 @@ class TreeItem {
             buttons: [
                 {
                     name: "Delete",
+                    type: "button",
                     worker: () => DeleteFile()
                 },
                 {
                     name: "Rename",
+                    type: "button",
                     worker: () => RenameFile(this.node.path)
                 },
                 {
+                  name: "",
+                  type: "spacer",
+                  worker: () => {}
+                },
+                {
                     name: "Copy Path",
+                    type: "button",
                     worker: async () => {
                         await navigator.clipboard.writeText(this.node.path);
                     }
                 },
                 {
                     name: "Copy Path as URI",
+                    type: "button",
                     worker: async () => {
                         await navigator.clipboard.writeText(await window.nq.pathToUri(this.node.path));
                     }
@@ -145,12 +161,14 @@ class TreeItem {
         if (!this.node.isDir) {
             tab.buttons.push({
                 name: "Copy Content",
+                type: "button",
                 worker: async () => {
                     await navigator.clipboard.writeText(await window.nq.openFile(this.node.path));
                 }
             });
             tab.buttons.push({
                 name: "Set as 'makefile'",
+                type: "button",
                 worker: () => DefineMake(this.node.path)
             });
         }
@@ -209,25 +227,92 @@ class TreeItem {
             }
         }
     }
+
+    public async showCreateInput(type: "file" | "directory"): Promise<void> {
+        if (this.createInput) {
+            this.createInput.remove();
+            this.createInput = null;
+            return;
+        }
+
+        if (!this.node.isDir) return;
+        
+        await this.select();
+        await this.open();
+
+        this.tab.querySelector(".tree-create-input")?.remove();
+
+        const input = document.createElement("input");
+        input.className = "tree-create-input";
+        input.placeholder =
+            type === "file"
+                ? "Enter file name:"
+                : "Enter directory name:";
+        input.style.width = "calc(100% - 30px)";
+        input.style.background = "var(--onSurfaceColor)";
+        input.style.border = "none";
+        input.style.outline = "none";
+        input.style.padding = "3px 5px";
+        input.style.borderRadius = "6px";
+        input.style.color = "var(--fontColor)";
+
+        this.createInput = input;
+
+        this.tab.prepend(input);
+        input.focus();
+
+        const cleanup = () => {
+            input.remove();
+            this.createInput = null;
+            document.removeEventListener("keydown", onKeyDown);
+        }
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key.toLowerCase() === "enter") {
+                const name = input.value.trim();
+                if (!name) return;
+
+                type === "file"
+                    ? CreateFile(name)
+                    : CreateDir(name);
+                
+                cleanup();
+            } else if (e.key.toLowerCase() === "escape") {
+                cleanup();
+            }
+        }
+
+        document.addEventListener("keydown", onKeyDown);
+    }
 }
 
 export class TreeViewManager {
     private element!: HTMLDivElement
-    private propertiesManager: PropertiesTabManager = new PropertiesTabManager(document.body);
     private items: TreeItem[] = [];
     private alreadyMounted: boolean = false;
+    private selectedItem: TreeItem | null = null;
 
     constructor(
-        private root: string
+        private root: string,
+        private propertiesManager: PropertiesTabManager
     ) {}
 
     public setRoot(root: string): void {
         this.root = root;
         this.items = [];
+        this.selectedItem = null;
         this.alreadyMounted = false;
     }
 
-    public async mountTreeView() {
+    public setSelectedItem(item: TreeItem): void {
+        this.selectedItem = item;
+    }
+
+    public getSelectedItem(): TreeItem | null {
+        return this.selectedItem;
+    }
+
+    public async mountTreeView(): Promise<HTMLDivElement> {
         if (this.alreadyMounted) {
             console.log("remontando!");
         }
@@ -255,7 +340,7 @@ export class TreeViewManager {
     }
 
 
-    public async mountFromDump(dump: TreeItemDump[]) {
+    public async mountFromDump(dump: TreeItemDump[]): Promise<HTMLDivElement> {
         if (this.alreadyMounted) {
             console.log("remontando!");
         }
