@@ -21,7 +21,7 @@ try {
             "src/core/preload.ts",
             "src/core/ui/treeView/treeProvider.ts",
             "src/core/ui/treeView/treeViewManager.ts",
-            "src/terminalManager.ts"
+            "src/api/modules/terminalManager.ts"
         ],
         outdir: "dist",
         bundle: true,
