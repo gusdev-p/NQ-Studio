@@ -23,7 +23,7 @@ let win: BrowserWindow | null = null;
 console.log("\n-=- debug messages -=-")
 
 const devMode = process.argv.includes("--dev-mode") || process.argv.includes("-d");
-const LspLogs = process.argv.includes("--lsp-logs") || process.argv.includes("-ll");
+const lspLogs = process.argv.includes("--lsp-logs") || process.argv.includes("-ll");
 
 console.log("dev-mode: ", devMode);
 
@@ -51,7 +51,7 @@ function initAPI() {
     filesystemHandler = new FilesystemHandler(devMode);
     iconsHandler = new IconsHandler(true)
     ideHandler = new IDEHandler(devMode);
-    lsp = new LSP(devMode);
+    lsp = new LSP(lspLogs);
 }
 
 function deinitAPI() {
@@ -202,7 +202,7 @@ function createBootstrap() {
     });
 
     window.maximize();
-    lspHandler = new LSPHandler(devMode, window, ideHandler.globalRoot);
+    lspHandler = new LSPHandler(lspLogs, window, ideHandler.globalRoot);
     lspHandler.register();
 };
 
