@@ -374,6 +374,10 @@ export const nq = {
         });
     },
 
+    reloadNow() {
+        return ipcRenderer.invoke("nq:reload-now");
+    },
+
     /**
      * ## Shutdown Now
      * Tells the IDE to shutdown immediately.
