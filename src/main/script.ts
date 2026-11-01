@@ -5,14 +5,34 @@ import { HideSecondarySideBar, OpenRoot, OpenSecondarySideBar, ToggleTerminal, U
 import { CreateFile } from "../events/sideBar.js";
 import { ReloadHTML, ReloadMarkdown } from "../events/preview.js";
 import { NotificationType } from "../core/ui/notify/notificationManager.js";
-import { saveTreeViewState } from "../core/ui/treeView/treeViewManager.js";
 
 let waitForO = false;
 let secondaryBarOpen = false
-let oldTreeView: any;
 
 const filesToNotOpen = [".jpg", ".png", ".jpeg", ".svg", ".gif"];
 
+const beforeReload = async () => {
+    console.log("[SCRIPT]: Received RELOAD call.");
+
+    const active = fileTabs.getActive();
+
+    if (active) {
+        fileTabs.setBuffer(active, nqeditor.getContent());
+    }
+
+    const dump = fileTabs.dumpTabs();
+    console.log(dump);
+    await window.nq.setLocalProperty("fileTabs", dump);
+
+    const treeViewDump = {
+        root: await window.nq.getRoot(),
+        items: treeView.dump()
+    };
+
+    await window.nq.setLocalProperty("treeView", treeViewDump);
+
+    await window.nq.reloadNow();
+};
 
 async function setTreeView(path: string) {
     side_bar.content.replaceChildren();
@@ -83,9 +103,14 @@ document.addEventListener("keydown", async (e) => {
     }
 
     if (e.ctrlKey && e.key.toLowerCase() === "f5") {
-        await saveTreeViewState()
-        UpdateTree()
-    }
+        const treeViewDump = {
+            root: await window.nq.getRoot(),
+            items: treeView.dump()
+        };
+
+        await window.nq.setLocalProperty("treeView", treeViewDump);
+            UpdateTree()
+        }
 
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
         e.preventDefault();
@@ -106,7 +131,11 @@ document.addEventListener("createDir", async (e: any) => {
         if (!result.success) {
             await window.nq.warn("Cant create directory", String(result.error));
         } else {
-            await saveTreeViewState()
+            const treeViewDump = {
+                root: await window.nq.getRoot(),
+                items: treeView.dump()
+            };
+            await window.nq.setLocalProperty("treeView", treeViewDump);
             UpdateTree()
         }
     } catch (e) {
@@ -139,9 +168,14 @@ document.addEventListener("createFile", async (e: any) => {
     if (!result.success) {
         await window.nq.warn("Cant create file", String(result.error));
     } else {
-        await saveTreeViewState()
-        UpdateTree()
-    }
+        const treeViewDump = {
+            root: await window.nq.getRoot(),
+            items: treeView.dump()
+        };
+
+        await window.nq.setLocalProperty("treeView", treeViewDump);
+            UpdateTree()
+        }
 });
 
 document.addEventListener("renameFile", async (e: any) => {
@@ -149,7 +183,12 @@ document.addEventListener("renameFile", async (e: any) => {
     const targetName = await window.nq.ask("Rename file:", "Enter the new file name:");
     const result = await window.nq.renameFile(path, String(targetName));
     if (result.success) {
-        await saveTreeViewState()
+        const treeViewDump = {
+            root: await window.nq.getRoot(),
+            items: treeView.dump()
+        };
+
+        await window.nq.setLocalProperty("treeView", treeViewDump);
         UpdateTree()
     } else {
         await window.nq.warn("Cant rename file", String(result.error));
@@ -207,7 +246,12 @@ document.addEventListener("deleteFile", async (e) => {
         if (!result.success) {
             await window.nq.warn(`Cant delete ${type}`, String(result.error));
         } else {
-            await saveTreeViewState()
+            const treeViewDump = {
+                root: await window.nq.getRoot(),
+                items: treeView.dump()
+            };
+
+            await window.nq.setLocalProperty("treeView", treeViewDump);
             UpdateTree()
             await window.nq.setSelected(await window.nq.getRoot());
         }
@@ -290,10 +334,17 @@ export async function initListeners() {
         console.log(dump);
         await window.nq.setLocalProperty("fileTabs", dump);
 
-        await saveTreeViewState();
+        const treeViewDump = {
+            root: await window.nq.getRoot(),
+            items: treeView.dump()
+        };
+
+        await window.nq.setLocalProperty("treeView", treeViewDump);
 
         await window.nq.shutdownNow();
     });
+
+    
 
     document.addEventListener("treeView", async () => {
         console.log(await window.nq.getRoot());
@@ -494,14 +545,16 @@ export async function initListeners() {
     });
 
     document.addEventListener("openRoot", async (e: any) => {
+        beforeReload();
         await window.nq.setRoot(e.detail.path);
-        await window.terminal.changeCwd(e.detail.path);
-        treeView.setRoot(e.detail.path);
-        await window.nq.setSelected(e.detail.path);
-        console.log("pedido de troca de root!");
-        console.log(e.detail.path);
-        await window.nq.initNqDir();
-        await setTreeView(e.detail.path);
+        await window.nq.reloadNow();
+        // await window.terminal.changeCwd(e.detail.path);
+        // treeView.setRoot(e.detail.path);
+        // await window.nq.setSelected(e.detail.path);
+        // console.log("pedido de troca de root!");
+        // console.log(e.detail.path);
+        // await window.nq.initNqDir();
+        // await setTreeView(e.detail.path);
     });
 
     document.addEventListener("updateTree", async () => {
