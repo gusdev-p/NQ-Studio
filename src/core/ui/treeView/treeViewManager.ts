@@ -197,7 +197,7 @@ export class TreeItem {
             this.tab.appendChild(await item.mount());
         }
         this.root.appendChild(this.tab);
-
+        
         this.loaded = true;
         this.isOpen = true;
         FolderOpened();
@@ -295,7 +295,9 @@ export class TreeViewManager {
     constructor(
         private root: string,
         private propertiesManager: PropertiesTabManager
-    ) {}
+    ) {
+        this.initListeners();
+    }
 
     public setRoot(root: string): void {
         this.root = root;
@@ -375,6 +377,8 @@ export class TreeViewManager {
         return this.items.map(item => item.dump());
     }
 
+    // note-to-self: never delete code, just comment
+    // thanks past-me
     public initListeners(): void {
         document.addEventListener("folderOpened", async () => {
             console.log("folder opened!");
@@ -390,14 +394,4 @@ export class TreeViewManager {
                 : console.log("[Tree View Manager]:", result.error);
         });
     }
-}
-
-export async function saveTreeViewState() {
-    const dump: TreeViewDump = {
-        root: await window.nq.getRoot(),
-        items: treeView.dump()
-    }
-
-    console.log("to dump:", dump);
-    await window.nq.setLocalProperty("treeView", dump);
 }
