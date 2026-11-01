@@ -2,7 +2,7 @@ import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { pathToFileURL, fileURLToPath } from "url";
 import { BrowserWindow } from "electron";
 
-type LSPType = "typescript" | "html" | "css" | "json";
+export type LSPType = "typescript" | "html" | "css" | "json";
 
 export class LSP {
     private servers = new Map<LSPType, ChildProcessWithoutNullStreams>();

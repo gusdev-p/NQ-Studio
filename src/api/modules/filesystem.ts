@@ -157,4 +157,18 @@ export class FilesystemHandler {
             return pathToFileURL(path).toString();
         });
     }
+
+    public unregister() {
+        ipcMain.removeHandler("openFile");
+        ipcMain.removeHandler("saveFile");
+        ipcMain.removeHandler("stat");
+        ipcMain.removeHandler("createDir");
+        ipcMain.removeHandler("createFile");
+        ipcMain.removeHandler("removeDir");
+        ipcMain.removeHandler("removeFile");
+        ipcMain.removeHandler("exists");
+        ipcMain.removeHandler("renameFile");
+        ipcMain.removeHandler("relativePath");
+        ipcMain.removeHandler("toUri");
+    }
 }

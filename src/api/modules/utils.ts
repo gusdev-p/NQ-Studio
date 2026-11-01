@@ -58,4 +58,14 @@ export class UtilsHandler {
             return path.resolve(...pathToResolve);
         });
     }
+
+    public unregister() {
+        ipcMain.removeHandler("getAppPath");
+        ipcMain.removeHandler("getTree");
+        ipcMain.removeHandler("getFileExt");
+        ipcMain.removeHandler("getFileName");
+        ipcMain.removeHandler("joinPath");
+        ipcMain.removeHandler("getDirname");
+        ipcMain.removeHandler("resolvePath");
+    }
 }

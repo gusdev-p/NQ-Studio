@@ -59,6 +59,10 @@ export class IconsHandler {
         });
     }
 
+    public unregister() {
+        ipcMain.removeHandler("IconsManager::getIcon");
+    }
+
     private getIcon(filePath: string, isPath: boolean = true): string {
         if (!this. icons) {
             console.error("No icon pack defined, probably the pack is invalid or is missing some essential icon. Return to fallback icon...");

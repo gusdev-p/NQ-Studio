@@ -3,7 +3,9 @@ import { ipcMain } from "electron";
 
 export class ExecuterHandler {
     private processes = new Map<number, ChildProcess>()
-    constructor(private verbose: boolean = false) {
+    constructor(private verbose: boolean = false) {}
+    
+    public register() {
         ipcMain.handle("executer:spawn", (_, command: string, args: string[] = [], cwd: string = process.cwd()) => {
             return this.execute(command, args, cwd);
         });
@@ -11,6 +13,11 @@ export class ExecuterHandler {
         ipcMain.handle("executer:kill", (_, pid: number, force: boolean = false) => {
             return this.kill(pid, force);
         });
+    }
+
+    public unregister() {
+        ipcMain.removeHandler("executer:spawn");
+        ipcMain.removeHandler("executer:kill");
     }
 
     execute(command: string, args: string[] = [], cwd: string = process.cwd()): ChildProcess {
