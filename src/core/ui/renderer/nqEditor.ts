@@ -1,9 +1,10 @@
 import { basicSetup, EditorView } from "codemirror";
 import { EditorState, Compartment, type Extension, EditorSelection } from "@codemirror/state";
 import { keymap, hoverTooltip } from "@codemirror/view";
-import { indentWithTab } from "@codemirror/commands";
+import { indentLess, indentMore } from "@codemirror/commands";
 import { setDiagnostics, type Diagnostic } from "@codemirror/lint";
-import { autocompletion } from "@codemirror/autocomplete";
+import { autocompletion, acceptCompletion, completionStatus, type Completion } from "@codemirror/autocomplete";
+import { indentUnit } from "@codemirror/language";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js/lib/common";
@@ -18,8 +19,9 @@ import { makefile } from "codemirror-lang-makefile";
 
 import { fileTabs, setEditorTheme } from "../../renderer";
 import { ChangeLanguage, FileModified } from "../../../events/editor";
+import { TabOpen } from "../../../events/tabs";
 
-type LSPType = "typescript" | "css" | "html";
+type LSPType = "typescript" | "css" | "html" | "json";
 
 export class nqEditor {
     private view!: EditorView;
@@ -45,21 +47,50 @@ export class nqEditor {
             doc,
             extensions: [
                 basicSetup,
-                keymap.of([indentWithTab]),
+                indentUnit.of("\t"),
+                keymap.of([
+                    {
+                        key: "Tab",
+                        run: (view) => {
+                            if (completionStatus(view.state) === "active") {
+                                return acceptCompletion(view);
+                            }
+
+                            return indentMore(view);
+                        }
+                    },
+                    {
+                        key: "Shift-Tab",
+                        run: indentLess
+                    },
+                    {
+                        key: "Shift-F12",
+                        run: () => {
+                            void this.jumpToReference();
+                            return true;
+                        }
+                    }
+                ]),
                 autocompletion({
                     activateOnTyping: true,
                     activateOnTypingDelay: 50,
                     selectOnOpen: true,
                     override: [
                         async (context) => {
-                            const line = context.state.doc.lineAt(context.pos);
+                            const word = context.matchBefore(/[\w$]+/);
 
-                            const lineText = line.text;
-                            const character = context.pos - line.from;
+                            if (!context.explicit && !word) {
+                                return null;
+                            }
+
+                            if (!this.lspType || !this.filePath) {
+                                return null;
+                            }
 
                             console.log("[CM]: Requesting completion...");
 
-                            if (!this.lspType) return null;
+                            const line = context.state.doc.lineAt(context.pos);
+                            const character = context.pos - line.from;
 
                             const result = await window.lsp.completion(
                                 this.filePath,
@@ -69,16 +100,14 @@ export class nqEditor {
                             );
 
                             console.log("[CM]: Completion result:", result);
-                            // console.log("[CM]: Completion result as JSON:", JSON.stringify(result, null, 2));
-
 
                             if (!result) return null;
 
                             const items = Array.isArray(result)
                                 ? result
                                 : result.items;
-                            
-                            const word = context.matchBefore(/[A-Za-z0-9_-]*/);
+
+                            if (!items?.length) return null;
 
                             return {
                                 from: word?.from ?? context.pos,
@@ -95,7 +124,36 @@ export class nqEditor {
                                     } as Record<number, string>)[item.kind] ?? "text",
                                     detail: item.detail,
                                     info: item.documentation?.value ?? item.documentation,
-                                    apply: item.textEdit?.newText ?? item.insertText ?? item.label
+                                    apply: (
+                                        view: EditorView,
+                                        _: Completion,
+                                        from: number,
+                                        to: number
+                                    ) => {
+                                        const toOffset = (position: any) =>
+                                            view.state.doc.line(position.line + 1).from
+                                            + position.character;
+
+                                        const range = item.textEdit?.range
+                                            ?? item.textEdit?.replace;
+
+                                        const changes = [
+                                            {
+                                                from: range ? toOffset(range.start) : from,
+                                                to: range ? toOffset(range.end) : to,
+                                                insert: item.textEdit?.newText
+                                                    ?? item.insertText
+                                                    ?? item.label
+                                            },
+                                            ...(item.additionalTextEdits ?? []).map((edit: any) => ({
+                                                from: toOffset(edit.range.start),
+                                                to: toOffset(edit.range.end),
+                                                insert: edit.newText
+                                            }))
+                                        ];
+
+                                        view.dispatch({ changes });
+                                    }
                                 }))
                             };
                         }
@@ -272,6 +330,57 @@ export class nqEditor {
         });
     }
 
+    async jumpToReference(pos = this.view.state.selection.main.head) {
+        if (!this.filePath || !this.lspType) return;
+
+        const line = this.view.state.doc.lineAt(pos);
+        const character = pos - line.from;
+
+        const result = await window.lsp.definition(
+            this.filePath,
+            line.number - 1,
+            character,
+            this.lspType
+        );
+
+        if (!result) return;
+
+        const location = Array.isArray(result) ? result[0] : result;
+
+        if (!location) return;
+
+        const uri: string | undefined = location.targetUri ?? location.uri;
+
+        const range = location.targetSelectionRange ?? location.range;
+
+        if (!uri || !range) return;
+
+        const targetPath = decodeURIComponent(new URL(uri).pathname);
+
+        await fileTabs.addFile(targetPath, targetPath);
+        TabOpen(targetPath, this.filePath, targetPath);
+
+        if (targetPath !== this.filePath) {
+            await new Promise<void>((resolve) => {
+                const check = () => {
+                    if (this.filePath === targetPath) {
+                        resolve();
+                        return;
+                    }
+
+                    requestAnimationFrame(check);
+                };
+
+                check();
+            });
+        }
+
+        this.goToLine(
+            range.start.line + 1,
+            range.start.character + 1
+        );
+    }
+
     setContent(content: string, path: string) {
         this.filePath = path;
         this.version = 1;
@@ -407,6 +516,10 @@ export class nqEditor {
             return "css";
         }
 
+        if ([".json", ".jsonc"].includes(ext)) {
+            return "json"
+        }
+
         return null;
     }
 
@@ -423,6 +536,8 @@ export class nqEditor {
         const languageId =
             type === "html" ? "html" :
             type === "css" ? "css" :
+            type === "json" && ext === ".jsonc" ? "jsonc" :
+            type === "json" ? "json" :
             [".ts", ".mts", ".cts"].includes(ext) ? "typescript" :
             "javascript";
         
