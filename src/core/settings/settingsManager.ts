@@ -108,9 +108,10 @@ ${JSON.stringify(this.config, null, 4)}
         }
 
         try {
-            const content = parse(this.path);
+            const content = parse(fs.readFileSync(this.path, "utf-8"));
             content[key] = value;
             fs.writeFileSync(this.path, JSON.stringify(content));
+            this.config = content;
             return;
         } catch (e) {
             console.error("[Settings Manager]: Cant define the setting:", key, " error:", e)
