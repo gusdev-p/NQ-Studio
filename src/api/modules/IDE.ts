@@ -1,7 +1,7 @@
 import { settingsManager } from "../../core/settings/settingsManager";
 import path from "path";
 import fs from "fs";
-import { ipcMain, dialog, BrowserWindow, shell, app } from "electron";
+import { ipcMain, dialog, BrowserWindow, shell, app, ipcRenderer } from "electron";
 import { MakefileParser } from "../../core/makefileParser";
 
 /*
@@ -32,6 +32,13 @@ export class SettingsManagerHandler {
         ipcMain.handle("getSettingContent", () => {
             return settingsManager.getSettingContent();
         })
+    }
+
+    public unregister() {
+        ipcMain.removeHandler("openSetting");
+        ipcMain.removeHandler("getSetting");
+        ipcMain.removeHandler("setSetting");
+        ipcMain.removeHandler("getSettingContent");
     }
 }
 
@@ -149,7 +156,7 @@ export class IDEHandler {
         });
 
 
-        ipcMain.handle("setRoot", (_, root: string) => {
+        ipcMain.handle("setRoot", (e, root: string) => {
             this.globalRoot = root;
             this.verbose ? console.log("[SET_ROOT]: new root defined:", root) : null;
         });
@@ -233,6 +240,22 @@ export class IDEHandler {
         ipcMain.handle("getAppAsar", async () => {
             return app.getAppPath();
         });
+    }
 
+    public unregister() {
+        ipcMain.removeHandler("askDir");
+        ipcMain.removeHandler("askInput");
+        ipcMain.removeHandler("warn");
+        ipcMain.removeHandler("askQuestion");
+        ipcMain.removeHandler("setRoot");
+        ipcMain.removeHandler("getRoot");
+        ipcMain.removeHandler("setSelected");
+        ipcMain.removeHandler("getSelected");
+        ipcMain.removeHandler("initNqDir");
+        ipcMain.removeHandler("getLocalProperty");
+        ipcMain.removeHandler("setLocalProperty");
+        ipcMain.removeHandler("openInBrowser");
+        ipcMain.removeHandler("make:parse");
+        ipcMain.removeHandler("getAppAsar");
     }
 }

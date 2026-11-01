@@ -60,4 +60,9 @@ export class ThemeHandler {
             }
         });
     }
+
+    public unregister() {
+        ipcMain.removeHandler("getAccentColor");
+        ipcMain.removeHandler("getTheme");
+    }
 }
