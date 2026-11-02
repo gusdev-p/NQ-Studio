@@ -28,7 +28,6 @@ const lspLogs = process.argv.includes("--lsp-logs") || process.argv.includes("-l
 console.log("dev-mode: ", devMode);
 
 if (typeof systemPreferences.getAccentColor === 'function') {
-    console.log("Accent color: ", systemPreferences.getAccentColor());
     if (systemPreferences.getAccentColor() !== "") {
         console.log("Accent color defined!")
     } else {
@@ -137,7 +136,7 @@ function bootstrap() {
 
 	// root definition
 	const oldRoot = stateManager.get("Opened Root");
-    console.log(oldRoot);
+    if (devMode) console.log("[BOOTSTRAP]: Root to open:",oldRoot);
 
     if (!oldRoot) return;
 	ideHandler.globalRoot = oldRoot;
