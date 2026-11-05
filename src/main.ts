@@ -12,6 +12,7 @@ import { FilesystemHandler } from "./api/modules/filesystem"
 import { IconsHandler } from "./api/modules/icons";
 import { LSP } from "./api/modules/lsp";
 import { LSPHandler } from "./api/modules/lspHandler";
+import { WindowManager } from "./api/modules/window";
 
 // utils
 import { settingsManager, SettingsManager } from "./core/settings/settingsManager";
@@ -42,6 +43,7 @@ let filesystemHandler :      FilesystemHandler
 let iconsHandler :           IconsHandler
 let ideHandler :             IDEHandler
 let lsp :                    LSP
+let windowManager :          WindowManager
 
 function initAPI() {
     themeHandler = new ThemeHandler(devMode);
@@ -161,10 +163,12 @@ function createBootstrap() {
         title: "NQ-Studio",
         icon: path.join("assets", "logo.png"),
         backgroundColor: backgroundColor,
-        show: false
+        show: false,
+		frame: false,
     });
     
     const window = win;
+    windowManager = new WindowManager(devMode, window);
     
     window.on("close", (e) => {
         if (allowClose) return;
@@ -218,6 +222,7 @@ async function reloadIDE() {
 
     terminal.delete();
     terminal.unregister();
+    windowManager.unregister();
     deinitAPI();
 
     allowClose = true;

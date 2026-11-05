@@ -1,4 +1,4 @@
-import { type server, type nq, type terminal, type make, type lsp } from "../core/preload";
+import { type server, type nq, type terminal, type make, type lsp, type window } from "../core/preload";
 
 declare global {
     interface Window {
@@ -7,6 +7,7 @@ declare global {
         server: typeof server;
         make: typeof make;
         lsp: typeof lsp;
+		windowm: typeof window;
     }
 }
 
