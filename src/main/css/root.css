@@ -2,3 +2,32 @@ body button {
   outline: none;
   font-family: inherit;
 }
+
+body {
+  user-select: none;
+}
+
+body img {
+  -webkit-user-drag: none;
+}
+
+body span {
+	font-family: inherit;
+	color: var(--fontColor);
+}
+
+#top-bar {
+  -webkit-app-region: drag;
+}
+
+#left-div {
+  -webkit-app-region: no-drag;
+}
+
+#mid-div {
+  -webkit-app-region: no-drag;
+}
+
+#right-div {
+  -webkit-app-region: no-drag;
+}
