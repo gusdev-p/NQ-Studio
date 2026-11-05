@@ -58,6 +58,8 @@ export class TreeItem {
         itemDiv.id = "tree-view-item";
         itemDiv.style.display = "flex";
         itemDiv.style.gap = "3px";
+        itemDiv.style.alignItems = "center";
+        itemDiv.style.marginLeft = "2px";
 
         const title = document.createElement("span");
         title.id = "tree-view-title";

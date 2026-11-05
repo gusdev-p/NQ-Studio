@@ -60,8 +60,8 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
 
     const fileLogo = document.createElement("img");
     fileLogo.src = await window.nq.getIcon("create_file", false);
-    fileLogo.style.width = "100%";
-    fileLogo.style.height = "auto";
+    // fileLogo.style.width = "100%";
+    fileLogo.style.height = "100%";
 
     createFileBtn.appendChild(fileLogo);
 
