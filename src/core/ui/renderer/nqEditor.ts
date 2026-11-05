@@ -5,9 +5,12 @@ import { indentLess, indentMore } from "@codemirror/commands";
 import { setDiagnostics, type Diagnostic } from "@codemirror/lint";
 import { autocompletion, acceptCompletion, completionStatus, type Completion } from "@codemirror/autocomplete";
 import { indentUnit } from "@codemirror/language";
+
+import hljs from "highlight.js/lib/common";
+import { showMinimap } from "@replit/codemirror-minimap";
+
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import hljs from "highlight.js/lib/common";
 
 import { javascript } from "@codemirror/lang-javascript";
 import { html } from "@codemirror/lang-html";
@@ -22,6 +25,11 @@ import { ChangeLanguage, FileModified } from "../../../events/editor";
 import { TabOpen } from "../../../events/tabs";
 
 type LSPType = "typescript" | "css" | "html" | "json";
+
+let create = (v:EditorView) => {
+    const dom = document.createElement("div");
+    return { dom };
+}
 
 export class nqEditor {
     private view!: EditorView;
@@ -38,6 +46,9 @@ export class nqEditor {
     private lspType: LSPType | null = null;
     private lspOpenRequest = 0;
 
+    private minimapCompartment = new Compartment();
+    private minimapGutters: Record<number, string> = {};
+
     constructor() {
         this.ready = this.init();
     }
@@ -48,6 +59,14 @@ export class nqEditor {
             extensions: [
                 basicSetup,
                 indentUnit.of("\t"),
+                this.minimapCompartment.of(
+                    showMinimap.compute(["doc"], () => ({
+                        create,
+                        displayText: "blocks",
+                        showOverlay: "always",
+                        gutters: []
+                    }))
+                ),
                 keymap.of([
                     {
                         key: "Tab",
@@ -469,6 +488,7 @@ export class nqEditor {
 
     setDiagnostics(diagnostics: any[]) {
         const result: Diagnostic[] = [];
+        const gutters: Record<number, string> = {};
 
         for (const diagnostic of diagnostics) {
             const startLine = diagnostic.range.start.line + 1;
@@ -479,6 +499,21 @@ export class nqEditor {
 
             const from = start.from + diagnostic.range.start.character;
             const to = end.from + diagnostic.range.end.character;
+
+            const color =
+                diagnostic.severity === 1 ? "#FF4444" :
+                diagnostic.severity === 2 ? "#FFAA00" :
+                "#4488FF";
+
+            const priority = {
+                "#4488FF": 1,
+                "#FFAA00": 2,
+                "#FF4444": 3
+            };
+
+            if (!gutters[startLine] || priority[color as keyof typeof priority] > priority[gutters[startLine] as keyof typeof priority]) {
+                gutters[startLine] = color;
+            }
 
             result.push({
                 from,
@@ -493,12 +528,29 @@ export class nqEditor {
             });
         }
 
+        this.setMinimapGutters(gutters);
+
         this.view.dispatch(
             setDiagnostics(
                 this.view.state,
                 result
             )
         );
+    }
+
+    public setMinimapGutters(gutters: Record<number, string>) {
+        this.minimapGutters = gutters;
+
+        this.view.dispatch({
+            effects: this.minimapCompartment.reconfigure(
+                showMinimap.compute(["doc"], () => ({
+                    create,
+                    displayText: "blocks",
+                    showOverlay: "always",
+                    gutters: [this.minimapGutters]
+                }))
+            )
+        })
     }
 
     private toLSPType(path: string): LSPType | null {
