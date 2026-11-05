@@ -1,5 +1,11 @@
 import { HTMLPreview, MarkdownPreview, ServerHTMLPreview, ServerHTMLPreviewOpenInBrowser } from "../../events/preview";
 
+type runConfig = {
+    fileName: string;
+    fileType: string;
+    filePath: string;
+}
+
 export class FileBar {
     private root: HTMLElement
 
