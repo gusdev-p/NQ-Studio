@@ -23,6 +23,10 @@
         "folder_nq": "icons/folder_nq.svg",
         "folder_settings": "icons/folder_settings.svg",
         "folder_src": "icons/folder_src.svg",
-        "todo": "icons/todo.svg"
+        "todo": "icons/todo.svg",
+        "maximize": "icons/maximize.svg",
+        "minimize": "icons/minimize.svg",
+        "restore": "icons/restaure.svg",
+		"close": "icons/close.svg"
     }
 }
