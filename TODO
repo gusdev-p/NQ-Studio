@@ -1,6 +1,12 @@
 adicionar barra superior estilo settings de IDE - renderer.ts
 
+NOTAS:
+    TODO RESET (sim TODO) precisa re-compilar o electron pro node-pty
+
 PELA AMOR DE DEUS FAÇA NA ORDEM EU DO FUTURO
+
+RECOMENDO FAZER:
+	fazer cada aba do fileTabs.ts guardar a linha e coluna de cada aba ;)
 
 melhorar e dar utilidade pra down-bar (mostrar a linguagem usada? package.json?)
 melhorar UX de criar pastas e arquivos
