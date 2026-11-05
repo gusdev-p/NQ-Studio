@@ -33,30 +33,39 @@ export class terminalManager {
 
     create(cwd: string, win: BrowserWindow) {
         this.pty?.kill();
-        
-        const shell =
+        this.spawn(cwd, win);
+    }
+
+    private spawn(cwd: string, win: BrowserWindow) {
+        const shell = 
             process.platform === "win32"
                 ? settingsManager.get("Console", "Shell", "Windows")
                 : settingsManager.get("Console", "Shell", "Linux");
         
         this.pty = pty.spawn(shell, [], {
-                    cwd: cwd,
-                    env: process.env,
-                    cols: 80,
-                    rows: 9,
-                });
-        
-        this.pty.onData(data => {
+            cwd,
+            env: process.env,
+            cols: 80,
+            rows: 9
+        });
+
+        const currentPty = this.pty;
+
+        currentPty.onData(data => {
             win.webContents.send("terminal:data", data);
         });
-        try {
-            ipcMain.handle("terminal:exec", (_, command: string) => {
-                this.pty?.write(command + "\n");
-                return true;
-            });
-        } catch (e) {
-            console.warn("[TERMINAL]:", e);
-        }
+
+        currentPty.onExit(({exitCode, signal}) => {
+            console.log("terminal killed :0", exitCode, signal);
+
+            if (this.pty !== currentPty) return;
+
+            this.pty = null;
+
+            if (!win.isDestroyed()) {
+                this.spawn(cwd, win);
+            }
+        })
     }
 
     changeCwd(newCwd: string) {
