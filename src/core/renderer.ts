@@ -14,6 +14,7 @@ import { parse } from "jsonc-parser"
 import { initListeners } from "../main/script.js";
 import { DownBar } from "./ui/downBar.js";
 import { TreeViewManager } from "./ui/treeView/treeViewManager.js";
+import { RunBar } from "./ui/runBar.js";
 
 console.log("-=- renderer boot! -=-")
 
@@ -88,7 +89,7 @@ async function initUI() {
 
     // topbar
     const topBar = document.createElement("div");
-    topBar.id = "topBar";
+    topBar.id = "top-bar";
     topBar.style.display = "flex";
     topBar.style.width = "100%";
     topBar.style.maxWidth = "100%";
@@ -97,8 +98,28 @@ async function initUI() {
     topBar.style.padding = "8px";
     topBar.style.gap = "4px";
     topBar.style.flexShrink = "0";
-    topBar.style.alignItems = "center"
+    topBar.style.alignItems = "center";
+    topBar.style.justifyContent = "space-between";
 
+    const leftDiv = document.createElement("div");
+    leftDiv.id = "left-div";
+    leftDiv.style.alignItems = "center";
+    leftDiv.style.display = "flex";
+    leftDiv.style.gap = "5px";
+
+    const midDiv = document.createElement("div");
+    midDiv.id = "mid-div";
+    midDiv.style.alignItems = "center";
+    midDiv.style.display = "flex";
+    midDiv.style.gap = "5px";
+
+    const rightDiv = document.createElement("div");
+    rightDiv.id = "right-div";
+	rightDiv.style.alignItems = "center";
+    rightDiv.style.display = "flex";
+    rightDiv.style.gap = "5px";
+
+	// left div
     // logo
     const logoSrc = document.createElement("img");
     logoSrc.id = "LogoSrc";
@@ -169,9 +190,137 @@ async function initUI() {
     fileContainer.appendChild(fileBtn);
     devContainer.appendChild(devBtn);
 
-    topBar.appendChild(logoSrc),
-    topBar.appendChild(fileContainer);
-    topBar.appendChild(devContainer);
+    leftDiv.appendChild(logoSrc),
+    leftDiv.appendChild(fileContainer);
+    leftDiv.appendChild(devContainer);
+
+	// mid div
+	const projectTitle = document.createElement("span");
+	projectTitle.innerText = await window.nq.getFileName(await window.nq.getRoot());
+
+	midDiv.appendChild(projectTitle);
+
+	// right div
+    // vertical spacer
+    const verticalSpacer = document.createElement("div");
+    verticalSpacer.style.width = "2px";
+    verticalSpacer.style.height = "20px";
+    verticalSpacer.style.borderRadius = "100%";
+    verticalSpacer.style.background = "var(--borderColor)";
+
+    // minimize button
+	const minimizeButton = document.createElement("button");
+    minimizeButton.style.width = "30px";
+    minimizeButton.style.height = "30px";
+    minimizeButton.style.display = "flex";
+    minimizeButton.style.justifyContent = "center";
+    minimizeButton.style.alignItems = "center";
+    minimizeButton.style.background = "transparent";
+    minimizeButton.style.border = "none";
+    minimizeButton.style.borderRadius = "10px";
+    minimizeButton.style.cursor = "pointer";
+
+	const minimizeIcon = document.createElement("img");
+    minimizeIcon.style.maxWidth = "20px";
+    minimizeIcon.style.height = "auto";
+
+    minimizeIcon.src = await window.nq.getIcon("minimize", false);
+
+    minimizeButton.appendChild(minimizeIcon);
+    
+    minimizeButton.addEventListener("mouseenter", () => {
+        minimizeButton.style.background = "var(--onSurfaceColor)"
+    });
+
+    minimizeButton.addEventListener("mouseleave", () => {
+        minimizeButton.style.background = "transparent";
+    });
+
+    minimizeButton.addEventListener("click", async () => {
+        await window.windowm.minimize();
+    }); 
+
+    // maximize
+    const maximizeButton = document.createElement("button");
+    maximizeButton.style.width = "30px";
+    maximizeButton.style.height = "30px";
+    maximizeButton.style.display = "flex";
+    maximizeButton.style.justifyContent = "center";
+    maximizeButton.style.alignItems = "center";
+    maximizeButton.style.background = "transparent";
+    maximizeButton.style.border = "none";
+    maximizeButton.style.borderRadius = "10px";
+    maximizeButton.style.cursor = "pointer";
+
+    const maximizeIcon = document.createElement("img");
+    maximizeIcon.style.maxWidth = "20px";
+    maximizeIcon.style.height = "auto";
+
+    maximizeIcon.src = await window.windowm.isMaximized()
+        ? await window.nq.getIcon("restore", false)
+        : await window.nq.getIcon("maximize", false);
+    
+    maximizeButton.appendChild(maximizeIcon);
+
+    maximizeButton.addEventListener("mouseenter", () => {
+        maximizeButton.style.background = "var(--onSurfaceColor)"
+    });
+
+    maximizeButton.addEventListener("mouseleave", () => {
+        maximizeButton.style.background = "transparent";
+    });
+
+    maximizeButton.addEventListener("click", async () => {
+        if (await window.windowm.isMaximized()) {
+            await window.windowm.restore();
+            maximizeIcon.src = await window.nq.getIcon("maximize", false);
+        } else {
+            await window.windowm.maximize();
+            maximizeIcon.src = await window.nq.getIcon("maximize", false);
+        }
+    });
+
+    // close
+    const closeButton = document.createElement("button");
+    closeButton.style.width = "30px";
+    closeButton.style.height = "30px";
+    closeButton.style.display = "flex";
+    closeButton.style.justifyContent = "center";
+    closeButton.style.alignItems = "center";
+    closeButton.style.background = "transparent";
+    closeButton.style.border = "none";
+    closeButton.style.borderRadius = "10px";
+    closeButton.style.cursor = "pointer";
+
+    const closeIcon = document.createElement("img");
+    closeIcon.style.maxWidth = "20px";
+    closeIcon.style.height = "auto";
+
+    closeIcon.src = await window.nq.getIcon("close", false);
+
+    closeButton.appendChild(closeIcon);
+
+    closeButton.addEventListener("mouseenter", () => {
+        closeButton.style.background = "var(--onSurfaceColor)"
+    });
+
+    closeButton.addEventListener("mouseleave", () => {
+        closeButton.style.background = "transparent";
+    });
+    
+    closeButton.addEventListener("click", async () => {
+        await window.windowm.shutdown();
+    });
+
+    rightDiv.appendChild(verticalSpacer);
+    rightDiv.appendChild(minimizeButton);
+    rightDiv.appendChild(maximizeButton);
+    rightDiv.appendChild(closeButton);
+
+	// top bar
+    topBar.appendChild(leftDiv);
+	topBar.appendChild(midDiv);
+	topBar.appendChild(rightDiv);
 
     const root = document.createElement("div");
     root.id = "root";
@@ -205,7 +354,7 @@ async function initUI() {
     editor.style.height = "100%";
     editor.style.width = "100%";
     editor.style.maxWidth = "100%";
-    editor.style.borderRadius = "8px";
+    editor.style.borderRadius = "10px";
     editor.style.overflow = "hidden";
     editor.style.minHeight = "0";
     editor.style.background = "var(--backgroundColor, #222)";
@@ -220,7 +369,7 @@ async function initUI() {
     terminal.style.display = "flex";
     terminal.style.flexDirection = "column";
     terminal.style.overflow = "hidden";
-    terminal.style.borderRadius = "8px";
+    terminal.style.borderRadius = "10px";
     terminal.style.border = "1px solid var(--borderColor)";
 
     const terminalResizer = document.createElement("div");
@@ -326,6 +475,7 @@ async function initUI() {
 
     document.body.appendChild(topBar);
     fileBar = new FileBar(document.body)
+    let runBar = new RunBar(document.body);
     document.body.appendChild(root);
     
     nqeditor = new nqEditor();
