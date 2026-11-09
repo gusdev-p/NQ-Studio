@@ -1,6 +1,6 @@
 type PropertiesButton = {
     name: string;
-    type: "button" | "spacer";
+    type: "button" | "spacer" | "title";
     worker: () => void | Promise<void>;
 }
 
@@ -74,6 +74,15 @@ export class PropertiesTabManager {
                 spacer.style.height = "1px";
 
                 root.appendChild(spacer);
+                return;
+            }
+
+            if (type === "title") {
+                const title = document.createElement("span");
+                title.id = "title";
+                title.innerText = name;
+
+                root.appendChild(title);
                 return;
             }
           
