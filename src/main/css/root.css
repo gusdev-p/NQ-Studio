@@ -1,6 +1,7 @@
 body button {
   outline: none;
   font-family: inherit;
+  color: var(--fontColor);
 }
 
 body {
