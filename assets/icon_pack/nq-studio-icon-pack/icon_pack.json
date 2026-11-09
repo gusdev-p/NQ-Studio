@@ -27,6 +27,8 @@
         "maximize": "icons/maximize.svg",
         "minimize": "icons/minimize.svg",
         "restore": "icons/restaure.svg",
-		"close": "icons/close.svg"
+		"close": "icons/close.svg",
+        "run": "icons/run.svg",
+        "reload": "icons/reload.svg"
     }
 }
