@@ -1,35 +1,14 @@
 {
-  "name": "nq-studio",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/main.js",
-  "scripts": {
+	"name": "nq-studio",
+	"version": "1.6.1",
+	"description": "",
+	"main": "dist/main.js",
+	"desktopName": "com.gusdev.nq-studio",
+  	"scripts": {
     "build": "node esbuild.mjs",
     "preview": "electron .",
     "pack:dir": "npm run build && electron-builder --dir",
-    "pack:linux": "npm run build && electron-builder --linux AppImage deb"
-  },
-  "build": {
-    "appId": "dev.gusdev.nq-studio",
-    "productName": "NQ-Studio",
-    "asar": true,
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/**/*",
-      "assets/**/*",
-      "package.json"
-    ],
-    "linux": {
-      "maintainer": "Gusdev-p",
-      "icon": "assets/logo.png",
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "category": "Development"
-    }
+    "pack:deb": "npm run build && electron-builder --linux AppImage deb"
   },
   "keywords": [
     "ide",
