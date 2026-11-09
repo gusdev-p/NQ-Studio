@@ -19,6 +19,7 @@ help:
 	@echo "send-state: Copy the base IDE state file (from the IDE source code folder) to your home."
 	@echo "reset-settings: Copy the local settings (from the IDE source code folder) to your home."
 	@echo "gen-third-party: Generate the 'THIRD-PARTY-LICENSES.md' file."
+	@echo "compile-nq: Compile the IDE into a '.AppImage' and '.deb' package. Note: This command is currently on alpha."
 
 run:
 	@echo "target: run"
@@ -75,3 +76,15 @@ send-state:
 
 gen-third-party:
 	npx --yes license-checker --markdown > THIRD-PARTY-LICENSES.md
+
+compile-nq:
+	@echo "target: compile-nq"
+	@echo "------------------"
+	@echo "\033[33mWARNING\033[0m: This command is current on alpha, bugs and BIG crashes are expected ;)"
+	@echo "Cleaning old builds..."
+	$(MAKE) distclean
+	@echo "Compiling Scripts..."
+	$(MAKE) build
+	@echo "Compiling IDE into ''.AppImage' and ''.deb'..."
+	@node compiler.mjs
+	@echo "Done! You may like check the 'release' directory ;) There is a surprise for you."
