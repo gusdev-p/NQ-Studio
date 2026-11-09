@@ -1,4 +1,4 @@
-import { side_bar, nqeditor, secondary_side_bar, fileBar, fileTabs, treeView, notificationManager } from "../core/renderer.js";
+import { side_bar, nqeditor, secondary_side_bar, runBar, fileTabs, treeView, notificationManager } from "../core/renderer.js";
 import { TabDumps } from "../core/ui/fileTabs.js";
 import { DeleteFile } from "../events/tree.js";
 import { HideSecondarySideBar, OpenRoot, OpenSecondarySideBar, ToggleTerminal, UpdateTree } from "../events/IDE.js";
@@ -302,7 +302,7 @@ export async function initListeners() {
 
             if (activeTab) {
                 fileTabs.setActive(tabs.activeTab);
-                fileBar.appendFile({fileName: await window.nq.getFileName(tabs.activeTab), fileType: await window.nq.getFileExt(tabs.activeTab), filePath: tabs.activeTab})
+                await runBar.setActiveFile({name: await window.nq.getFileName(tabs.activeTab), ext: await window.nq.getFileExt(tabs.activeTab), path: tabs.activeTab})
 
                 nqeditor.setContent(
                     activeTab.buffer,
@@ -368,7 +368,7 @@ export async function initListeners() {
 
         fileTabs.addFile(path, path);
         fileTabs.setActive(path);
-        fileBar.appendFile({fileName: name, filePath: path, filetype: ext});
+        await runBar.setActiveFile({name: name, path: path, ext: ext});
     })
 
     document.addEventListener("fileOpened", async (e: any) => {
@@ -421,10 +421,10 @@ export async function initListeners() {
             )
         );
 
-        fileBar.appendFile({
-            fileName,
-            filePath,
-            fileType
+        await runBar.setActiveFile({
+            name: fileName,
+            path: filePath,
+            ext: fileType
         });
 
         fileTabs.setActive(filePath);
@@ -455,7 +455,7 @@ export async function initListeners() {
         );
 
         fileTabs.setActive(fileIdentifier);
-        fileBar.appendFile({fileName: newTab.fileName, fileType: await window.nq.getFileExt(newTab.path), filePath: newTab.path});
+        await runBar.setActiveFile({name: newTab.fileName, ext: await window.nq.getFileExt(newTab.path), path: newTab.path});
         e.detail.onOpened?.();
     }); 
 
@@ -474,7 +474,7 @@ export async function initListeners() {
         }
 
         fileTabs.removeFile(fileIdentifier);
-        fileBar.removeFile()
+        runBar.removeActiveFile()
 
         if (fileTabs.tabs < 1) {
             nqeditor.setContent(
@@ -610,7 +610,8 @@ export async function initListeners() {
             makefilePath = await window.nq.resolvePath(await window.nq.getRoot(), "makefile");
         }
 
-        const parsed = await window.make.parse(makefilePath);
+        const parsed = await window.make.parse(await window.nq.resolvePath(makefilePath));
+        console.log("makefile path:", makefilePath);
         console.log("parsed: ", parsed);
         side_bar.defineMakefileView(parsed);
     });
