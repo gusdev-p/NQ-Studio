@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="126.32306mm"
+   height="126.17321mm"
+   viewBox="0 0 126.32306 126.17321"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="run.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.2485111"
+     inkscape:cx="143.77125"
+     inkscape:cy="223.06569"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="126.32306"
+       height="126.17321"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,8.853823,0,1 @ F,0,0,1,0,7.8935258,0,1 @ F,0,0,1,0,7.8651712,0,1 @ F,0,0,1,0,10.556054,0,1"
+       radius="6.7194117"
+       unit="mm"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-49.226379,-89.213913)">
+    <rect
+       style="fill:#09c40d;fill-opacity:1;stroke-width:19.9256"
+       id="rect3"
+       width="126.32306"
+       height="126.17321"
+       x="49.226379"
+       y="89.213913"
+       ry="15.914271" />
+    <g
+       id="g6"
+       transform="matrix(0,-0.73270658,1,0,-48.862938,240.73178)">
+      <rect
+         style="fill:#ffffff;stroke-width:9.57529"
+         id="rect1"
+         width="16.353569"
+         height="85.127731"
+         x="-57.314293"
+         y="139.4097"
+         ry="8.242527"
+         transform="matrix(0.72931176,-0.68418152,0.71184683,0.70233474,0,0)" />
+      <rect
+         style="fill:#ffffff;stroke-width:9.78098"
+         id="rect2"
+         width="16.68211"
+         height="87.075035"
+         x="209.62675"
+         y="-26.996828"
+         ry="8.4310751"
+         transform="matrix(0.72263334,0.69123155,-0.73978681,0.67284135,0,0)" />
+      <rect
+         style="fill:#ffffff;stroke-width:11.295"
+         id="rect4"
+         width="16.105999"
+         height="120.2735"
+         x="-144.8093"
+         y="61.372807"
+         ry="11.645529"
+         transform="matrix(0.00598004,-0.99998212,0.99999576,0.00291137,0,0)" />
+      <rect
+         style="fill:#ffffff;stroke-width:10.1264"
+         id="rect5"
+         width="23.09918"
+         height="46.410278"
+         x="92.245956"
+         y="130.11429"
+         ry="0"
+         transform="matrix(0,1,-1.3648028,0,328.43268,48.862941)" />
+      <rect
+         style="fill:#ffffff;stroke-width:5.17118"
+         id="rect6"
+         width="15.893931"
+         height="17.589283"
+         x="114.92257"
+         y="144.73671"
+         ry="0"
+         transform="matrix(0,1,-1.3648028,0,328.43268,48.862941)" />
+    </g>
+  </g>
+</svg>
