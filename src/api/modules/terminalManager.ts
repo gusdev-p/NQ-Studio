@@ -26,6 +26,14 @@ export class terminalManager {
             ipcMain.handle("terminal:cwdNew", (_, newCwd: string) => {
                 this.changeCwd(newCwd);
             });
+
+			ipcMain.handle("terminal:exec", (_, command: string) => {
+				if (!command.endsWith("\n")) {
+					command += "\n";
+				}
+
+				this.pty?.write(command);
+			});
         } catch (e) {
             console.warn("[TERMINAL]: ", e);
         }
@@ -88,5 +96,6 @@ export class terminalManager {
         ipcMain.removeAllListeners("terminal:resize");
         ipcMain.removeHandler("terminal:create");
         ipcMain.removeHandler("terminal:cwdNew");
+		ipcMain.removeHandler("terminal:exec");
     }
 }
