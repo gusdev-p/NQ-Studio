@@ -344,6 +344,7 @@ export const nq = {
      * @returns The specified icon for the path.
      * @example // Examples of usage:
      * await window.nq.getIcon("some_file.txt") // returns a generic icon.
+     * await window.nq.getIcon("some_script.ts") // returns the TypeScript icon.
      * await window.nq.getIcon("makefile", false) // returns the makefile icon.
      */
     getIcon(filePath: string, is_path: boolean = true): Promise<string> {
