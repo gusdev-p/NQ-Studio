@@ -2,7 +2,7 @@ import { SideBar } from "./ui/sidebar.js";
 import { mainSideBar } from "./ui/mainSideBar.js";
 import { terminalView } from "./ui/terminal/terminalView.js";
 import { SecondarySideBar } from "./ui/secondaryBar.js";
-import { FileBar } from "./ui/fileBar.js";
+import { RunBar } from "./ui/runBar.js"
 import { nqEditor } from "./ui/renderer/nqEditor.js";
 import { FileTabs } from "./ui/fileTabs.js";
 import { Extension } from "@codemirror/state";
@@ -14,7 +14,6 @@ import { parse } from "jsonc-parser"
 import { initListeners } from "../main/script.js";
 import { DownBar } from "./ui/downBar.js";
 import { TreeViewManager } from "./ui/treeView/treeViewManager.js";
-import { RunBar } from "./ui/runBar.js";
 
 console.log("-=- renderer boot! -=-")
 
@@ -31,7 +30,7 @@ document.body.style.maxWidth = "100vw";
 export let side_bar: SideBar;
 export let nqeditor: nqEditor;
 export let secondary_side_bar: SecondarySideBar;
-export let fileBar: FileBar;
+export let runBar: RunBar;
 export let fileTabs: FileTabs;
 export let downBar: DownBar;
 export let treeView: TreeViewManager;
@@ -123,7 +122,7 @@ async function initUI() {
     // logo
     const logoSrc = document.createElement("img");
     logoSrc.id = "LogoSrc";
-    logoSrc.src = await window.nq.resolvePath(await window.nq.getAppAsar(), "assets", "logo.png");
+    logoSrc.src = await window.nq.resolvePath(await window.nq.getAppAsar(), "assets", "logo.svg");
     logoSrc.style.maxWidth = "100px";
     logoSrc.style.maxHeight = "30px"
 
@@ -372,6 +371,10 @@ async function initUI() {
     terminal.style.borderRadius = "10px";
     terminal.style.border = "1px solid var(--borderColor)";
 
+    const terminalBar = document.createElement("div");
+    terminalBar.style.width = "100%";
+    terminalBar.style.height = "30px";
+
     const terminalResizer = document.createElement("div");
     terminalResizer.id = "terminalResizer"
     terminalResizer.style.width = "100%";
@@ -384,6 +387,7 @@ async function initUI() {
     terminalResizer.style.alignItems = "center";
     
     terminal.appendChild(terminalResizer);
+    terminal.appendChild(terminalBar);
 
     const terminalContent = document.createElement("div");
     terminalContent.id = "terminalContent"
@@ -474,12 +478,10 @@ async function initUI() {
     root.appendChild(workspace);
 
     document.body.appendChild(topBar);
-    fileBar = new FileBar(document.body)
-    let runBar = new RunBar(document.body);
+    runBar = new RunBar(document.body);
     document.body.appendChild(root);
     
     nqeditor = new nqEditor();
-    
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
