@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer } from "electron";
 import { TreeNode } from "./ui/treeView/treeProvider";
 import { Result } from "../core/settings/settingsManager";
 import { ChildProcess } from "child_process";
+import { ExecutedProcess } from "../api/modules/processManager";
 
 let booted = false;
 
@@ -437,16 +438,26 @@ export const nq = {
         return ipcRenderer.invoke("getSettingContent");
     },
 
-    spawnProcess(command: string, args: string[] = [], cwd: string = process.cwd()): Promise<ChildProcess> {
-        return ipcRenderer.invoke("executer:spawn", command, args, cwd);
+    spawnProcess(command: string, args: string[]): Promise<ExecutedProcess> {
+        return ipcRenderer.invoke("executer:spawn", command, args);
     },
 
-    killProcess(pid: number, force: boolean = false): Promise<boolean> {
-        return ipcRenderer.invoke("executer:kill", pid, force);
+    killProcess(uuid: string): Promise<boolean> {
+        return ipcRenderer.invoke("executer:kill", uuid);
     },
 
     getAppAsar(): Promise<string> {
         return ipcRenderer.invoke("getAppAsar");
+    },
+
+    /**
+     * ## Exists Command
+     * Search for the specified command
+     * 
+     * @returns A boolean value that means if the command was found.
+     */
+    existsCommand(command: string): Promise<boolean> {
+        return ipcRenderer.invoke("existsCommand", command);
     }
 };
 
@@ -458,6 +469,10 @@ export const terminal = {
     write(data: string) {
         ipcRenderer.send("terminal:write", data);
     },
+
+	kill() {
+		ipcRenderer.invoke("terminal:killActive");
+	},
 
     resize(cols: number, rows: number) {
         ipcRenderer.send("terminal:resize", cols, rows);
