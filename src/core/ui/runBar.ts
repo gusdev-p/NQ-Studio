@@ -24,16 +24,18 @@ export class RunBar {
 
     public activeFile: fileConfig | null = null;
     private activeFileTab: HTMLDivElement | null = null;
+    private activeExecution: boolean = false;
 
     constructor(private parent: HTMLElement) {
         const root = document.createElement("div");
+        root.id = "run-bar";
         root.style.width = "calc(100% - 10px)";
         root.style.height = "50px";
         root.style.display = "flex";
         root.style.boxSizing = "border-box";
         root.style.borderRadius = "10px";
         root.style.border = "solid 1px var(--borderColor)";
-        root.style.margin = "0 5px";
+        root.style.margin = "5px 5px";
         root.style.background = "var(--surfaceColor)";
         root.style.justifyContent = "space-between";
         root.style.alignItems = "center";
@@ -43,7 +45,7 @@ export class RunBar {
         this.leftSide.style.height = "100%";
         this.leftSide.style.display = "flex";
         this.leftSide.style.justifyContent = "start";
-        this.leftSide.style.marginLeft = "10px";
+        this.leftSide.style.marginLeft = "5px";
         this.leftSide.style.alignItems = "center";
         this.leftSide.style.gap = "4px"
 
@@ -52,7 +54,7 @@ export class RunBar {
         this.rightSide.style.height = "100%";
         this.rightSide.style.display = "flex";
         this.rightSide.style.justifyContent = "end";
-        this.rightSide.style.marginRight = "10px";
+        this.rightSide.style.marginRight = "5px";
         this.rightSide.style.alignItems = "center";
         this.rightSide.style.gap = "4px"
 
@@ -149,6 +151,11 @@ export class RunBar {
         run.style.alignItems = "center";
         run.style.gap = "4px";
         run.style.justifyContent = "center";
+
+        run.addEventListener("click", async (e) => {
+            const algo = await window.nq.spawnProcess("echo", ["bom-dia"]);
+            console.log("o processo:", algo);
+        });
 
         const runTitle = document.createElement("span");
         runTitle.innerText = "Run";
@@ -359,6 +366,7 @@ export class RunBar {
         switch (type) {
             case "html": {
                 secondary_side_bar.setHTMlPreview(path);
+                this.activeExecution
                 break;
             }
 
@@ -375,40 +383,120 @@ export class RunBar {
     }
 
     private async executeActiveFile() {
+        const type = this.runType;
         const file = this.activeFile!;
 
-        switch (file.ext) {
-            case ".js":
-            case ".mjs":
-            case ".cjs": {
-                await window.nq.terminal.executeInTerminal(`node ${file.path}`);
+        switch (type) {
+            case "auto":
+            case "active-file": {
+                if (!file) return;
+
+                switch (file.ext) {
+                    case ".mjs":
+                    case ".js":
+                    case ".cjs": {
+                        if (!await window.nq.existsCommand("node")) return;
+                        window.terminal.executeInTerminal(`node ${file.path}`);
+                        break;
+                    }
+
+                    case ".ts":
+                    case ".mts":
+                    case ".cts": {
+                        if (!await window.nq.existsCommand("ts-node")) return;
+                        window.terminal.executeInTerminal(`ts-node ${file.path}`);
+                        break;
+                    }
+
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".svg":
+                    case ".gif": {
+                        this.preview("image", file.path);
+                        break;
+                    }
+
+                    case ".html": {
+                        this.preview("html", file.path);
+                        break;
+                    }
+
+                    case ".md": {
+                        this.preview("markdown", file.path);
+                        break;
+                    }
+                }
+            }
+
+            case "makefile-target": {
+                if (!await window.nq.existsCommand("make")) return;
+
+                const target = await window.nq.getLocalProperty("main_target");
+                const makePath = await window.nq.getLocalProperty("makefile");
+
+                window.terminal.executeInTerminal(
+                    makePath 
+                        ? `make -f ${makePath} ${target}`
+                        : `make ${target}`
+                );
                 break;
             }
 
-            case ".ts":
-            case ".mts":
-            case ".cts": {
-                await window.nq.terminal.executeInTerminal(`ts-node ${file.path}`);
+            case "open-in-browser": {
+                await window.nq.openInBrowser(file.path);
                 break;
             }
 
-            case ".html": {
-                this.preview("html", file.path);
+            case "open-in-browser-server": {
+                const url = await window.server.openHttpServer(await window.nq.getRoot());
+
+                await window.nq.openInBrowser(url);
                 break;
             }
 
-            case ".jpg":
-            case ".jpeg":
-            case ".png":
-            case ".svg":
-            case ".gif": {
-                this.preview("image", file.path);
-                break;
+            case "open-in-preview": {
+                switch (file.ext) {
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".svg":
+                    case ".gif": {
+                        this.preview("image", file.path);
+                        break;
+                    }
+
+                    case ".html": {
+                        this.preview("html", file.path);
+                        break;
+                    }
+
+                    case ".md": {
+                        this.preview("markdown", file.path);
+                        break;
+                    }
+                }
             }
 
-            case ".md": {
-                this.preview("markdown", file.path);
-                break;
+            case "open-in-server-preview": {
+                switch (file.ext) {
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".svg":
+                    case ".gif": {
+                        this.preview("image", file.path);
+                        break;
+                    }
+
+                    case ".html": {
+                        const url = await window.server.openHttpServer(await window.nq.getRoot());
+                        this.preview("html", await window.nq.joinPath(url, file.path));
+                        break;
+                    }
+
+                    case ".md": {
+                        this.preview("markdown", file.path);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -418,7 +506,8 @@ export class RunBar {
     }
 
     public async reExecuteCode() {
-
+		window.terminal.kill();
+		this.executeActiveFile();
     }
 
     public stopCode() {
