@@ -34,6 +34,10 @@ export class terminalManager {
 
 				this.pty?.write(command);
 			});
+
+			ipcMain.handle("terminal:killActive", () => {
+				this.pty?.kill();
+			});
         } catch (e) {
             console.warn("[TERMINAL]: ", e);
         }
@@ -97,5 +101,6 @@ export class terminalManager {
         ipcMain.removeHandler("terminal:create");
         ipcMain.removeHandler("terminal:cwdNew");
 		ipcMain.removeHandler("terminal:exec");
+		ipcMain.removeHandler("terminal:killActive");
     }
 }
