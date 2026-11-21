@@ -10,9 +10,11 @@ import { SettingsManagerHandler, IDEHandler } from "./api/modules/IDE";
 import { UtilsHandler } from "./api/modules/utils"
 import { FilesystemHandler } from "./api/modules/filesystem"
 import { IconsHandler } from "./api/modules/icons";
-import { LSP } from "./api/modules/lsp";
 import { LSPHandler } from "./api/modules/lspHandler";
 import { WindowManager } from "./api/modules/window";
+import { ProcessManagerHandler } from "./api/modules/processManager";
+
+// import { LSP } from "./api/modules/lsp";
 
 // utils
 import { settingsManager, SettingsManager } from "./core/settings/settingsManager";
@@ -42,8 +44,10 @@ let utilsHandler :           UtilsHandler
 let filesystemHandler :      FilesystemHandler
 let iconsHandler :           IconsHandler
 let ideHandler :             IDEHandler
-let lsp :                    LSP
 let windowManager :          WindowManager
+let processManager :         ProcessManagerHandler
+
+// let lsp :                    LSP
 
 function initAPI() {
     themeHandler = new ThemeHandler(devMode);
@@ -52,7 +56,9 @@ function initAPI() {
     filesystemHandler = new FilesystemHandler(devMode);
     iconsHandler = new IconsHandler(true)
     ideHandler = new IDEHandler(devMode);
-    lsp = new LSP(lspLogs);
+    processManager = new ProcessManagerHandler(devMode);
+
+    // lsp = new LSP(lspLogs);
 }
 
 function deinitAPI() {
@@ -62,6 +68,7 @@ function deinitAPI() {
     filesystemHandler.unregister();
     iconsHandler.unregister();
     ideHandler.unregister();
+    processManager.unregister();
 }
 
 let lspHandler: LSPHandler;
@@ -185,7 +192,7 @@ function createBootstrap() {
         console.log("[NQ]: did-finish-load triggered")
         
         console.log("[NQ]: Starting LSP (Language Server Protocol)...")
-        lsp.start(window, "typescript", ideHandler.globalRoot);
+        // lsp.start(window, "typescript", ideHandler.globalRoot);
         
         console.log("[NQ]: Sending BOOT call");
         window.webContents.send("nq:boot");
