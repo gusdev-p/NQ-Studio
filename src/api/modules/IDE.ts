@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { ipcMain, dialog, BrowserWindow, shell, app, ipcRenderer } from "electron";
 import { MakefileParser } from "../../core/makefileParser";
+import { execSync } from "child_process";
 
 /*
 NQ-Studio IDE API
@@ -240,6 +241,21 @@ export class IDEHandler {
         ipcMain.handle("getAppAsar", async () => {
             return app.getAppPath();
         });
+
+        ipcMain.handle("existsCommand", (_, command: string) => {
+            try {
+                execSync(
+                    process.platform === "win32"
+                        ? `where ${command}`
+                        : `which ${command}`,
+                    { stdio: "ignore" }
+                );
+
+                return true;
+            } catch {
+                return false;
+            }
+        });
     }
 
     public unregister() {
@@ -257,5 +273,6 @@ export class IDEHandler {
         ipcMain.removeHandler("openInBrowser");
         ipcMain.removeHandler("make:parse");
         ipcMain.removeHandler("getAppAsar");
+        ipcMain.removeHandler("existsCommand");
     }
 }
