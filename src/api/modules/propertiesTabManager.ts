@@ -1,8 +1,19 @@
-type PropertiesButton = {
-    name: string;
-    type: "button" | "spacer" | "title";
-    worker: () => void | Promise<void>;
-}
+type PropertiesButton =
+    | {
+        type: "button";
+        name: string;
+        worker: () => void | Promise<void>
+    }
+    | {
+        type: "title";
+        name: string;
+        worker?: never;
+    }
+    | {
+        type: "spacer";
+        name?: never;
+        worker?: never
+    }
 
 export type PropertiesTabType = {
     name: string;
