@@ -133,7 +133,7 @@ async function initUI() {
     fileBtn.style.background = "var(--onSurfaceColor)";
     fileBtn.style.color = "var(--fontColor)";
     fileBtn.style.border = "none";
-    fileBtn.style.borderRadius = "3px";
+    fileBtn.style.borderRadius = "10px";
 
     const fileButtons: PropertiesTabType = {
         name: "File",
@@ -162,7 +162,7 @@ async function initUI() {
     devBtn.style.background = "var(--onSurfaceColor)";
     devBtn.style.color = "var(--fontColor)";
     devBtn.style.border = "none";
-    devBtn.style.borderRadius = "3px";
+    devBtn.style.borderRadius = "10px";
     
     const devButtons: PropertiesTabType = {
         name: "Developer Options:",
@@ -363,17 +363,19 @@ async function initUI() {
 
     const terminal = document.createElement("div");
     terminal.id = "terminal";
-    terminal.style.height = "200px";
+    terminal.style.height = "300px";
     terminal.style.background = "black"
     terminal.style.display = "flex";
     terminal.style.flexDirection = "column";
     terminal.style.overflow = "hidden";
     terminal.style.borderRadius = "10px";
     terminal.style.border = "1px solid var(--borderColor)";
+    terminal.style.gap = "3px";
 
     const terminalBar = document.createElement("div");
     terminalBar.style.width = "100%";
     terminalBar.style.height = "30px";
+    terminalBar.style.background = "var(--surfaceColor)";
 
     const terminalResizer = document.createElement("div");
     terminalResizer.id = "terminalResizer"
@@ -386,8 +388,12 @@ async function initUI() {
     terminalResizer.style.justifyContent = "center";
     terminalResizer.style.alignItems = "center";
     
-    terminal.appendChild(terminalResizer);
-    terminal.appendChild(terminalBar);
+    const terminalBarDiv = document.createElement("div");
+    
+    terminalBarDiv.appendChild(terminalResizer);
+    terminalBarDiv.appendChild(terminalBar);
+
+    terminal.appendChild(terminalBarDiv);
 
     const terminalContent = document.createElement("div");
     terminalContent.id = "terminalContent"
