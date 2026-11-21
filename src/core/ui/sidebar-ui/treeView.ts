@@ -66,20 +66,12 @@ export async function defineTreeView(root: HTMLElement | HTMLDivElement, tree: s
     createFileBtn.appendChild(fileLogo);
 
     createDirBtn.addEventListener("click", async () => {
-        
-        const selected = treeView.getSelectedItem();
-
-        if (!selected) return;
-
-        await selected.showCreateInput("directory");
+        // console.log("criar pasta!")
+        await treeView.showCreateInput("directory");
     });
 
     createFileBtn.addEventListener("click", async () => {
-        const selected = treeView.getSelectedItem();
-
-        if (!selected) return;
-
-        await selected.showCreateInput("file");
+        await treeView.showCreateInput("file");
     });
     
     const spacer = document.createElement("div");

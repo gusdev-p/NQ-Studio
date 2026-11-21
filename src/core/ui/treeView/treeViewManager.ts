@@ -139,9 +139,7 @@ export class TreeItem {
                     worker: () => RenameFile(this.node.path)
                 },
                 {
-                  name: "",
-                  type: "spacer",
-                  worker: () => {}
+                  type: "spacer"
                 },
                 {
                     name: "Copy Path",
@@ -293,6 +291,7 @@ export class TreeViewManager {
     private items: TreeItem[] = [];
     private alreadyMounted: boolean = false;
     private selectedItem: TreeItem | null = null;
+    private input: HTMLInputElement | null = null;
 
     constructor(
         private root: string,
@@ -395,5 +394,68 @@ export class TreeViewManager {
                 ? console.log("[Tree View Manager]: Tree view state saved!")
                 : console.log("[Tree View Manager]:", result.error);
         });
+    }
+
+    public async showCreateInput(type: "file" | "directory"): Promise<void> {
+        if (this.input) {
+            this.input.remove();
+            this.input = null;
+            return;
+        }
+
+        const selected = this.getSelectedItem();
+
+        if (selected && selected.node.isDir) {
+            await selected.showCreateInput(type);
+            return;
+        }
+
+        if (!selected) {
+
+            const input = document.createElement("input");
+
+            input.className = "tree-create-input";
+            input.placeholder = type === "file"
+                ? "Enter file name:"
+                : "Enter directory name:";
+
+            input.style.width = "calc(100% - 30px)";
+            input.style.background = "var(--onSurfaceColor)";
+            input.style.border = "none";
+            input.style.outline = "none";
+            input.style.padding = "3px 5px";
+            input.style.borderRadius = "6px";
+            input.style.color = "var(--fontColor)";
+
+            this.input = input;
+
+            this.element.prepend(this.input);
+            this.input.focus();
+            
+            const cleanup = () => {
+                input.remove();
+                this.input = null;
+                document.removeEventListener("keydown", onKeyDown);
+            };
+
+            const onKeyDown = (e: KeyboardEvent) => {
+                if (e.key === "Enter") {
+                    const name = input.value.trim();
+                    if (!name) return;
+
+                    type === "file"
+                        ? CreateFile(name)
+                        : CreateDir(name);
+
+                    cleanup();
+                }
+
+                if (e.key === "Escape") {
+                    cleanup();
+                }
+            };
+
+            document.addEventListener("keydown", onKeyDown);
+        }
     }
 }
