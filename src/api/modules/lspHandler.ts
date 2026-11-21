@@ -1,5 +1,5 @@
 import { LSP, type LSPType } from "./lsp";
-import { BrowserWindow, ipcMain, ipcRenderer } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 
 export class LSPHandler {
     public lsp!: LSP;
