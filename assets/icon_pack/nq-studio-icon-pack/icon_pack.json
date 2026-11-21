@@ -29,6 +29,7 @@
         "restore": "icons/restaure.svg",
 		"close": "icons/close.svg",
         "run": "icons/run.svg",
-        "reload": "icons/reload.svg"
+        "reload": "icons/reload.svg",
+        "dropdown": "icons/dropdown.svg"
     }
 }
