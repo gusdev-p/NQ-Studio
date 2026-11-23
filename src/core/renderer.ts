@@ -37,6 +37,11 @@ export let treeView: TreeViewManager;
 export let notificationManager: NotificationManager
 let terminalVisible = true
 
+// top-bar buttons variables
+let sidebarRightVisible: boolean = false;
+let sidebarLeftVisible: boolean = true;
+let terminalBarVisible: boolean = true;
+
 const propertiesTab = new PropertiesTabManager(document.body);
 
 let isDark: boolean;
@@ -200,6 +205,133 @@ async function initUI() {
 	midDiv.appendChild(projectTitle);
 
 	// right div
+
+    // sidebar left button
+    const sidebarLeftBtn = document.createElement("button");
+    sidebarLeftBtn.style.cssText = `
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    `
+
+    sidebarLeftBtn.addEventListener("mouseenter", (e) => {
+        sidebarLeftBtn.style.background = "var(--onSurfaceColor)";
+    });
+
+    sidebarLeftBtn.addEventListener("mouseleave", (e) => {
+        sidebarLeftBtn.style.background = "transparent";
+    });
+
+    const sidebarLeftIcon = document.createElement("img");
+    sidebarLeftIcon.style.cssText = `
+        max-width: 20px;
+        height: auto;
+    `
+
+    sidebarLeftIcon.src = await window.nq.getIcon("sidebar_left", false);
+
+    sidebarLeftBtn.appendChild(sidebarLeftIcon);
+
+    sidebarLeftBtn.addEventListener("click", (e) => {
+        sidebarLeftVisible = !sidebarLeftVisible;
+        
+        sidebarLeftVisible
+            ? side_bar.show()
+            : side_bar.hide();
+    });
+
+    rightDiv.appendChild(sidebarLeftBtn);
+
+    // terminal bar
+    const terminalBarBtn = document.createElement("button");
+    terminalBarBtn.style.cssText = `
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    `
+
+    terminalBarBtn.addEventListener("mouseenter", (e) => {
+        terminalBarBtn.style.background = "var(--onSurfaceColor)";
+    });
+
+    terminalBarBtn.addEventListener("mouseleave", (e) => {
+        terminalBarBtn.style.background = "transparent";
+    });
+
+    const terminalBarIcon = document.createElement("img");
+    terminalBarIcon.style.cssText = `
+        max-width: 20px;
+        height: auto;
+    `
+
+    terminalBarIcon.src = await window.nq.getIcon("terminal_show", false);
+
+    terminalBarBtn.appendChild(terminalBarIcon);
+
+    terminalBarBtn.addEventListener("click", (e) => {
+        terminalBarVisible = !terminalBarVisible;
+
+        terminalBarVisible
+            ? terminal.style.display = "none"
+            : terminal.style.display = "flex";
+    });
+
+    rightDiv.appendChild(terminalBarBtn);
+
+    // sidebar right button
+    const sidebarRightBtn = document.createElement("button");
+    sidebarRightBtn.style.cssText = `
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    `
+
+    sidebarRightBtn.addEventListener("mouseenter", (e) => {
+        sidebarRightBtn.style.background = "var(--onSurfaceColor)";
+    });
+
+    sidebarRightBtn.addEventListener("mouseleave", (e) => {
+        sidebarRightBtn.style.background = "transparent";
+    });
+
+    const sidebarRightIcon = document.createElement("img");
+    sidebarRightIcon.style.cssText = `
+        max-width: 20px;
+        height: auto;
+    `
+
+    sidebarRightIcon.src = await window.nq.getIcon("sidebar_right", false);
+
+    sidebarRightBtn.appendChild(sidebarRightIcon);
+
+    sidebarRightBtn.addEventListener("click", (e) => {
+        sidebarRightVisible = !sidebarRightVisible;
+        
+        sidebarRightVisible
+            ? secondary_side_bar.show()
+            : secondary_side_bar.hide();
+    });
+
+    rightDiv.appendChild(sidebarRightBtn);
+
     // vertical spacer
     const verticalSpacer = document.createElement("div");
     verticalSpacer.style.width = "2px";
@@ -476,6 +608,7 @@ async function initUI() {
     workspace.style.maxWidth = "100%";
     workspace.style.minWidth = "0";
     workspace.style.overflow = "hidden";
+    workspace.style.gap = "3px";
     
     workspace.appendChild(main);
     secondary_side_bar = new SecondarySideBar(workspace);
