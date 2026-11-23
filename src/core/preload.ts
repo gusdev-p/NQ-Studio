@@ -342,6 +342,7 @@ export const nq = {
      * ## Get Icon
      * Returns the compatible icon compared to the path
      * @param filePath - The file path to receive the icon.
+     * @param is_path - A boolean value that tells if the `filePath` is the icon name
      * @returns The specified icon for the path.
      * @example // Examples of usage:
      * await window.nq.getIcon("some_file.txt") // returns a generic icon.
