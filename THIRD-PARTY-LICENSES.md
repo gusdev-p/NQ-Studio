@@ -27,7 +27,7 @@
 [@esbuild/linux-x64@0.28.2](https://github.com/evanw/esbuild) - MIT
 [@eslint-community/eslint-utils@4.10.1](https://github.com/eslint-community/eslint-utils) - MIT
 [@eslint-community/regexpp@4.12.2](https://github.com/eslint-community/regexpp) - MIT
-[@eslint/config-array@0.23.5](https://github.com/eslint/rewrite) - Apache-2.0
+[@eslint/config-array@0.23.6](https://github.com/eslint/rewrite) - Apache-2.0
 [@eslint/config-helpers@0.7.0](https://github.com/eslint/rewrite) - Apache-2.0
 [@eslint/core@0.17.0](https://github.com/eslint/rewrite) - Apache-2.0
 [@eslint/core@1.2.1](https://github.com/eslint/rewrite) - Apache-2.0
@@ -46,6 +46,7 @@
 [@humanwhocodes/momoa@3.3.13](https://github.com/humanwhocodes/momoa) - Apache-2.0
 [@humanwhocodes/retry@0.4.3](https://github.com/humanwhocodes/retry) - Apache-2.0
 [@isaacs/fs-minipass@4.0.1](https://github.com/npm/fs-minipass) - ISC
+[@isaacs/nonrecursive-glob-match@1.1.0](undefined) - BlueOak-1.0.0
 [@keyv/bigmap@1.3.1](https://github.com/jaredwray/keyv) - MIT
 [@keyv/serialize@1.1.1](https://github.com/jaredwray/keyv) - MIT
 [@lezer/common@1.5.3](git+https://code.haverbeke.berlin/lezer/common) - MIT
@@ -92,16 +93,16 @@
 [@types/serve-static@2.2.0](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
 [@types/trusted-types@2.0.7](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
 [@types/unist@3.0.3](https://github.com/DefinitelyTyped/DefinitelyTyped) - MIT
-[@typescript-eslint/eslint-plugin@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/parser@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/project-service@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/scope-manager@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/tsconfig-utils@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/type-utils@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/types@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/typescript-estree@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/utils@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
-[@typescript-eslint/visitor-keys@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/eslint-plugin@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/parser@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/project-service@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/scope-manager@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/tsconfig-utils@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/type-utils@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/types@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/typescript-estree@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/utils@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[@typescript-eslint/visitor-keys@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
 [@vscode/l10n@0.0.18](https://github.com/Microsoft/vscode-l10n) - MIT
 [@xmldom/xmldom@0.8.15](https://github.com/xmldom/xmldom) - MIT
 [@xterm/addon-fit@0.11.0](https://github.com/xtermjs/xterm.js/tree/master/addons/addon-fit) - MIT
@@ -123,16 +124,13 @@
 [asynckit@0.4.0](https://github.com/alexindigo/asynckit) - MIT
 [at-least-node@1.0.0](https://github.com/RyanZim/at-least-node) - ISC
 [aws4@1.13.2](https://github.com/mhart/aws4) - MIT
-[balanced-match@1.0.2](https://github.com/juliangruber/balanced-match) - MIT
 [balanced-match@4.0.4](https://github.com/juliangruber/balanced-match) - MIT
 [base64-js@1.5.1](https://github.com/beatgammit/base64-js) - MIT
 [bluebird@3.7.2](https://github.com/petkaantonov/bluebird) - MIT
 [body-parser@2.4.0](https://github.com/expressjs/body-parser) - MIT
 [boolbase@1.0.0](https://github.com/fb55/boolbase) - ISC
 [boolean@3.2.0](https://github.com/thenativeweb/boolean) - MIT
-[brace-expansion@1.1.21](https://github.com/juliangruber/brace-expansion) - MIT
-[brace-expansion@2.1.7](https://github.com/juliangruber/brace-expansion) - MIT
-[brace-expansion@5.0.12](https://github.com/juliangruber/brace-expansion) - MIT
+[brace-expansion@5.0.13](https://github.com/juliangruber/brace-expansion) - MIT
 [buffer-from@1.1.2](https://github.com/LinusU/buffer-from) - MIT
 [builder-util-runtime@9.7.0](https://github.com/electron-userland/electron-builder) - MIT
 [builder-util@26.16.0](https://github.com/electron-userland/electron-builder) - MIT
@@ -150,7 +148,7 @@
 [chownr@3.0.0](https://github.com/isaacs/chownr) - BlueOak-1.0.0
 [chromium-pickle-js@0.2.0](https://github.com/electron/node-chromium-pickle-js) - MIT
 [ci-info@4.3.1](https://github.com/watson/ci-info) - MIT
-[ci-info@4.4.0](https://github.com/watson/ci-info) - MIT
+[ci-info@4.5.0](https://github.com/watson/ci-info) - MIT
 [cliui@8.0.1](https://github.com/yargs/cliui) - ISC
 [clone-response@1.0.3](https://github.com/sindresorhus/clone-response) - MIT
 [codemirror-lang-makefile@0.1.1](git+https://git.sr.ht/~mattmundell/codemirror-lang-makefile) - MIT
@@ -161,7 +159,6 @@
 [commander@5.1.0](https://github.com/tj/commander.js) - MIT
 [commander@9.5.0](https://github.com/tj/commander.js) - MIT
 [compare-version@0.1.2](https://github.com/kevva/compare-version) - MIT
-[concat-map@0.0.1](https://github.com/substack/node-concat-map) - MIT
 [content-disposition@2.0.1](https://github.com/jshttp/content-disposition) - MIT
 [content-type@2.1.0](https://github.com/jshttp/content-type) - MIT
 [cookie-signature@1.2.2](https://github.com/visionmedia/node-cookie-signature) - MIT
@@ -193,7 +190,7 @@
 [dom-serializer@2.0.0](https://github.com/cheeriojs/dom-serializer) - MIT
 [domelementtype@2.3.0](https://github.com/fb55/domelementtype) - BSD-2-Clause
 [domhandler@5.0.3](https://github.com/fb55/domhandler) - BSD-2-Clause
-[dompurify@3.4.17](https://github.com/cure53/DOMPurify) - (MPL-2.0 OR Apache-2.0)
+[dompurify@3.4.18](https://github.com/cure53/DOMPurify) - (MPL-2.0 OR Apache-2.0)
 [domutils@3.2.2](https://github.com/fb55/domutils) - BSD-2-Clause
 [dotenv-expand@11.0.7](https://github.com/motdotla/dotenv-expand) - BSD-2-Clause
 [dotenv@16.6.1](https://github.com/motdotla/dotenv) - BSD-2-Clause
@@ -226,7 +223,7 @@
 [eslint-scope@9.1.2](https://github.com/eslint/js) - BSD-2-Clause
 [eslint-visitor-keys@3.4.3](https://github.com/eslint/eslint-visitor-keys) - Apache-2.0
 [eslint-visitor-keys@5.0.1](https://github.com/eslint/js) - Apache-2.0
-[eslint@10.14.0](https://github.com/eslint/eslint) - MIT
+[eslint@10.15.0](https://github.com/eslint/eslint) - MIT
 [espree@11.2.0](https://github.com/eslint/js) - BSD-2-Clause
 [esquery@1.7.0](https://github.com/estools/esquery) - BSD-3-Clause
 [esrecurse@4.3.0](https://github.com/estools/esrecurse) - BSD-2-Clause
@@ -290,7 +287,7 @@
 [https-proxy-agent@7.0.6](https://github.com/TooTallNate/proxy-agents) - MIT
 [iconv-lite@0.7.3](https://github.com/pillarjs/iconv-lite) - MIT
 [ignore@5.3.2](https://github.com/kaelzhang/node-ignore) - MIT
-[ignore@7.0.14](https://github.com/kaelzhang/node-ignore) - MIT
+[ignore@7.0.16](https://github.com/kaelzhang/node-ignore) - MIT
 [imurmurhash@0.1.4](https://github.com/jensyt/imurmurhash-js) - MIT
 [inflight@1.0.6](https://github.com/npm/inflight) - ISC
 [inherits@2.0.4](https://github.com/isaacs/inherits) - ISC
@@ -386,10 +383,7 @@
 [mime@2.6.0](https://github.com/broofa/mime) - MIT
 [mimic-response@1.0.1](https://github.com/sindresorhus/mimic-response) - MIT
 [mimic-response@3.1.0](https://github.com/sindresorhus/mimic-response) - MIT
-[minimatch@10.2.6](https://github.com/isaacs/minimatch) - BlueOak-1.0.0
-[minimatch@3.1.5](https://github.com/isaacs/minimatch) - ISC
-[minimatch@5.1.9](https://github.com/isaacs/minimatch) - ISC
-[minimatch@9.0.9](https://github.com/isaacs/minimatch) - ISC
+[minimatch@11.0.9](https://github.com/isaacs/minimatch) - BlueOak-1.0.0
 [minimist@1.2.8](https://github.com/minimistjs/minimist) - MIT
 [minipass@7.1.3](https://github.com/isaacs/minipass) - BlueOak-1.0.0
 [minizlib@3.1.0](https://github.com/isaacs/minizlib) - MIT
@@ -462,11 +456,11 @@
 [run-applescript@7.1.0](https://github.com/sindresorhus/run-applescript) - MIT
 [safe-buffer@5.1.2](https://github.com/feross/safe-buffer) - MIT
 [safer-buffer@2.1.2](https://github.com/ChALkeR/safer-buffer) - MIT
-[sanitize-filename@1.6.4](https://github.com/parshap/node-sanitize-filename) - WTFPL OR ISC
+[sanitize-filename@1.6.5](https://github.com/parshap/node-sanitize-filename) - WTFPL OR ISC
 [sax@1.6.1](https://github.com/isaacs/sax-js) - BlueOak-1.0.0
 [semver-compare@1.0.0](https://github.com/substack/semver-compare) - MIT
-[semver@5.7.2](https://github.com/npm/node-semver) - ISC
-[semver@6.3.1](https://github.com/npm/node-semver) - ISC
+[semver@5.7.3](https://github.com/npm/node-semver) - ISC
+[semver@6.3.2](https://github.com/npm/node-semver) - ISC
 [semver@7.7.4](https://github.com/npm/node-semver) - ISC
 [semver@7.8.5](https://github.com/npm/node-semver) - ISC
 [send@1.2.1](https://github.com/pillarjs/send) - MIT
@@ -507,7 +501,7 @@
 [type-check@0.4.0](https://github.com/gkz/type-check) - MIT
 [type-fest@0.13.1](https://github.com/sindresorhus/type-fest) - (MIT OR CC0-1.0)
 [type-is@2.1.0](https://github.com/jshttp/type-is) - MIT
-[typescript-eslint@8.72.1](https://github.com/typescript-eslint/typescript-eslint) - MIT
+[typescript-eslint@8.73.0](https://github.com/typescript-eslint/typescript-eslint) - MIT
 [typescript-language-server@6.0.2](https://github.com/typescript-language-server/typescript-language-server) - Apache-2.0
 [typescript@4.9.5](https://github.com/Microsoft/TypeScript) - Apache-2.0
 [typescript@6.0.3](https://github.com/microsoft/TypeScript) - Apache-2.0
