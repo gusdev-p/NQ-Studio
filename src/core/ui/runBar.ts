@@ -1,6 +1,7 @@
 import { ChildProcess } from "child_process";
 import { PropertiesTabManager, PropertiesTabType } from "../../api/modules/propertiesTabManager"
 import { secondary_side_bar } from "../renderer";
+import { HideSecondarySideBar, OpenSecondarySideBar } from "../../events/IDE";
 
 interface fileConfig {
     name: string;
@@ -123,9 +124,17 @@ export class RunBar {
     private async updateRunTarget() {
         this.runTargetTitle.innerText =
             `Active target: ${this.runType ? await this.runTargetToText() : "Nothing :/"}`
+        
+            await window.nq.setLocalProperty("run_target", this.runType);
     }
 
     private async init() {
+        // preparative
+        const oldRun = await window.nq.getLocalProperty("run_target");
+        if (oldRun) {
+            this.runType = oldRun;
+        }
+
         // left div
 
         // root
@@ -153,8 +162,7 @@ export class RunBar {
         run.style.justifyContent = "center";
 
         run.addEventListener("click", async (e) => {
-            const algo = await window.nq.spawnProcess("echo", ["bom-dia"]);
-            console.log("o processo:", algo);
+            this.runCode();
         });
 
         const runTitle = document.createElement("span");
@@ -426,6 +434,7 @@ export class RunBar {
                         break;
                     }
                 }
+                break;
             }
 
             case "makefile-target": {
@@ -474,6 +483,7 @@ export class RunBar {
                         break;
                     }
                 }
+                break;
             }
 
             case "open-in-server-preview": {
@@ -497,6 +507,7 @@ export class RunBar {
                         break;
                     }
                 }
+                break;
             }
         }
     }
