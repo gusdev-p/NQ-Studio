@@ -6,16 +6,11 @@
 </p>
 
 <p align="center">
-<<<<<<< HEAD
     <img src="https://img.shields.io/github/stars/gusdev-p/NQ-Studio">
-    <img src="https://img.shields.io/github/license/gusdev-p/NQ-Studio">
-    <img src="https://img.shields.io/badge/version-0.6.0--alpha-blue">
-=======
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome">
-    <img src="https://img.shields.io/badge/version-0.6.1--alpha-blue" alt="Version 0.6.1-alpha">
+    <img src="https://img.shields.io/badge/version-0.7.2--alpha-blue" alt="Version 0.6.1-alpha">
+    <img src="https://img.shields.io/github/last-commit/gusdev-p/NQ-Studio" alt="Last Commit">
     <img src="https://img.shields.io/github/license/gusdev-p/NQ-Studio" alt="License GPL-3.0">
-    <img src="https://img.shields.io/badge/status-unstable-yellow" alt="This version is unstable!">
->>>>>>> 83cf12c (new update: 0.6.1-alpha)
+    <img src="https://img.shields.io/badge/status-stable-yellow" alt="This version is unstable!">
 </p>
 
 <p align="center">
@@ -29,13 +24,12 @@
 </p>
 
 <p align="center">
-    <img src="./assets/html_preview.gif" alt="NQ-Studio HTML Preview" width="600">
+    <img src="./assets/markdown_preview.gif" alt="NQ-Studio Markdown Preview" width="600">
 </p>
 
 <p align="center">
     Tired of using a heavy IDE for a simple project? NQ-Studio is for you.
 </p>
-
 
 ### Features ✨
 
@@ -52,13 +46,13 @@
 
 NQ-Studio is still under development, we don't recommend you use it for now, because some features are under development, like:
 
-- properties tab for each file.
-- `src` directory definition.
+- Run bar
+- Fine tunning in TreeView
 
 But if you don't mind that, you can use the IDE :)
 
 ### Changelog 🎯
-NQ-Studio is now in the `0.6.0-alpha` version! To see the changes check: [CHANGELOG.md](./CHANGELOG.md)
+NQ-Studio is now in the `0.7.2-alpha` version! To see the changes check: [CHANGELOG.md](./CHANGELOG.md)
 
 --- 
 
@@ -88,7 +82,13 @@ This command executes other three steps:
 
 - `make preview` : Launches **Electron** and opens the IDE.
 
----
+If you need some help, about how to use the other commands (yes it have a lot of commands), use:
+
+```Bash
+make help
+```
+
+It will show all the commands with a simple description about.
 
 ### Notes 📋
 This project is under development and may contain bugs or have incomplete features.
