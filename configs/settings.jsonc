@@ -23,7 +23,7 @@
             "Variant": "dark",
             // The theme pallete
             "Theme": {
-                "--backgroundColor": "#222", // background color
+                "--backgroundColor": "linear-gradient(to bottom, #222, #333)", // background color
                 "--surfaceColor": "#333", // surface color (on top of the background)
                 "--onSurfaceColor": "#444", // on surface color (on top of the surface)
                 "--fontColor": "#f1f1f1", // font color
@@ -78,7 +78,7 @@
     "UI": {
       // the UI font
       // Note: Use 'auto' for an automatically selection of your font
-      "Font": "JetBrainsMono Nerd, monospace" // note that the 'monospace' is used if the first option fails
+      "Font": "System-ui, monospace" // note that the 'monospace' is used if the first option fails
     },
     // Input settings
     // Note: only one key for the input ex.: ctrl+f6 (wrong); f6 (right)
