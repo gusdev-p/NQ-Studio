@@ -32,7 +32,7 @@ Because this branch is like a "rolling version" of NQ-Studio here we have some f
 
 - `Compilable` : With just a command with `make` or `npm`, you can compile the NQ-Studio to an AppImage or into a .deb
 
-**### 💻 About the PRs (Pull Requests)**
+### 💻 About the PRs (Pull Requests)
 
 All PRs are welcome! However, I have one simple requirement: **explain EVERYTHING you modified.**
 
