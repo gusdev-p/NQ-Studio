@@ -114,6 +114,22 @@ export class SideBar {
         this.root.appendChild(this.wrapper);
     }
 
+    public show(width?: number | "auto"): void {
+        if (width && width !== "auto") {
+            this.wrapper.style.width = `${width}px`;
+        }
+
+        this.wrapper.style.display = "flex";
+        this.content.style.display = "flex";
+        this.resizer.style.display = "flex";
+    }
+
+    public hide(): void {
+        this.wrapper.style.display = "none";
+        this.content.style.display = "none";
+        this.resizer.style.display = "none";
+    }
+
     /**
      * 
      * @param tree 
