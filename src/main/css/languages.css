@@ -115,3 +115,20 @@
     color: #3584e4;
     text-decoration: underline;
 }
+
+/* Markdown: lists and bullets */
+.hljs-bullet {
+    color: #f66151;
+}
+
+/* Markdown: blockquotes */
+.hljs-quote {
+    color: #8caaee;
+    font-style: italic;
+}
+
+/* Markdown: headings */
+.hljs-section {
+    color: #3584e4;
+    font-weight: bold;
+}
