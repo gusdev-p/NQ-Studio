@@ -1,6 +1,7 @@
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { ReloadHTML, reloadImage, ReloadMarkdown } from "../../events/preview";
+import hljs from "highlight.js";
 export class SecondarySideBar {
     private root: HTMLElement;
 
@@ -106,7 +107,6 @@ export class SecondarySideBar {
         wrapper.style.border = "1px solid var(--borderColor)";
         wrapper.style.borderRadius = "8px";
         wrapper.style.flexShrink = "0";
-        wrapper.style.gap = "2px";
 
 
         wrapper.appendChild(this.resizer);
@@ -139,10 +139,8 @@ export class SecondarySideBar {
         });
     }
 
-    show(width: number | string) {
-        if (typeof width === "string" && width.toLowerCase() === "auto") {
-            ;
-        } else {
+    show(width?: number | "auto") {
+        if (width !== "auto") {
             this.sidebar.style.width = `${width}px`
         }
         this.wrapper.style.display = "flex";
@@ -424,6 +422,7 @@ export class SecondarySideBar {
         this.content.style.background = "var(--surfaceColor)";
         this.content.style.color = "var(--fontColor)";
         this.content.innerHTML = DOMPurify.sanitize(marked.parse(mdSource) as string);
+        this.content.style.padding = "5px";
 
         const toolBar = document.createElement("div");
         toolBar.id = "HTMLPreviewToolBar"
@@ -488,12 +487,11 @@ export class SecondarySideBar {
         this.content.prepend(toolBar);
 
         const images = this.content.querySelectorAll("img");
-        const elements = this.content.querySelectorAll(":scope > *");
-
-        elements.forEach((element) => {
-            (element as HTMLElement).style.marginLeft = "3px";
-            (element as HTMLElement).style.marginRight = "3px";
-        });
+        const blockquotes = this.content.querySelectorAll("blockquote");
+        const pres = this.content.querySelectorAll("pre");
+        const codes = this.content.querySelectorAll("code");
+        const ps = this.content.querySelectorAll("p");
+        
 
         for (const img of images) {
             const src = img.getAttribute("src");
@@ -504,6 +502,46 @@ export class SecondarySideBar {
 
             const fullPath = await window.nq.resolvePath(await window.nq.getDirname(this.currentMd), src);
             img.src = fullPath;
+        }
+
+        for (const blockquote of blockquotes) {
+            blockquote.style.background = "var(--onSurfaceColor)";
+            blockquote.style.border = "solid 1px var(--borderColor)";
+            blockquote.style.borderRadius = "8px";
+            blockquote.style.padding = "3px";
+            blockquote.style.margin = "0";
+
+            const ps = blockquote.querySelectorAll("p");
+
+            for (const p of ps) {
+                p.style.margin = "0";
+            }
+        }
+
+        for (const pre of pres) {
+            pre.style.background = "var(--onSurfaceColor)";
+            pre.style.border = "solid 1px var(--borderColor)";
+            pre.style.borderRadius = "8px";
+            pre.style.textWrap = "pretty";
+            pre.style.padding = "3px";
+            pre.style.margin = "5px";
+        }
+
+        for (const code of codes) {
+            console.log("tem suporte?", hljs.getLanguage("markdown"));
+            hljs.highlightElement(code);
+            console.log("novo code: ", code);
+        }
+
+        for (const p of ps) {
+            const codes = p.querySelectorAll("code");
+
+            for (const code of codes) {
+                code.style.background = "var(--onSurfaceColor)";
+                code.style.borderRadius = "8px";
+                code.style.padding = "5px";
+                code.style.border = "solid 1px var(--borderColor)";
+            }
         }
 
         this.content.addEventListener("click", async (e) => {
