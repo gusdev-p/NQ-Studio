@@ -562,7 +562,7 @@ export async function initListeners() {
     });
 
     document.addEventListener("openSecondarySideBar", () =>{
-        if (!secondary_side_bar.isOpen()) secondary_side_bar.show(150);
+        if (!secondary_side_bar.isOpen()) secondary_side_bar.show();
     });
 
     document.addEventListener("hideSecondarySideBar", () => {
