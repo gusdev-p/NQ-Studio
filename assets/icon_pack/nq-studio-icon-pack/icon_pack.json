@@ -30,6 +30,9 @@
 		"close": "icons/close.svg",
         "run": "icons/run.svg",
         "reload": "icons/reload.svg",
-        "dropdown": "icons/dropdown.svg"
+        "dropdown": "icons/dropdown.svg",
+        "sidebar_right": "icons/sidebar_right.svg",
+        "sidebar_left": "icons/sidebar_left.svg",
+        "terminal_show": "icons/terminal_show.svg"
     }
 }
