@@ -37,7 +37,6 @@
 - 📂 **Tree View** - Much easier to see your files.
 - ⚡ **Lightweight** - Lightweight compared to other IDEs.
 - 🎨 **Dark, light and custom themes** - Fully customizable themes!
-- 📝 **Monaco Editor** - Same editor that vs code uses!
 - 📄 **Markdown Preview** - Preview of your `README.md`!
 - 🖼️ **Image Preview** - Show your image with simple zoom and move.
 - 🌐 **HTML Preview** - Preview in sidebar with toolbar.
