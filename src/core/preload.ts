@@ -5,6 +5,7 @@ import { server } from "../api/preload/server"
 import { make } from "../api/preload/make"
 import { lsp } from "../api/preload/lsp"
 import { windowManager } from "../api/preload/windowManager"
+import { git } from "../api/preload/git";
 
 const newNQ = {
     ...nq,
@@ -12,7 +13,8 @@ const newNQ = {
     server,
     make,
     lsp,
-    windowManager
+    windowManager,
+    git
 };
 
 contextBridge.exposeInMainWorld("nq", newNQ);

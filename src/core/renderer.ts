@@ -9,7 +9,7 @@ import { Extension } from "@codemirror/state";
 import { buildCMTheme } from "./cmTheme.js";
 import { PropertiesTabManager, type PropertiesTabType } from "../api/modules/propertiesTabManager.js";
 import { NotificationManager, NotificationType } from "./ui/notify/notificationManager.js";
-import { parse } from "jsonc-parser"
+import { parse } from "jsonc-parser";
 
 import { initListeners } from "../main/script.js";
 import { DownBar } from "./ui/downBar.js";
@@ -629,5 +629,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         await initUI();
         await initListeners();
         await initTreeView();
+        console.log("init do git:", await window.nq.git.init());
+        console.log("status do git:", await window.nq.git.status());
     }, 0.3);
 });

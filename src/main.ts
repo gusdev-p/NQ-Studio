@@ -13,6 +13,7 @@ import { IconsHandler } from "./api/modules/icons";
 import { LSPHandler } from "./api/modules/lspHandler";
 import { WindowManager } from "./api/modules/window";
 import { ProcessManagerHandler } from "./api/modules/processManager";
+import { GitHandler } from "./api/modules/git";
 
 // import { LSP } from "./api/modules/lsp";
 
@@ -46,6 +47,7 @@ let iconsHandler :           IconsHandler
 let ideHandler :             IDEHandler
 let windowManager :          WindowManager
 let processManager :         ProcessManagerHandler
+let gitHandler :             GitHandler
 
 // let lsp :                    LSP
 
@@ -57,6 +59,7 @@ function initAPI() {
     iconsHandler = new IconsHandler(true)
     ideHandler = new IDEHandler(devMode);
     processManager = new ProcessManagerHandler(devMode);
+    gitHandler = new GitHandler(ideHandler.globalRoot);
 
     // lsp = new LSP(lspLogs);
 }
@@ -69,6 +72,7 @@ function deinitAPI() {
     iconsHandler.unregister();
     ideHandler.unregister();
     processManager.unregister();
+    gitHandler.unregister();
 }
 
 let lspHandler: LSPHandler;
