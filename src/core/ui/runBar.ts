@@ -404,7 +404,7 @@ export class RunBar {
                     case ".js":
                     case ".cjs": {
                         if (!await window.nq.existsCommand("node")) return;
-                        window.terminal.executeInTerminal(`node ${file.path}`);
+                        window.nq.terminal.executeInTerminal(`node ${file.path}`);
                         break;
                     }
 
@@ -412,7 +412,7 @@ export class RunBar {
                     case ".mts":
                     case ".cts": {
                         if (!await window.nq.existsCommand("ts-node")) return;
-                        window.terminal.executeInTerminal(`ts-node ${file.path}`);
+                        window.nq.terminal.executeInTerminal(`ts-node ${file.path}`);
                         break;
                     }
 
@@ -443,7 +443,7 @@ export class RunBar {
                 const target = await window.nq.getLocalProperty("main_target");
                 const makePath = await window.nq.getLocalProperty("makefile");
 
-                window.terminal.executeInTerminal(
+                window.nq.terminal.executeInTerminal(
                     makePath 
                         ? `make -f ${makePath} ${target}`
                         : `make ${target}`
@@ -457,7 +457,7 @@ export class RunBar {
             }
 
             case "open-in-browser-server": {
-                const url = await window.server.openHttpServer(await window.nq.getRoot());
+                const url = await window.nq.server.openHttpServer(await window.nq.getRoot());
 
                 await window.nq.openInBrowser(url);
                 break;
@@ -497,7 +497,7 @@ export class RunBar {
                     }
 
                     case ".html": {
-                        const url = await window.server.openHttpServer(await window.nq.getRoot());
+                        const url = await window.nq.server.openHttpServer(await window.nq.getRoot());
                         this.preview("html", await window.nq.joinPath(url, file.path));
                         break;
                     }
@@ -517,7 +517,7 @@ export class RunBar {
     }
 
     public async reExecuteCode() {
-		window.terminal.kill();
+		window.nq.terminal.kill();
 		this.executeActiveFile();
     }
 
