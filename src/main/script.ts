@@ -531,7 +531,7 @@ export async function initListeners() {
             const target = await window.nq.getLocalProperty("main_target");
 
             if (target) {
-                const child = window.terminal.executeInTerminal(`make ${target}`);
+                const child = window.nq.terminal.executeInTerminal(`make ${target}`);
             } else {
                 const notification: NotificationType = {
                     title: "Make",
@@ -548,7 +548,7 @@ export async function initListeners() {
         beforeReload();
         await window.nq.setRoot(e.detail.path);
         await window.nq.reloadNow();
-        // await window.terminal.changeCwd(e.detail.path);
+        // await window.nq.terminal.changeCwd(e.detail.path);
         // treeView.setRoot(e.detail.path);
         // await window.nq.setSelected(e.detail.path);
         // console.log("pedido de troca de root!");
@@ -578,8 +578,8 @@ export async function initListeners() {
     });
 
     document.addEventListener("server:htmlPreview", async (e: any) => {
-        await window.server.closeHttpServer();
-        const url = await window.server.openHttpServer(await window.nq.getRoot());
+        await window.nq.server.closeHttpServer();
+        const url = await window.nq.server.openHttpServer(await window.nq.getRoot());
         if (!secondary_side_bar.isOpen()) secondary_side_bar.show(344);
 
         const path: string  = e.detail.path;
@@ -589,8 +589,8 @@ export async function initListeners() {
     });
 
     document.addEventListener("server:openInBrowser", async (e: any) => {
-        await window.server.closeHttpServer();
-        const url = await window.server.openHttpServer(await window.nq.getRoot());
+        await window.nq.server.closeHttpServer();
+        const url = await window.nq.server.openHttpServer(await window.nq.getRoot());
 
         const path: string = e.detail.path;
         const root = await window.nq.getRoot();
@@ -610,7 +610,7 @@ export async function initListeners() {
             makefilePath = await window.nq.resolvePath(await window.nq.getRoot(), "makefile");
         }
 
-        const parsed = await window.make.parse(await window.nq.resolvePath(makefilePath));
+        const parsed = await window.nq.make.parse(await window.nq.resolvePath(makefilePath));
         console.log("makefile path:", makefilePath);
         console.log("parsed: ", parsed);
         side_bar.defineMakefileView(parsed);

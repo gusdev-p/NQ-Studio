@@ -149,8 +149,8 @@ export async function defineMakefileView(root: HTMLDivElement | HTMLElement, par
 
             functionDiv.addEventListener("click", async () => {
                 await window.nq.getLocalProperty("makefile") === undefined
-                    ? window.terminal.executeInTerminal(`make ${functionOption.value}`)
-                    : window.terminal.executeInTerminal(`make -f ${await window.nq.getLocalProperty("makefile")} ${functionOption.value}`);
+                    ? window.nq.terminal.executeInTerminal(`make ${functionOption.value}`)
+                    : window.nq.terminal.executeInTerminal(`make -f ${await window.nq.getLocalProperty("makefile")} ${functionOption.value}`);
             });
 
             functionTitle.addEventListener("click", () => {

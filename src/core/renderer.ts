@@ -368,7 +368,7 @@ async function initUI() {
     });
 
     minimizeButton.addEventListener("click", async () => {
-        await window.windowm.minimize();
+        await window.nq.windowManager.minimize();
     }); 
 
     // maximize
@@ -387,7 +387,7 @@ async function initUI() {
     maximizeIcon.style.maxWidth = "20px";
     maximizeIcon.style.height = "auto";
 
-    maximizeIcon.src = await window.windowm.isMaximized()
+    maximizeIcon.src = await window.nq.windowManager.isMaximized()
         ? await window.nq.getIcon("restore", false)
         : await window.nq.getIcon("maximize", false);
     
@@ -402,11 +402,11 @@ async function initUI() {
     });
 
     maximizeButton.addEventListener("click", async () => {
-        if (await window.windowm.isMaximized()) {
-            await window.windowm.restore();
+        if (await window.nq.windowManager.isMaximized()) {
+            await window.nq.windowManager.restore();
             maximizeIcon.src = await window.nq.getIcon("maximize", false);
         } else {
-            await window.windowm.maximize();
+            await window.nq.windowManager.maximize();
             maximizeIcon.src = await window.nq.getIcon("maximize", false);
         }
     });
@@ -440,7 +440,7 @@ async function initUI() {
     });
     
     closeButton.addEventListener("click", async () => {
-        await window.windowm.shutdown();
+        await window.nq.windowManager.shutdown();
     });
 
     rightDiv.appendChild(verticalSpacer);

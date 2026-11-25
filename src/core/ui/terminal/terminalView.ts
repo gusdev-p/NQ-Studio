@@ -27,21 +27,21 @@ export class terminalView {
 
         const cwd = await window.nq.getRoot();
         
-        await window.terminal.create(cwd);
+        await window.nq.terminal.create(cwd);
 
         this.terminal.onData(data => {
             
-            window.terminal.write(data);
+            window.nq.terminal.write(data);
         });
 
-        window.terminal.onData(data => {
+        window.nq.terminal.onData(data => {
             this.terminal.write(data);
         });
 
         window.addEventListener("resize", () => {
             this.fitAddon.fit();
             
-            window.terminal.resize(
+            window.nq.terminal.resize(
                 this.terminal.cols,
                 this.terminal.rows
             );
@@ -50,7 +50,7 @@ export class terminalView {
         const observer = new ResizeObserver(() => {
             this.fitAddon.fit();
 
-            window.terminal.resize(
+            window.nq.terminal.resize(
                 this.terminal.cols,
                 this.terminal.rows
             );
@@ -62,7 +62,7 @@ export class terminalView {
     fit() {
         this.fitAddon.fit();
         
-        window.terminal.resize(
+        window.nq.terminal.resize(
             this.terminal.cols,
             this.terminal.rows 
         );

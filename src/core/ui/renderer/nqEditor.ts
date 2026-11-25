@@ -111,7 +111,7 @@ export class nqEditor {
                             const line = context.state.doc.lineAt(context.pos);
                             const character = context.pos - line.from;
 
-                            const result = await window.lsp.completion(
+                            const result = await window.nq.lsp.completion(
                                 this.filePath,
                                 line.number - 1,
                                 character,
@@ -186,7 +186,7 @@ export class nqEditor {
 
                   if (!this.filePath || !this.lspType) return null;
 
-                  const result = await window.lsp.hover(
+                  const result = await window.nq.lsp.hover(
                     this.filePath,
                     line.number - 1,
                     character,
@@ -269,7 +269,7 @@ export class nqEditor {
                     const text = update.state.doc.toString();
 
                     if (this.filePath && this.lspType) {
-                        window.lsp.change(
+                        window.nq.lsp.change(
                             this.filePath,
                             this.version,
                             text,
@@ -338,7 +338,7 @@ export class nqEditor {
         this.setLanguage("javascript");
         this.filePath = "";
 
-        window.lsp.onDiagnostics(async (uri, diagnostics) => {
+        window.nq.lsp.onDiagnostics(async (uri, diagnostics) => {
             if (!this.filePath) return;
 
             const currentUri = await window.nq.pathToUri(this.filePath);
@@ -355,7 +355,7 @@ export class nqEditor {
         const line = this.view.state.doc.lineAt(pos);
         const character = pos - line.from;
 
-        const result = await window.lsp.definition(
+        const result = await window.nq.lsp.definition(
             this.filePath,
             line.number - 1,
             character,
@@ -577,7 +577,7 @@ export class nqEditor {
 
     private async activateLSP(path: string, content: string, type: LSPType | null, request: number) {
         if (!type) {
-            await window.lsp.kill();
+            await window.nq.lsp.kill();
             return;
         }
 
@@ -596,6 +596,6 @@ export class nqEditor {
 
         console.log(`[LSP OPEN]:`, path, languageId, type);
         
-        await window.lsp.open(path, content, languageId, type);
+        await window.nq.lsp.open(path, content, languageId, type);
     }
 }
