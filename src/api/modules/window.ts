@@ -35,7 +35,7 @@ export class WindowManager {
 	public unregister() {
 		ipcMain.removeHandler("window:maximize");
 		ipcMain.removeHandler("window:restore");
-		ipcMain.removeHandler("window.minimize");
+		ipcMain.removeHandler("window:minimize");
 		ipcMain.removeHandler("window:maximized");
 		ipcMain.removeHandler("window:minimized");
 		ipcMain.removeHandler("window:shutdown");
